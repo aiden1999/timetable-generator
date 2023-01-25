@@ -1,1 +1,1 @@
-# timetable-project
+# Timetable Project
