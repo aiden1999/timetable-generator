@@ -1,0 +1,34 @@
+{
+  "teachers": [
+    { "id": "001", "name": "J Harkness" },
+    { "id": "002", "name": "G Cooper" },
+    { "id": "003", "name": "O Harper" },
+    { "id": "004", "name": "T Sato" },
+    { "id": "005", "name": "I Jones" }
+  ],
+  "rooms": [{ "id": "", "building": "", "type": "", "capacity": "" }],
+  "student_groups": [{ "id": "", "modules": "", "num_of_students": "" }],
+  "modules": [{ "id": "", "title": "", "teachers": "", "hours": "" }],
+  "time_slots": [
+    {
+      "day": "Monday",
+      "start_times": ["09", "10", "11", "12", "13", "14", "15", "16", "17"]
+    },
+    {
+      "day": "Tuesday",
+      "start_times": ["09", "10", "11", "12", "13", "14", "15", "16", "17"]
+    },
+    {
+      "day": "Wednesday",
+      "start_times": ["09", "10", "11", "12"]
+    },
+    {
+      "day": "Thursday",
+      "start_times": ["09", "10", "11", "12", "13", "14", "15", "16", "17"]
+    },
+    {
+      "day": "Friday",
+      "start_times": ["09", "10", "11", "12", "13", "14", "15", "16", "17"]
+    }
+  ]
+}
