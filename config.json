@@ -6,7 +6,21 @@
     { "id": "004", "name": "T Sato" },
     { "id": "005", "name": "I Jones" }
   ],
-  "rooms": [{ "id": "", "building": "", "type": "", "capacity": "" }],
+  "rooms": [
+    {
+      "id": "M101",
+      "building": "Maths",
+      "type": "Lecture",
+      "capacity": "200"
+    },
+    { "id": "M002", "building": "Maths", "type": "Seminar", "capacity": "50" },
+    {
+      "id": "CS001",
+      "building": "Computer Science",
+      "type": "Computer Lab",
+      "capacity": "100"
+    }
+  ],
   "student_groups": [{ "id": "", "modules": "", "num_of_students": "" }],
   "modules": [{ "id": "", "title": "", "teachers": "", "hours": "" }],
   "time_slots": [
