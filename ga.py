@@ -4,7 +4,8 @@ import json
 class Solution(str):
     def __init__(self, teachers, rooms, student_groups, modules, time_slots, total_sessions):
         super().__init__()
-        
+        for i in range(total_sessions):
+            
 
     def calculate_fitness():
         pass
