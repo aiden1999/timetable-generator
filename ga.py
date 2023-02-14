@@ -2,8 +2,9 @@ import json
 
 
 class Solution(str):
-    def __init__(self, teachers, rooms, student_groups, modules, time_slots, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, teachers, rooms, student_groups, modules, time_slots, total_sessions):
+        super().__init__()
+        
 
     def calculate_fitness():
         pass
@@ -21,7 +22,7 @@ def generate_timetable():
     
 def get_config_data():
     print("Reading config file")
-    file = open("config.json", "r")
+    file = open("data.json", "r")
     data = json.load(file)
     teachers = data["teachers"]
     rooms = data["rooms"]
@@ -43,8 +44,10 @@ def generate_initial_population():
     for student_group in student_groups:
         student_groups_id.append(student_group["id"])
     modules_id = []
+    total_sessions = 0
     for module in modules:
         modules_id.append(module["id"])
+        total_session += int(module["hours"])
     time_slots_id = []
     day_number = 1
     for day in time_slots:
@@ -56,4 +59,3 @@ def generate_initial_population():
     for i in range(10):
         initial_solution = Solution(teachers_id[i], rooms_id[i], student_groups_id, modules_id, time_slots_id)
         population.append(initial_solution)
-    
