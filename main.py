@@ -3,7 +3,7 @@ from os import system, name
     
 def menu():
     clear()
-    print("Timetable Maker\nPlease ensure that config.json is filled in correctly\nType start to create a timetable with output to a text file, or type help for more commands")
+    print("Timetable Maker\nPlease ensure that data.json is filled in correctly\nType start to create a timetable with output to a text file, or type help for more commands")
     get_user_input()
     
 def clear():
