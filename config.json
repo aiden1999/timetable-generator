@@ -21,8 +21,48 @@
       "capacity": "100"
     }
   ],
-  "student_groups": [{ "id": "", "modules": "", "num_of_students": "" }],
-  "modules": [{ "id": "", "title": "", "teachers": "", "hours": "" }],
+  "student_groups": [
+    { "id": "3874", "modules": ["C110", "B388"], "num_of_students": "200" },
+    { "id": "4389", "modules": ["K483", "L378"], "num_of_students": "150" },
+    { "id": "7368", "modules": ["A123"], "num_of_students": "30" }
+  ],
+  "modules": [
+    {
+      "id": "C110",
+      "title": "Introduction to Keyboards",
+      "teachers": "004",
+      "hours": "3",
+      "student_group": "3874"
+    },
+    {
+      "id": "B388",
+      "title": "Basics of Immortality",
+      "teachers": "001",
+      "hours": "5",
+      "student_group": "3874"
+    },
+    {
+      "id": "K483",
+      "title": "Jam Making",
+      "teachers": "003",
+      "hours": "2",
+      "student_group": "4389"
+    },
+    {
+      "id": "L378",
+      "title": "Coffee Brewing",
+      "teachers": "005",
+      "hours": "3",
+      "student_group": "4389"
+    },
+    {
+      "id": "A123",
+      "title": "Avoiding Apocalyptic Scenarios",
+      "teachers": "002",
+      "hours": "8",
+      "student_group": "7368"
+    }
+  ],
   "time_slots": [
     {
       "day": "Monday",
