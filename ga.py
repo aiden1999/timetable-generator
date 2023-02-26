@@ -23,15 +23,10 @@ def generate_timetable():
     
 def get_config_data():
     print("Reading config file")
-    file = open("data.json", "r")
+    file = open("config.json", "r")
     data = json.load(file)
-    teachers = data["teachers"]
-    rooms = data["rooms"]
-    student_groups = data["student_groups"]
-    modules = data["modules"]
-    time_slots = data["time_slots"]
     file.close()
-    return teachers, rooms, student_groups, modules, time_slots
+    return data
     
 def generate_initial_population():
     teachers, rooms, student_groups, modules, time_slots = get_config_data()
