@@ -69,7 +69,6 @@ def calculate_fitness(solution):
     solution.sort(key=lambda x: x[0])  # sort by time slot
     clash_count = 0
     for i in range(len(solution) - 1):
-        print(solution[i])  # delete later
         if solution[i][0] != solution[i + 1][0]:  # no sessions happening at the same time
             pass
         else:
