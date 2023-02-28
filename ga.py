@@ -6,7 +6,8 @@ def generate_timetable():
     print("Generating initial population")
     population = generate_initial_population()
     for solution in population:
-        # return the fitness of each solution as a list??
+        sol_fitness = calculate_fitness(solution)
+        print(sol_fitness)  # delete later
 
 
 def get_config_data():
@@ -64,9 +65,28 @@ def create_complete_solution(sessions, rooms, time_slots):
     return solution
 
 
-def calculate_fitness():
-    pass  # delete later
-
+def calculate_fitness(solution):
+    solution.sort(key=lambda x: x[0])  # sort by time slot
+    clash_count = 0
+    for i in range(len(solution) - 1):
+        print(solution[i])  # delete later
+        if solution[i][0] != solution[i + 1][0]:  # no sessions happening at the same time
+            pass
+        else:
+            if solution[i][1] == solution[i + 1][1]:  # room clash
+                clash_count += 1
+                pass
+            if solution[i][2] == solution[i + 1][2]:  # student group clash
+                clash_count += 1
+                pass
+            if solution[i][4] == solution[i + 1][4]:  # teacher clash
+                clash_count += 1
+                pass
+    if clash_count == 0:
+        fitness = 0
+    else:
+        fitness = 1 / clash_count    
+    return fitness 
 
 def crossover():
     pass  # delete later
