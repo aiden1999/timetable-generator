@@ -5,9 +5,16 @@ import random
 def generate_timetable():
     print("Generating initial population")
     population = generate_initial_population()
+    # create list to store fitnesses
     for solution in population:
         sol_fitness = calculate_fitness(solution)
         print(sol_fitness)  # delete later
+    # pick two parents based on fitness
+    # normalise fitness
+    # choose random number between 0 and 1
+    # case switch normalised ranges for each solution
+    # remove chosen parent, recalculate for second parent
+    # selection can be its own function
 
 
 def get_config_data():
