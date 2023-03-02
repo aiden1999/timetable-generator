@@ -110,7 +110,7 @@ def select_parents(population_fitness):
     range_upper_limits[len(population_fitness) - 1] = 1
             
     choice = random.random()
-    lower, upper = 0, len(population_fitness) - 1)
+    lower, upper = 0, len(population_fitness) - 1
     found_parent = False
     while not found_parent:
         middle = (lower + upper) // 2
