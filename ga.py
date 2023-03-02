@@ -122,7 +122,7 @@ def select_parents(population_fitness):
         else:
             upper = middle
     
-    
+    # remove parent a fitness from the list
                 
     return parent_a
 
