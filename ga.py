@@ -10,7 +10,6 @@ def generate_timetable():
         sol_fitness = calculate_fitness(solution)
         population_fitness.append(sol_fitness)
     # break condition if fitness = 0
-    print(population_fitness)  # delete later
     parent_a, parent_b = select_parents(population_fitness)
 
 
@@ -68,7 +67,7 @@ def create_complete_solution(sessions, rooms, time_slots):
 
 
 def calculate_fitness(solution):
-    solution.sort(key = lambda x: x[0])  # sort by time slot
+    solution.sort(key=lambda x: x[0])  # sort by time slot
     clash_count = 0
     for i in range(len(solution) - 1):
         if solution[i][0] != solution[i + 1][0]:  # no sessions happening at the same time
@@ -91,40 +90,45 @@ def calculate_fitness(solution):
 
 
 def select_parents(population_fitness):
-    # normalise fitness
-    # choose random number between 0 and 1
-    # case switch normalised ranges for each solution
-    # remove chosen parent, recalculate for second parent
-    # selection can be its own function
+    fitness_values = population_fitness
+    range_limits_a = normalise_values(fitness_values)
+    parent_a = choose_parent(range_limits_a)
+    fitness_values.remove(fitness_values[parent_a])
+    range_limits_b = normalise_values(fitness_values)
+    parent_b = choose_parent(range_limits_b)
+    return parent_a, parent_b
+
+
+def normalise_values(fitness_values):
     fitness_total = 0
-    for value in population_fitness:
+    for value in fitness_values:
         fitness_total += value
-        
-    range_upper_limits = []
-    for i in range(len(population_fitness)):
-        value_norm = population_fitness[i] / fitness_total
-        print(value_norm)  # delete later
-        range_upper_limits.append(value_norm)
+    range_limits = []
+    for i in range(len(fitness_values)):
+        value_norm = fitness_values[i] / fitness_total
+        range_limits.append(value_norm)
         if i != 0:
-            range_upper_limits[i] += range_upper_limits[i - 1]
-    range_upper_limits[len(population_fitness) - 1] = 1
-            
+            range_limits[i] += range_limits[i - 1]
+    range_limits[len(fitness_values) - 1] = 1
+    range_limits.insert(0, 0)
+    return range_limits
+
+
+def choose_parent(range_limits):
     choice = random.random()
-    lower, upper = 0, len(population_fitness) - 1
+    lower, upper = 0, len(range_limits) - 1
     found_parent = False
     while not found_parent:
         middle = (lower + upper) // 2
         if lower == upper - 1:
             found_parent = True
-            parent_a = upper
-        elif population_fitness[middle] < choice:
+            parent_index = upper
+        elif range_limits[middle] < choice:
             lower = middle
         else:
             upper = middle
-    
-    # remove parent a fitness from the list
-                
-    return parent_a
+    return parent_index
+
 
 def crossover():
     pass  # delete later
