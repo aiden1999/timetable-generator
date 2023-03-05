@@ -10,7 +10,12 @@ def generate_timetable():
         sol_fitness = calculate_fitness(solution)
         population_fitness.append(sol_fitness)
     # break condition if fitness = 0
+    #this bit is gonna be in a while loop probs
     parent_a, parent_b = select_parents(population_fitness)
+    # crossover of parents
+    offspring = crossover(population[parent_a], population[parent_b], len(population[0]))
+    # ten children
+    # only top 10 survive
 
 
 def get_config_data():
@@ -130,7 +135,20 @@ def choose_parent(range_limits):
     return parent_index
 
 
-def crossover():
+def crossover(parent_a, parent_b, num_of_sessions):
+    # 5 times (to make 10 children)
+    # pick crossover point (cant remember the proper word) - between list items
+    # crossover
+    # add to list
+    # return list
+    for i in range(5):  # wow look that's some hard coding
+        locus_1 = random.randint(0, num_of_sessions - 1)
+        if locus_1 == 0:
+            locus_2 = random.randint(1, 2)
+        else:
+            locus_2 = random.randint(0, 2)  # even more hard coding
+            
+        
     pass  # delete later
 
 
