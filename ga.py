@@ -2,7 +2,7 @@ import json
 import random
 
 
-def generate_timetable():
+def generate_timetable():    
     print("Generating initial population")
     population = generate_initial_population()
     population_fitness = []
@@ -10,10 +10,11 @@ def generate_timetable():
         sol_fitness = calculate_fitness(solution)
         population_fitness.append(sol_fitness)
     # break condition if fitness = 0
-    #this bit is gonna be in a while loop probs
+    # this bit is gonna be in a while loop probs
     parent_a, parent_b = select_parents(population_fitness)
     # crossover of parents
-    offspring = crossover(population[parent_a], population[parent_b], len(population[0]))
+    offspring = crossover(population[parent_a],
+                          population[parent_b], len(population[0]))
     # ten children
     # only top 10 survive
 
@@ -75,18 +76,28 @@ def calculate_fitness(solution):
     solution.sort(key=lambda x: x[0])  # sort by time slot
     clash_count = 0
     for i in range(len(solution) - 1):
-        if solution[i][0] != solution[i + 1][0]:  # no sessions happening at the same time
+
+        # Case where no sessions are happening at the same time
+        if solution[i][0] != solution[i + 1][0]:
             pass
+
         else:
-            if solution[i][1] == solution[i + 1][1]:  # room clash
+
+            # Room clash
+            if solution[i][1] == solution[i + 1][1]:
                 clash_count += 1
                 pass
-            if solution[i][2] == solution[i + 1][2]:  # student group clash
+
+            # Student group clash
+            if solution[i][2] == solution[i + 1][2]:
                 clash_count += 1
                 pass
-            if solution[i][4] == solution[i + 1][4]:  # teacher clash
+
+            # Teacher Clash
+            if solution[i][4] == solution[i + 1][4]:
                 clash_count += 1
                 pass
+            
     if clash_count == 0:
         fitness = 0
     else:
@@ -136,20 +147,29 @@ def choose_parent(range_limits):
 
 
 def crossover(parent_a, parent_b, num_of_sessions):
-    # 5 times (to make 10 children)
-    # pick crossover point (cant remember the proper word) - between list items
-    # crossover
-    # add to list
-    # return list
+    offspring = []
     for i in range(5):  # wow look that's some hard coding
-        locus_1 = random.randint(0, num_of_sessions - 1)
-        if locus_1 == 0:
-            locus_2 = random.randint(1, 2)
+        locus_outer = random.randint(0, num_of_sessions - 1)
+        if locus_outer == 0:
+            locus_inner = random.randint(1, 2)
         else:
-            locus_2 = random.randint(0, 2)  # even more hard coding
-            
+            locus_inner = random.randint(0, 2)  # even more hard coding
         
-    pass  # delete later
+        # Crossover of child a
+        left_a = parent_a[:locus_outer]
+        centre_a = parent_a[locus_outer][:locus_inner] + parent_b[locus_outer][locus_inner:]
+        right_a = parent_b[locus_outer + 1:]
+        child_a = [left_a, [centre_a], right_a]
+        offspring.append(child_a)
+        
+        # Crossover of child b
+        left_b = parent_b[:locus_outer]
+        centre_b = parent_b[locus_outer][:locus_inner] + parent_a[locus_outer][locus_inner:]
+        right_b = parent_a[locus_outer + 1:]
+        child_b = [left_b, [centre_b], right_b]
+        offspring.append(child_b)
+        
+    return offspring
 
 
 def mutation():
