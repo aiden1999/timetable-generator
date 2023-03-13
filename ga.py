@@ -190,15 +190,18 @@ def mutation(offspring, time_slots, rooms, sessions):
                         
                         # Mutation of time slot
                         case 0:
-                            offspring[solution][session][0] = random.choice[time_slots]
+                            new_time_slot = random.choice(time_slots)
+                            offspring[solution][session][0] = new_time_slot
                         
                         # Mutation of room
                         case 1:
-                            offspring[solution][session][1] = random.choice[rooms]
+                            new_room = random.choice(rooms)
+                            offspring[solution][session][1] = new_room
                             
-                        # Mutation of session    
+                        # Mutation of session
                         case _:
-                            offspring[solution]
+                            new_session = random.choice(sessions)
+                            offspring[solution][session]
                     
     # for each solution
     # for each session
@@ -207,3 +210,4 @@ def mutation(offspring, time_slots, rooms, sessions):
     # change thingy if done
     # return the list of solutions
     pass  # delete later
+    
