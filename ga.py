@@ -2,7 +2,7 @@ import json
 import random
 
 
-def generate_timetable():    
+def generate_timetable():
     print("Generating initial population")
     population = generate_initial_population()
     population_fitness = []
@@ -12,11 +12,12 @@ def generate_timetable():
     # break condition if fitness = 0
     # this bit is gonna be in a while loop probs
     parent_a, parent_b = select_parents(population_fitness)
-    # crossover of parents
     offspring = crossover(population[parent_a],
                           population[parent_b], len(population[0]))
-    # ten children
-    # only top 10 survive
+    mutated_offspring = mutation(offspring)
+    # mutation of offspring
+    # run fitness again to generate 10 best
+    # also check if there is a solution
 
 
 def get_config_data():
@@ -27,7 +28,7 @@ def get_config_data():
     return data
 
 
-def generate_initial_population():
+def generate_initial_population() -> list:
     data = get_config_data()
 
     sessions, rooms_id, time_slots_id = [], [], []
@@ -47,7 +48,7 @@ def generate_initial_population():
         day_number += 1
 
     population = []
-    for i in range(10):  # could change so create more than 10?
+    for i in range(10):  # hard coding
         solution = create_complete_solution(sessions, rooms_id, time_slots_id)
         population.append(solution)
 
@@ -73,8 +74,11 @@ def create_complete_solution(sessions, rooms, time_slots):
 
 
 def calculate_fitness(solution):
-    solution.sort(key=lambda x: x[0])  # sort by time slot
+    
+    # Sort by time slot
+    solution.sort(key=lambda x: x[0])
     clash_count = 0
+    
     for i in range(len(solution) - 1):
 
         # Case where no sessions are happening at the same time
@@ -93,11 +97,11 @@ def calculate_fitness(solution):
                 clash_count += 1
                 pass
 
-            # Teacher Clash
+            # Teacher clash
             if solution[i][4] == solution[i + 1][4]:
                 clash_count += 1
                 pass
-            
+
     if clash_count == 0:
         fitness = 0
     else:
@@ -148,29 +152,58 @@ def choose_parent(range_limits):
 
 def crossover(parent_a, parent_b, num_of_sessions):
     offspring = []
-    for i in range(5):  # wow look that's some hard coding
+    for i in range(5):  # hard coding
         locus_outer = random.randint(0, num_of_sessions - 1)
         if locus_outer == 0:
-            locus_inner = random.randint(1, 2)
+            locus_inner = random.randint(1, 2)  # hard coding
         else:
-            locus_inner = random.randint(0, 2)  # even more hard coding
-        
+            locus_inner = random.randint(0, 2)  # hard coding
+
         # Crossover of child a
         left_a = parent_a[:locus_outer]
-        centre_a = parent_a[locus_outer][:locus_inner] + parent_b[locus_outer][locus_inner:]
+        centre_a = parent_a[locus_outer][:locus_inner] + \
+            parent_b[locus_outer][locus_inner:]
         right_a = parent_b[locus_outer + 1:]
         child_a = [left_a, [centre_a], right_a]
         offspring.append(child_a)
-        
+
         # Crossover of child b
         left_b = parent_b[:locus_outer]
-        centre_b = parent_b[locus_outer][:locus_inner] + parent_a[locus_outer][locus_inner:]
+        centre_b = parent_b[locus_outer][:locus_inner] + \
+            parent_a[locus_outer][locus_inner:]
         right_b = parent_a[locus_outer + 1:]
         child_b = [left_b, [centre_b], right_b]
         offspring.append(child_b)
-        
+
     return offspring
 
 
-def mutation():
+def mutation(offspring, time_slots, rooms, sessions):
+    for solution in offspring:
+        for session in solution:
+            for i in range(3): # hard coding
+                mutate = random.randint(1000)
+                
+                # Mutation does occur
+                if mutate == 0:
+                    match i:
+                        
+                        # Mutation of time slot
+                        case 0:
+                            offspring[solution][session][0] = random.choice[time_slots]
+                        
+                        # Mutation of room
+                        case 1:
+                            offspring[solution][session][1] = random.choice[rooms]
+                            
+                        # Mutation of session    
+                        case _:
+                            offspring[solution]
+                    
+    # for each solution
+    # for each session
+    # for each "possibility"
+    # random number 0.1%
+    # change thingy if done
+    # return the list of solutions
     pass  # delete later
