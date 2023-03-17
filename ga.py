@@ -3,21 +3,18 @@ import random
 
 
 def generate_timetable():
-    print("Generating initial population")
-    population = generate_initial_population()
-    population_fitness = []
-    for solution in population:
-        sol_fitness = calculate_fitness(solution)
-        population_fitness.append(sol_fitness)
-    # break condition if fitness = 0
-    # this bit is gonna be in a while loop probs
-    parent_a, parent_b = select_parents(population_fitness)
-    offspring = crossover(population[parent_a],
-                          population[parent_b], len(population[0]))
-    mutated_offspring = mutation(offspring)
-    # mutation of offspring
-    # run fitness again to generate 10 best
-    # also check if there is a solution
+    print("Generating initial population...")
+    sessions, rooms, time_slots = get_config_data()
+    population = generate_initial_population(sessions, rooms, time_slots)
+    population_fitness, valid_solution = check_population_fitness(population)
+    while not valid_solution:
+        parent_a, parent_b = select_parents(population_fitness)
+        offspring = crossover(population[parent_a],
+                              population[parent_b], len(population[0]))
+        mutated_offspring = mutation(offspring, time_slots, rooms, sessions)
+        
+        # run fitness again to generate 10 best
+    # display valid solution or output to txt or something idk
 
 
 def get_config_data():
@@ -25,11 +22,6 @@ def get_config_data():
     file = open("config.json", "r")
     data = json.load(file)
     file.close()
-    return data
-
-
-def generate_initial_population() -> list:
-    data = get_config_data()
 
     sessions, rooms_id, time_slots_id = [], [], []
     for module in data["modules"]:
@@ -47,15 +39,18 @@ def generate_initial_population() -> list:
             time_slots_id.append(str(day_number) + str(time_number))
         day_number += 1
 
+    return sessions, rooms_id, time_slots_id
+
+
+def generate_initial_population(sessions, rooms, time_slots) -> list:
     population = []
     for i in range(10):  # hard coding
-        solution = create_complete_solution(sessions, rooms_id, time_slots_id)
+        solution = create_complete_solution(sessions, rooms, time_slots)
         population.append(solution)
-
     return population
 
 
-def create_session_solution(session, rooms: list[str], time_slots: list[int]):
+def create_session_solution(session, rooms: list[str], time_slots: list[int]) -> list:
     time_slot = random.choice(time_slots)
     room = random.choice(rooms)
     student_group = session[1]
@@ -73,12 +68,24 @@ def create_complete_solution(sessions, rooms, time_slots):
     return solution
 
 
+def check_population_fitness(population):
+    population_fitness = []
+    valid_solution = False
+    for solution in population:
+        sol_fitness = calculate_fitness(solution)
+        population_fitness.append(sol_fitness)
+        if sol_fitness == 0:
+            valid_solution = True
+            break
+    return population_fitness, valid_solution
+
+
 def calculate_fitness(solution):
-    
+
     # Sort by time slot
     solution.sort(key=lambda x: x[0])
     clash_count = 0
-    
+
     for i in range(len(solution) - 1):
 
         # Case where no sessions are happening at the same time
@@ -178,36 +185,32 @@ def crossover(parent_a, parent_b, num_of_sessions):
     return offspring
 
 
-def mutation(offspring, time_slots, rooms, sessions):
+def mutation(offspring_in, time_slots, rooms, sessions):
+    offspring = offspring_in
     for solution in offspring:
         for session in solution:
-            for i in range(3): # hard coding
+            for i in range(3):  # hard coding
                 mutate = random.randint(1000)
-                
+
                 # Mutation does occur
                 if mutate == 0:
                     match i:
-                        
+
                         # Mutation of time slot
                         case 0:
                             new_time_slot = random.choice(time_slots)
                             offspring[solution][session][0] = new_time_slot
-                        
+
                         # Mutation of room
                         case 1:
                             new_room = random.choice(rooms)
                             offspring[solution][session][1] = new_room
-                            
+
                         # Mutation of session
                         case _:
                             new_session = random.choice(sessions)
-                            offspring[solution][session]
-                    
-    # for each solution
-    # for each session
-    # for each "possibility"
-    # random number 0.1%
-    # change thingy if done
-    # return the list of solutions
-    pass  # delete later
-    
+                            offspring[solution][session][2] = new_session[0]
+                            offspring[solution][session][3] = new_session[1]
+                            offspring[solution][session][4] = new_session[2]
+
+    return offspring
