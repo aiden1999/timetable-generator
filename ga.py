@@ -12,8 +12,14 @@ def generate_timetable():
         offspring = crossover(population[parent_a],
                               population[parent_b], len(population[0]))
         mutated_offspring = mutation(offspring, time_slots, rooms, sessions)
-        
-        # run fitness again to generate 10 best
+        new_pop = mutated_offspring + population[parent_a] + population[parent_b]  # add to list
+        population_fitness, valid_solution = check_population_fitness(new_pop)
+        if not valid_solution:
+            # combine new_pop and population_fitness into a 2D array (2 *12)
+            # sort by fitness
+            # remove last 2
+            pass
+    print("Timetable solution found. Output in timetable.txt")
     # display valid solution or output to txt or something idk
 
 
