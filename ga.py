@@ -196,7 +196,7 @@ def mutation(offspring_in, time_slots, rooms, sessions):
     for solution in offspring:
         for session in solution:
             for i in range(3):  # hard coding
-                mutate = random.randint(1000)
+                mutate = random.randint(1, 1000)
 
                 # Mutation does occur
                 if mutate == 0:
