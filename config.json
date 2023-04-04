@@ -24,7 +24,10 @@
   "student_groups": [
     { "id": "3874", "modules": ["C110", "B388"], "num_of_students": "200" },
     { "id": "4389", "modules": ["K483", "L378"], "num_of_students": "150" },
-    { "id": "7368", "modules": ["A123"], "num_of_students": "30" }
+    { "id": "7368", "modules": ["A123"], "num_of_students": "30" },
+    { "id": "8394", "modules": ["A123", "D112"], "num_of_students": "100" },
+    { "id": "2938", "modules": ["J736", "F937"], "num_of_students": "50" },
+    { "id": "9483", "modules": ["G023", "U843"], "num_of_students": "80" }
   ],
   "modules": [
     {
@@ -60,7 +63,42 @@
       "title": "Avoiding Apocalyptic Scenarios",
       "teachers": "002",
       "hours": "8",
-      "student_group": "7368"
+      "student_group": ["7368", "8394"]
+    },
+    {
+      "id": "D112",
+      "title": "Legal Tax Evasion",
+      "teachers": "001",
+      "hours": "4",
+      "student_group": "8394"
+    },
+    {
+      "id": "J736",
+      "title": "Infiltration via Pizza Delivery",
+      "teachers": "002",
+      "hours": "6",
+      "student_group": "2938"
+    },
+    {
+      "id": "F937",
+      "title": "Autopsies 101",
+      "teachers": "003",
+      "hours": "5",
+      "student_group": "2938"
+    },
+    {
+      "id": "G023",
+      "title": "Linux Basics",
+      "teachers": "004",
+      "hours": "2",
+      "student_group": "9483"
+    },
+    {
+      "id": "U843",
+      "title": "Advanced Archiving",
+      "teachers": "005",
+      "hours": "3",
+      "student_group": "9483"
     }
   ],
   "time_slots": [

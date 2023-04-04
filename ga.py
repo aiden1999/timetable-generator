@@ -11,6 +11,7 @@ def generate_timetable():
         parent_a, parent_b = select_parents(population_fitness)
         offspring = crossover(population[parent_a],
                               population[parent_b], len(population[0]))
+        # check if any of the offspring is a valid solution
         mutated_offspring = mutation(offspring, time_slots, rooms, sessions)
         new_pop = mutated_offspring + population[parent_a] + population[parent_b]  # add to list
         population_fitness, valid_solution = check_population_fitness(new_pop)
@@ -83,12 +84,14 @@ def check_population_fitness(population):
         if sol_fitness == 0:
             valid_solution = True
             break
+    print("generation done")
     return population_fitness, valid_solution
 
 
 def calculate_fitness(solution):
 
     # Sort by time slot
+    print("solution: ", solution)  # there is a bug here v
     solution.sort(key=lambda x: x[0])
     clash_count = 0
 
@@ -119,13 +122,16 @@ def calculate_fitness(solution):
         fitness = 0
     else:
         fitness = 1 / clash_count
+    print(fitness)
     return fitness
 
 
 def select_parents(population_fitness):
     fitness_values = population_fitness
     range_limits_a = normalise_values(fitness_values)
+    print("range_limits_a: ", range_limits_a)  # there is a bug here v
     parent_a = choose_parent(range_limits_a)
+    print("parent a ", parent_a)  # there was a bug here v
     fitness_values.remove(fitness_values[parent_a])
     range_limits_b = normalise_values(fitness_values)
     parent_b = choose_parent(range_limits_b)
@@ -149,10 +155,12 @@ def normalise_values(fitness_values):
 
 def choose_parent(range_limits):
     choice = random.random()
+    print("choice: ", choice)  # debugging
     lower, upper = 0, len(range_limits) - 1
     found_parent = False
     while not found_parent:
         middle = (lower + upper) // 2
+        print("lower: ", lower, " middle: ", middle, " upper: ", upper)  # debugging
         if lower == upper - 1:
             found_parent = True
             parent_index = upper
