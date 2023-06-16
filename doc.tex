@@ -13,6 +13,7 @@
 \usepackage[includeheadfoot,margin=3.5cm]{geometry}
 \usepackage{fancyhdr}
 \usepackage{titlesec}
+\usepackage{amsmath}
 
 \linespread{1.3}
 
@@ -31,51 +32,47 @@
 \fancypage{}{\fbox}
 
 \begin{center}
-    \Large{
-        \hfill \begin{tabular}{l}
-            Computer Science \\ and Mathematics \\
-            COC255           \\
-            B827126
-        \end{tabular}
-    }
+	\Large{
+		\hfill \begin{tabular}{l}
+			Computer Science \\ and Mathematics \\
+			COC255           \\
+			B827126
+		\end{tabular}
+	}
 
-    \vspace*{\fill}
+	\vspace*{\fill}
 
-    \Large{\textbf{TIMETABLE CREATION \\ USING \\
-            ARTIFICIAL INTELLIGENCE}}
+	\Large{\textbf{TIMETABLE CREATION \\ USING \\
+			ARTIFICIAL INTELLIGENCE}}
+	\vspace*{\fill}
 
-    \vspace*{\fill}
+	by
+	\vspace*{\fill}
 
-    by
+	Aiden Nico Tempest
 
-    \vspace*{\fill}
+	\vspace*{\fill}
+	Supervisor: Dr.\ S. Fatima
+	\vspace*{\fill}
 
-    %Replace by your name
-    Aiden Nico Tempest
-
-    %Replace by your supervisor's name
-    \vspace*{\fill}
-    Supervisor: Dr.\ S. Fatima
-    \vspace*{\fill}
-
-    \underline{Department of Computer Science} \\
-    \underline{Loughborough University}
-
-    \vspace*{\fill}
-    August 2023
-
-\end{center}
-
-% Front Page ends
+	\underline{Department of Computer Science} \\
+	\underline{Loughborough University}
+	\vspace*{\fill}
+	
+	August 2023
+\end{center} % Front Page ends
 
 \newpage
 
-%Reset so that next pages do not have a box around them
-\fancypage{}{}
+\fancypage{}{}  %Reset so that next pages do not have a box around them
 \tableofcontents
+
 \newpage
+
 \chapter{Literature Review}
+
 \section{The Timetabling Problem}
+
 The timetabling problem is a constraint satisfying problem and it is known to
 be NP-Complete. The aim is to create a university timetable where several
 constraints are met. These constraints are either hard constraints or soft
@@ -83,31 +80,41 @@ constraints. For a solution to be valid, all the hard constraints must be met.
 Not all (or in fact, any) of the soft constraints need to be met for the
 solution to be valid, however it is preferable for as many soft constraints to
 be met as possible. Examples of possible hard constraints include:
+
 \begin{itemize}
-    \item At most only one session (i.e., a lecture or lab) is happening in a specific
-          room in a specific period
-    \item A student can only be attending at most one session in a specific period
-    \item A teacher (e.g., a lecturer or lab helper) can only be attending at most one
-          session in a specific period
-    \item The size of a student group cannot exceed the capacity of the room
-    \item The room must be appropriate for the type of session, e.g., a lecture must be
-          in a lecture theatre, and a lab session must be in a computer lab
-    \item Part time teachers can only be assigned certain time slots, e.g., they may not
-          work on Tuesdays, so sessions they teach cannot be scheduled for time slots on
-          Tuesday
+	\item At most only one session (i.e., a lecture or lab) is happening in a 
+		specific room in a specific period
+	\item A student can only be attending at most one session in a specific 
+		period
+	\item A teacher (e.g., a lecturer or lab helper) can only be attending at 
+		most one session in a specific period
+	\item The size of a student group cannot exceed the capacity of the room
+	\item The room must be appropriate for the type of session, e.g., a lecture 
+		must be in a lecture theatre, and a lab session must be in a computer 
+		lab
+	\item Part time teachers can only be assigned certain time slots, e.g., they may not
+	      work on Tuesdays, so sessions they teach cannot be scheduled for time slots on
+	      Tuesday
 \end{itemize}
+
 Possible soft constraints include:
+
 \begin{itemize}
-    \item Students do not have more than two consecutive hours scheduled
-    \item The capacity of a room is well suited to the size of the student group, to make
-          an efficient use of space e.g., a group of twenty students are not going to be
-          in a room with a capacity of two hundred
-    \item If a student or teacher has one session immediately after another, then the
-          respective rooms are relatively close to each other
+	\item Students do not have more than two consecutive hours scheduled
+	\item The capacity of a room is well suited to the size of the student group, to make
+	      an efficient use of space e.g., a group of twenty students are not going to be
+	      in a room with a capacity of two hundred
+	\item If a student or teacher has one session immediately after another, then the
+	      respective rooms are relatively close to each other
 \end{itemize}
-A solution is invalid if at least of one the hard constraints are met. For example, if a student is scheduled to be in two different sessions at the same time - this is known as a clash.
+A solution is invalid if at least of one the hard constraints are met. For 
+example, if a student is scheduled to be in two different sessions at the same 
+time - this is known as a clash.
+
 \section{Methods}
+
 \subsection{Genetic Algorithms}
+
 Genetic algorithms (GAs) made up a group of search metaheuristics, inspired by
 Darwin's theory of evolution. Here, the fittest members of a population survive
 and produce offspring, which inherit the characteristics of the parents. It is
@@ -120,12 +127,13 @@ a desired solution.
 
 There does not exist a rigorous definition of GAs, but most methods use these
 five phases:
+
 \begin{enumerate}
-    \item Initial population - populations of chromosomes
-    \item Fitness function
-    \item Selection - according to fitness
-    \item Crossover - to produce new offspring
-    \item Mutation - random mutation of new offspring
+	\item Initial population - populations of chromosomes
+	\item Fitness function
+	\item Selection - according to fitness
+	\item Crossover - to produce new offspring
+	\item Mutation - random mutation of new offspring
 \end{enumerate}
 
 The initial \textbf{population} is a set of \textbf{individuals}, where each
@@ -168,10 +176,71 @@ same size as the initial population. Whether this is by two parents reproducing
 multiple times using different loci or not, depends on the method used in the
 selection phase.
 
-After reproduction, \textbf{mutations} can be introduced into the offspring. For example, if the chromosomes are encoded by binary strings, then some bits are randomly flipped. However, there is a very small chance of this occurring at each bit, a suggested probability is 0.1\%. By introducing mutations into the offspring, the likelihood of reaching a local maximum is reduced.
+After reproduction, \textbf{mutations} can be introduced into the offspring. 
+For example, if the chromosomes are encoded by binary strings, then some bits 
+are randomly flipped. However, there is a very small chance of this occurring 
+at each bit, a suggested probability is 0.1\%. By introducing mutations into 
+the offspring, the likelihood of reaching a local maximum is reduced.
 
-Once there is a new population made up of the offspring, the process repeats until a solution is found. Each repetition is called a \textbf{generation}, and the entire set of generations is known as a \textbf{run}.
+Once there is a new population made up of the offspring, the process repeats 
+until a solution is found. Each repetition is called a \textbf{generation}, and 
+the entire set of generations is known as a \textbf{run}.
+
 \subsection{Binary Integer Programming}
+
+Binary integer programming is used to solve constraint satisfiability problems.
+Variables must either take a value of 1 or 0 (hence binary integer), as they 
+are used to represent decisions, i.e., in the case of the university 
+timetabling problem, a teaching session is happening in a specific room, at a 
+specific time, on a specific day, with a specific teacher, with a specific 
+teacher, with a specific student group, about a specific module, or not. Then 
+constraints are applied and used with the objective function to find what value 
+each variables takes.
+
+First, a mathematical model of the problem must be constructed. REF modelled 
+the features of the university timetabling problem as a group of sets:
+\begin{itemize}
+	\item
+		\begin{math}
+			I = \{1, \dots , n_i\}
+		\end{math}
+		: set of days in the week where courses are offered
+	\item
+		\begin{math}
+			J = \{1, \dots , n_j\}
+		\end{math}
+		: set of time slots in a day
+	\item 
+		\begin{math}
+			K = \{1, \dots , n_k\}
+		\end{math}
+		: set of courses
+	\item 
+		\begin{math}
+			L = \{1, \dots , n_l\}
+		\end{math}
+		: set of student groups
+	\item 
+		\begin{math}
+			M = \{1, \dots , n_m\}
+		\end{math}
+		: set of teachers
+	\item 
+		\begin{math}
+			N = \{1, \dots , n_n\}
+		\end{math}
+		: set of classrooms
+\end{itemize}
+
+Next, the decision variables are defined. The basic variables
+\begin{math}
+	x_{i,j,k,l,m,n}
+\end{math}
+are defined as
+\begin{align}
+	x_{i,j,k,l,m,n} = 
+\end{align}
+
 
 % Rename Bibliography to References
 \renewcommand\bibname{References}
