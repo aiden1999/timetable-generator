@@ -236,14 +236,98 @@ Next, the decision variables are defined. The basic variables
 \begin{math}
 	x_{i,j,k,l,m,n}
 \end{math}
-are defined as
+are defined as \\
+\begin{math}
+	\forall i \in I, \forall j \in J, \forall k \in K, \forall l \in L, \forall
+	m \in M, \forall n \in N
+\end{math}
 \begin{align}
 	x_{i,j,k,l,m,n} = 
+	\begin{cases}
+		1, & \parbox[t]{9.5cm}{if a course $k$ taught by teacher $m$ for the
+		group of students $l$ is assigned to the $j^{th}$ time slot of day $i$
+		in classroom $m$} \\
+		0, & \text{otherwise}
+	\end{cases}	
 \end{align}
 
 
+In other words, the basic variables represent the decision of whether or a not
+a course is being taught by a specific teacher for a specific group of students
+is happening in a specific time slot of a specific day in a specific classroom
+Then (Abdellahi and Eledum, 2017) defined their auxiliary variables as \\
+
+\begin{math}
+	\forall i \in I, \forall j \in J, \forall l \in L
+\end{math}
+\begin{align}
+	y_{i,j,k,l} = 
+	\begin{cases}
+		1, & \parbox[t]{9.5cm}{if a course $k + s$ for group of students
+		overlap with its prerequite $k$ for the same group $l$ in the $j^{th}$
+		time slot of day $i$} \\
+		0, & \text{otherwise}
+	\end{cases}	
+\end{align}
+\begin{math}
+	\text{for } s \in 1, \cdots, n_k - 1, \text{where } k + s \leq n_k	
+\end{math}
+
+Finally, (people) defined two further sets of variables:
+\begin{itemize}
+	\item $z_{im}$, which represents the existence of lectures for teacher $m$
+	on day $i$
+	\item $z_{il}$, which represents the existence of lectures for student $l$
+	on day $i$
+\end{itemize}
+
+\begin{math}
+	\forall m \in M
+\end{math}
+\begin{align}
+	z_{im} =
+	\begin{cases}
+		1, & \text{if $\sum_{j \in J} x_{i,j,k,l,m,n} \neq 0$} \\
+		0, & \text{otherwise}
+	\end{cases}	
+\end{align}
+\begin{math}
+	\forall l \in L
+\end{math}
+\begin{align}
+	z_{il} =
+	\begin{cases}
+		1, & \text{if $\sum_{j \in J} x_{i,j,k,l,m,n} \neq 0$} \\
+		0, & \text{otherwise}
+	\end{cases}	
+\end{align}
+
+$z_{im}$ and $z_{il}$ are for use with the object function, later. The next
+thing to be modelled is the restraints. For the university modelled by
+(Abdellahi and Eledum, 2017), these were:
+
+\begin{enumerate}
+	\item There is no overlapping for courses
+	\item Each teacher cannot be assigned to more than one course for any given
+	period
+	\item Each classroom cannot hold more than one course for any given period
+	\item A student has some courses amount to 18 hours per week. Each course
+	consists of 3 hours and taught in 2 periods (each period is 90 minutes
+	long), which is expressed as the number of slots worked per day.
+	\item For a student, each course occupies only one slot per day
+	\item The lectures of each course must be distributed in such a way that
+	there is one day off between them
+	\item All lectures of a given course in a week must be held in the same
+	classroom
+	\item The overlap of course with prerequisites for the same group of
+	undergrad students l is permitted (note: (Abdellahi and Eledum, 2017) refer
+	to undergrad students as pre-graduated students)
+\end{enumerate}
+
+As an example, the first restraint is modelled as:
+
 % Rename Bibliography to References
-\renewcommand\bibname{References}
+% \renewcommand\bibname{References}
 %\bibliography{<Path to .bib file>}
 
 % Include appendix section if needed
