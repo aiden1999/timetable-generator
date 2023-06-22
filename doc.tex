@@ -6,6 +6,7 @@
 \usepackage{url}
 \usepackage{fancybox}
 \usepackage{parskip}
+\usepackage{examplep}
 
 % Choose your bibliography style
 %\bibliographystyle{}
@@ -65,6 +66,11 @@
 \newpage
 
 \fancypage{}{}  %Reset so that next pages do not have a box around them
+
+\begin{abstract}
+	lol placeholder text for abstract lorem ipsum etc
+\end{abstract}
+
 \tableofcontents
 
 \newpage
@@ -241,7 +247,7 @@ are defined as \\
 	\forall i \in I, \forall j \in J, \forall k \in K, \forall l \in L, \forall
 	m \in M, \forall n \in N
 \end{math}
-\begin{align}
+\begin{align*}
 	x_{i,j,k,l,m,n} = 
 	\begin{cases}
 		1, & \parbox[t]{9.5cm}{if a course $k$ taught by teacher $m$ for the
@@ -249,8 +255,7 @@ are defined as \\
 		in classroom $m$} \\
 		0, & \text{otherwise}
 	\end{cases}	
-\end{align}
-
+\end{align*}
 
 In other words, the basic variables represent the decision of whether or a not
 a course is being taught by a specific teacher for a specific group of students
@@ -260,7 +265,7 @@ Then (Abdellahi and Eledum, 2017) defined their auxiliary variables as \\
 \begin{math}
 	\forall i \in I, \forall j \in J, \forall l \in L
 \end{math}
-\begin{align}
+\begin{align*}
 	y_{i,j,k,l} = 
 	\begin{cases}
 		1, & \parbox[t]{9.5cm}{if a course $k + s$ for group of students
@@ -268,9 +273,9 @@ Then (Abdellahi and Eledum, 2017) defined their auxiliary variables as \\
 		time slot of day $i$} \\
 		0, & \text{otherwise}
 	\end{cases}	
-\end{align}
+\end{align*}
 \begin{math}
-	\text{for } s \in 1, \cdots, n_k - 1, \text{where } k + s \leq n_k	
+	\text{for } s \in 1, \ldots, n_k - 1, \text{where } k + s \leq n_k	
 \end{math}
 
 Finally, (people) defined two further sets of variables:
@@ -284,23 +289,23 @@ Finally, (people) defined two further sets of variables:
 \begin{math}
 	\forall m \in M
 \end{math}
-\begin{align}
+\begin{align*}
 	z_{im} =
 	\begin{cases}
 		1, & \text{if $\sum_{j \in J} x_{i,j,k,l,m,n} \neq 0$} \\
 		0, & \text{otherwise}
 	\end{cases}	
-\end{align}
+\end{align*}
 \begin{math}
 	\forall l \in L
 \end{math}
-\begin{align}
+\begin{align*}
 	z_{il} =
 	\begin{cases}
 		1, & \text{if $\sum_{j \in J} x_{i,j,k,l,m,n} \neq 0$} \\
 		0, & \text{otherwise}
 	\end{cases}	
-\end{align}
+\end{align*}
 
 $z_{im}$ and $z_{il}$ are for use with the object function, later. The next
 thing to be modelled is the restraints. For the university modelled by
@@ -325,6 +330,211 @@ thing to be modelled is the restraints. For the university modelled by
 \end{enumerate}
 
 As an example, the first restraint is modelled as:
+\begin{align*}
+	\sum_{k \in K} \sum_{m \in M} \sum_{n \in N} x_{i,j,k,l,m,n} \leq 1,
+	\forall i \in I, \forall j \in J, \forall l \in L
+\end{align*}
+The objective function needs to be either minimised or maximised (dependent on
+how it is modelled), by changing the values assigned to the variables, whilst
+ensuring that the constraints are met. In this instance, the total
+dissatisfaction of teachers and students needs to be minimised, which is
+equivalent to maximising the number of lectures per day, which implies
+decreasing the waiting time between lectures (Abdellahi and Eledum, 2017).
+\begin{align*}
+	\parbox[t]{10cm}{(Total dissatisfaction) = Teacher\{number of lectures per
+	day\} + Regular student\{number of lectures per day\} + Predicted graduate
+	student\{number of lectures per day\}}
+\end{align*}
+The model produced may not be tractable, meaning that the problem may not be
+able to be solved in a reasonable period. To make the problem easier to be
+solved, the model needs to be reduced. (Abdellahi and Eledum, 2017) achieved
+this by removing the index representing classrooms ($n\in N$) and by adding
+another constraint, that the number of courses cannot exceed the number of
+classrooms in a timeslot $j$ in a given day $i$ (constraint 9). To further
+simplify the model, the term corresponding to the overlapping of courses
+and their prerequisites has been removed from the objective function, with the
+related constraint 8.
+
+The model is now:
+\begin{align*}
+	\max\{1.5 \sum_{j \in J} \sum_{k \in K} \sum_{l \in L} \sum_{m \in M} x_{i,j
+	k,l,m} + \sum_{m \in M} z_{im} + \sum_{l \in L}z_{il} \} & \text{(objective
+	function)}
+\end{align*}
+subject to
+\begin{align*}
+	\sum_{k \in K} \sum_{m \in M} x_{i,j,k,l,m} &\leq 1 & \forall i \in I
+	\forall j \in J, \forall l \in L & \text{ (constraint 1)} \\
+	\sum_{l \in L} \sum_{k \in K} x_{i,j,k,l,m} &\leq 1 & \forall i \in I,
+	\forall j \in J, \forall m \in M & \text{ (constraint 2)} \\
+	\sum_{j \in J} \sum_{k \in K} \sum_{m \in M} x_{i,j,k,l,m} &\leq n_j &
+	\forall i \in I, \forall l \in L & \text{ (constraint 4)} \\
+	\sum_{j \in J}x_{i,j,k,l,m} &\leq 1 & \forall i \in I, \forall k \in K,
+	\forall l \in L, \forall m \in M & \text{ (constraint 5)} \\
+	\sum_{j \in J}(x_{i,j,k,l,m} + x_{i+2,j,k,l,m} = 2), i + 2 &\leq 5 & \forall
+	i \in I, \forall k \in K, \forall l \in L, \forall m \in M & 
+	\text{ (constraint 6)} \\
+	\sum_{k \in K} \sum_{l \in L} \sum_{m \in M} x_{i,j,k,l,m} &\leq n_n &
+	\forall i \in I, \forall j \in J & \text{ (constraint 9)} \\
+	s \in \{1, \ldots, n_k - 1\}, k + s &\leq n_k \\
+	\sum_{m \in M}z_{im} &\leq 1 & \forall i \in I \\
+	\sum_{l \in L} z_{il} &\leq n_l & \forall i \in I \\
+	x_{i,j,k,l,m}, y_{i,j,k,l,m}, z_{im}, z_{il} &\leq 0 & \text{(so all
+	variables are non-negative)}
+\end{align*}
+The model can be reduced further into two models, one for students and one for
+teachers.
+The problem is solved with using an external penalty function method. Penalty
+functions convert constrained problems to those without constraints by
+introducing a penalty for violating the constraints. By using a penalty
+function, (Abdellahi and Eledum, 2017) found a real solution to the
+unrestrained problem, and then approximated it to a binary solution with an
+algorithm.
+
+\subsection{Tabu Search}
+Tabu search is a metaheuristic that guides a local search to explore the
+solution space outside of the local optimum, by using a \textbf{Tabu list}. A
+Tabu list is flexible memory structures that stores solutions that are not to
+be used. Tabu search is used to solve combinatorial optimisation problems,
+which have a finite solution set. The university timetabling problem has a
+finite solution set, as there are a finite number of teachers, student groups,
+time slots, rooms, courses, etc., so there is a finite number of different way
+that the timetable can be created. Tabu search makes uses of three main
+strategies:
+\begin{itemize}
+	\item Forbidding strategy: this controls what enters the Tabu list
+	\item Freeing strategy: this controls what exits the Tabu list
+	\item Short-term strategy: this is for managing interplay between the
+	forbidding strategy and the freeing strategy to select trial solutions
+\end{itemize}
+Tabu search examines neighbouring solutions, which are solutions that are one
+“step” away from the current solution. Using the travelling salesman problem as
+an example, suppose the current solution is B C D A F E, where each letter
+represents a city. An example neighbouring solution is E C D A F B, where only
+one swap has occurred, between the positions of B and E. However, the solution
+E C D F A B is not in the neighbourhood of the current solution, as two swaps
+have occurred. If a solution has been used, then it is put into the Tabu list,
+until it meets an \textbf{aspiration criterion}. Aspiration criteria provide
+reasons for a solution to be freed from the Tabu table (freeing strategy). For
+example, if a using a Tabu move results in a solution better than any other so
+far, then it can come out of the Tabu table. Much like with genetic algorithms,
+a fitness function is used to measure how optimal a solution is.
+
+A basic algorithm is:
+\begin{enumerate}
+	\item 	Choose an initial solution $i$ in the solution space $S$. Set
+	$i^\prime=i$ and $k=0$, where $k$ is the number of iterations.
+	\item Set $k=k+1$ and generate a set of possible solutions $N(i,k)$,
+	where $N(i,k)$ is the set of neighbouring solutions.
+	\item Choose a best $j\in N(i,k)$, where $j$ is not Tabu (in the
+	Tabu list). If $j$ is Tabu, but meets an aspiration criterion, then 
+	choose$j$. Set $i =j$.
+	\item If $f(i)>f(i\prime)$ (where $f$ is the fitness
+	function), set $i^\prime=i$. Note this is for the case when a higher fitness
+	function is better. For the case when a lower fitness function is better,
+	set $i^\prime=i$ when $f(i)<f(i^\prime)$.
+	\item Put $i$ into the Tabu table. Update aspiration criteria.
+	\item If a stopping condition is met, stop. Else, go to step 2.
+\end{enumerate}
+There are several possible stopping criteria, such as:
+\begin{itemize}
+	\item There are no more feasible solutions in the neighbourhood of the
+	current solution
+	\item $k$ is larger than the maximum number of allowed iterations
+	\item The number of iterations since the last improvement of $i^\prime$ is
+	greater than a specified number – meaning that convergence has been
+	reached, and that there are diminishing returns on finding a more optimal
+	solution
+	\item An optimal solution has been obtained. There would need to be a
+	method to find what the vicinity of the optimal solution, so that upper
+	lower bounds can be set.
+\end{itemize}
+Tabu search has been used to solve the university timetabling problem (Awad et
+al, 2021). They defined four different neighbourhoods:
+\begin{itemize}
+	\item Nb1: Randomly choose a particular course and progress to a feasible
+	timeslot, which can produce the smallest cost
+	\item Nb2: Randomly select a room. Also, randomly select two courses for
+	that room. Next, swap timeslots.
+	\item Nb3: Randomly select two times. Next, swap timeslots.
+	\item Nb4: Randomly select a particular time and swap it with another time,
+	in the range between 0 and 44, which can produce the smallest penalty cost.
+\end{itemize}
+In order to produce an initial solution which met all the hard constraints, a
+least saturation degree algorithm is used, where events that are more different
+to schedule are scheduled first. If that did not produce a feasible solution,
+then Nb1 is used for a specific number of repetitions, then Nb2 is used for a
+specific number of repetitions if Nb1 did not reach a feasible solution. Next
+an improvement algorithm was used with Nb3 and Nb4, specifically adaptive Tabu
+search. The penalty cost is checked every 1,000 iterations and if the penalty
+cost has not changed, then two solutions are removed from the Tabu List.
+
+\subsection{Answer Set Programming}
+Answer set programming (ASP) reduces problems to logic programs, and then
+answer set solvers are used to do the search. The logic programs are sets of
+rules that take the form:
+\begin{center}
+	$a_0$ \verb|:-| $a_1, \ldots, a_m$ \verb|not| $a_{m+1}, \ldots,$ \verb|not|
+	$a_n$
+\end{center}
+where every $a_i$ is a propositional atom and \verb|not| is default negation. If $n=0$
+then a rule is a fact. A rule is an integrity constraint if $a_0$ is omitted. A
+logic program induces a collection of answer sets, which are recognized models
+of the program determined by answer set semantics.
+
+To make ASP better for real-world use, some extensions were developed. Rules
+with first-order variables are viewed as shorthand for the set of their ground
+instances. Additionally, there are conditional literals that take the form:
+\begin{center}
+	\verb|a: | $b_1, \ldots, b_m$
+\end{center}
+where \verb|a| and $b_i$ are possibly default-negated variables. There are also
+cardinality constraints which take the form:
+\begin{center}
+	\verb|s|$\{c_1, \ldots, c_n\}$\verb|t|
+\end{center}
+where each $c_j$ is a conditional literal. \verb|s| and \verb|t| provide lower
+and upper bounds on the number of satisfied literals in the cardinality
+constraint. For example, \verb|2{a(X):b(X)}4| is true when 2, 3 or 4
+instances of \verb|(X)| (subject to \verb|b(X)|) are true. Also $N=c_1,\ldots
+c_n$ binds $N$ to the number of satisfied conditional literals $c_j$. And
+objective functions that minimise the sum of weights $w_j$ of conditional
+literals $c_j$ are expressed as
+\verb|#minimize{|$w_1:c_1,\ldots, w_n:c_n$\verb|}|.
+
+The logic programs can be written in a language called AnsProlog (Answer Set
+Programming in Logic), which can be used with answer set solvers such as
+smodels.
+
+\subsection{Bat Inspired Algorithm}
+
+\section{Comparison of Methods}
+
+\section{Chosen Method}
+
+\chapter{Requirements}
+
+\chapter{Design and Implementation}
+
+\section{Program Overview}
+
+\section{Genetic Algorithm}
+
+\subsection{Initial Population}
+
+\subsection{Fitness Function}
+
+\subsection{Selection}
+
+\subsection{Crossover}
+
+\subsection{Mutation}
+
+\chapter{Testing}
+
+\chapter{Evaluation}
+
+\chapter{Conclusion}
 
 % Rename Bibliography to References
 % \renewcommand\bibname{References}
