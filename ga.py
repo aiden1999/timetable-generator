@@ -3,30 +3,45 @@ import random
 
 
 def generate_timetable():
+    """
+    Base function for the timetable generation, goes through the whole
+    genetic algorithm.
+    """
     print("Generating initial population...")
     sessions, rooms, time_slots = get_config_data()
     population = generate_initial_population(sessions, rooms, time_slots)
-    population_fitness, valid_solution = check_population_fitness(population)
-    while not valid_solution:
+    population_fitness, valid_solution_bool, valid_solution = \
+        check_population_fitness(population)
+    while not valid_solution_bool:
         parent_a, parent_b = select_parents(population_fitness)
+        # Note that parent_a and parent_b are indices
         offspring = crossover(population[parent_a],
                               population[parent_b], len(population[0]))
         # check if any of the offspring is a valid solution
         mutated_offspring = mutation(offspring, time_slots, rooms, sessions)
-        new_pop = mutated_offspring + population[parent_a] + population[parent_b]  # add to list
-        population_fitness, valid_solution = check_population_fitness(new_pop)
-        if not valid_solution:
+        new_pop = mutated_offspring + population[parent_a] + \
+            population[parent_b]  # add to list
+        population_fitness, valid_solution_bool, valid_solution \
+            = check_population_fitness(new_pop)
+        if not valid_solution:  # TODO
             # combine new_pop and population_fitness into a 2D array (2 *12)
+            new_pop_fitness = zip(new_pop, population_fitness)
+            print(new_pop_fitness)  # debugging
             # sort by fitness
             # remove last 2
-            pass
+    generate_output_text(valid_solution)
     print("Timetable solution found. Output in timetable.txt")
-    # display valid solution or output to txt or something idk
+    # TODO: display valid solution or output to txt or something idk
 
 
-def get_config_data():
+def get_config_data():  # TODO: add ->
+    """_summary_
+
+    Returns:
+        _type_: _description_
+    """
     print("Reading config file")
-    file = open("config.json", "r")
+    file = open("config.json", "r", encoding="utf-8")
     data = json.load(file)
     file.close()
 
@@ -50,6 +65,16 @@ def get_config_data():
 
 
 def generate_initial_population(sessions, rooms, time_slots) -> list:
+    """_summary_
+
+    Args:
+        sessions (_type_): _description_
+        rooms (_type_): _description_
+        time_slots (_type_): _description_
+
+    Returns:
+        list: _description_
+    """
     population = []
     for i in range(10):  # hard coding
         solution = create_complete_solution(sessions, rooms, time_slots)
@@ -58,6 +83,16 @@ def generate_initial_population(sessions, rooms, time_slots) -> list:
 
 
 def create_session_solution(session, rooms: list[str], time_slots: list[int]) -> list:
+    """_summary_
+
+    Args:
+        session (_type_): _description_
+        rooms (list[str]): _description_
+        time_slots (list[int]): _description_
+
+    Returns:
+        list: _description_
+    """
     time_slot = random.choice(time_slots)
     room = random.choice(rooms)
     student_group = session[1]
@@ -68,6 +103,16 @@ def create_session_solution(session, rooms: list[str], time_slots: list[int]) ->
 
 
 def create_complete_solution(sessions, rooms, time_slots):
+    """_summary_
+
+    Args:
+        sessions (_type_): _description_
+        rooms (_type_): _description_
+        time_slots (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     solution = []
     for session in sessions:
         session_solution = create_session_solution(session, rooms, time_slots)
@@ -76,22 +121,38 @@ def create_complete_solution(sessions, rooms, time_slots):
 
 
 def check_population_fitness(population):
+    """_summary_
+
+    Args:
+        population (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     population_fitness = []
-    valid_solution = False
+    valid_solution_bool = False
+    valid_solution = None
     for solution in population:
         sol_fitness = calculate_fitness(solution)
         population_fitness.append(sol_fitness)
         if sol_fitness == 0:
-            valid_solution = True
+            valid_solution_bool = True
+            valid_solution = solution
             break
-    print("generation done")
-    return population_fitness, valid_solution
+    return population_fitness, valid_solution_bool, valid_solution
 
 
 def calculate_fitness(solution):
+    """_summary_
+
+    Args:
+        solution (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
 
     # Sort by time slot
-    print("solution: ", solution)  # there is a bug here v
     solution.sort(key=lambda x: x[0])
     clash_count = 0
 
@@ -122,16 +183,21 @@ def calculate_fitness(solution):
         fitness = 0
     else:
         fitness = 1 / clash_count
-    print(fitness)
     return fitness
 
 
 def select_parents(population_fitness):
+    """_summary_
+
+    Args:
+        population_fitness (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     fitness_values = population_fitness
     range_limits_a = normalise_values(fitness_values)
-    print("range_limits_a: ", range_limits_a)  # there is a bug here v
     parent_a = choose_parent(range_limits_a)
-    print("parent a ", parent_a)  # there was a bug here v
     fitness_values.remove(fitness_values[parent_a])
     range_limits_b = normalise_values(fitness_values)
     parent_b = choose_parent(range_limits_b)
@@ -139,6 +205,14 @@ def select_parents(population_fitness):
 
 
 def normalise_values(fitness_values):
+    """_summary_
+
+    Args:
+        fitness_values (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     fitness_total = 0
     for value in fitness_values:
         fitness_total += value
@@ -150,17 +224,24 @@ def normalise_values(fitness_values):
             range_limits[i] += range_limits[i - 1]
     range_limits[len(fitness_values) - 1] = 1
     range_limits.insert(0, 0)
-    return range_limits
+    return range_limits  # limits are upper limits?
 
 
 def choose_parent(range_limits):
+    """_summary_
+
+    Args:
+        range_limits (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     choice = random.random()
-    print("choice: ", choice)  # debugging
     lower, upper = 0, len(range_limits) - 1
     found_parent = False
+    parent_index = None
     while not found_parent:
         middle = (lower + upper) // 2
-        print("lower: ", lower, " middle: ", middle, " upper: ", upper)  # debugging
         if lower == upper - 1:
             found_parent = True
             parent_index = upper
@@ -172,6 +253,16 @@ def choose_parent(range_limits):
 
 
 def crossover(parent_a, parent_b, num_of_sessions):
+    """_summary_
+
+    Args:
+        parent_a (_type_): _description_
+        parent_b (_type_): _description_
+        num_of_sessions (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     offspring = []
     for i in range(5):  # hard coding
         locus_outer = random.randint(0, num_of_sessions - 1)
@@ -200,6 +291,17 @@ def crossover(parent_a, parent_b, num_of_sessions):
 
 
 def mutation(offspring_in, time_slots, rooms, sessions):
+    """_summary_
+
+    Args:
+        offspring_in (_type_): _description_
+        time_slots (_type_): _description_
+        rooms (_type_): _description_
+        sessions (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     offspring = offspring_in
     for solution in offspring:
         for session in solution:
@@ -228,3 +330,15 @@ def mutation(offspring_in, time_slots, rooms, sessions):
                             offspring[solution][session][4] = new_session[2]
 
     return offspring
+
+
+def generate_output_text(solution):
+    """_summary_
+
+    Args:
+        solution (_type_): _description_
+    """
+    print(solution) 
+    # create text file
+    # timetable for each teacher
+    # timetable for each student group

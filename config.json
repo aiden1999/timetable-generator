@@ -27,7 +27,9 @@
     { "id": "7368", "modules": ["A123"], "num_of_students": "30" },
     { "id": "8394", "modules": ["A123", "D112"], "num_of_students": "100" },
     { "id": "2938", "modules": ["J736", "F937"], "num_of_students": "50" },
-    { "id": "9483", "modules": ["G023", "U843"], "num_of_students": "80" }
+    { "id": "9483", "modules": ["G023", "U843"], "num_of_students": "80" },
+    { "id": "4293", "modules": ["D112", "C110"], "num_of_students": "30" },
+    { "id": "6437", "modules": ["G023", "U843", "K483", "B388"], "num_of_students": "80" }
   ],
   "modules": [
     {
