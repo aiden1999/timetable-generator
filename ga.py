@@ -333,12 +333,34 @@ def mutation(offspring_in, time_slots, rooms, sessions):
 
 
 def generate_output_text(solution):
+    # session[0] = time_slot
+    # session[1] = room
+    # session[2] = student_group
+    # session[3] = module
+    # session[4] = teacher
     """_summary_
 
     Args:
         solution (_type_): _description_
     """
-    print(solution) 
-    # create text file
+
+    teachers_dict = {}
+    student_groups_dict = {}
+    file = open("config.json", "r", encoding="utf-8")
+    data = json.load(file)
+    file.close()
+    for teacher in data["teachers"]:
+        teachers_dict.update({teacher["id"]: []})
+    for student_group in data["student_groups"]:
+        student_groups_dict.update({student_group["id"]: []})
+    print(solution)  # debugging TODO: remove later
+    for session in solution:
+        
+    
+    # for each session, append the session to a list for the teacher
+    # and a list for the student group - create list if needed
+    # create folder for timetables
+    # create text file for each teacher/student group
+    # formatting?
     # timetable for each teacher
     # timetable for each student group
