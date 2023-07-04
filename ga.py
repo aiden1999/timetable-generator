@@ -1,11 +1,13 @@
 import json
 import random
+import os
 
 
 def generate_timetable():
-    """
-    Base function for the timetable generation, goes through the whole
-    genetic algorithm.
+    """Base function for the timetable generation.
+
+    Basis of the timetable generation, goes through the whole of the
+    genetic algorithm
     """
     print("Generating initial population...")
     sessions, rooms, time_slots = get_config_data()
@@ -82,7 +84,8 @@ def generate_initial_population(sessions, rooms, time_slots) -> list:
     return population
 
 
-def create_session_solution(session, rooms: list[str], time_slots: list[int]) -> list:
+def create_session_solution(session, rooms: list[str], time_slots: list[int]) \
+     -> list:
     """_summary_
 
     Args:
@@ -333,6 +336,7 @@ def mutation(offspring_in, time_slots, rooms, sessions):
 
 
 def generate_output_text(solution):
+    # TODO: add 'person' parameter to do teacher and student
     # session[0] = time_slot
     # session[1] = room
     # session[2] = student_group
@@ -355,11 +359,27 @@ def generate_output_text(solution):
         student_groups_dict.update({student_group["id"]: []})
     print(solution)  # debugging TODO: remove later
     for session in solution:
-        
-    
-    # for each session, append the session to a list for the teacher
-    # and a list for the student group - create list if needed
-    # create folder for timetables
+        session_teacher = session[4]
+        session_teacher_list = teachers_dict.get(session_teacher)
+        session_teacher_list.append(session)
+        teachers_dict.update({session_teacher: session_teacher_list})
+        session_student_group = session[2]
+        session_student_group_list = student_groups_dict.get(
+            session_student_group)
+        session_student_group_list.append(session)
+        student_groups_dict.update({session_student_group:
+                                    session_student_group_list})
+    print("Creating directory for teacher timetables...")
+    try:
+        os.mkdir("./teacher-timetables")
+        print("Directory 'teacher-timetables' created.")
+    except FileExistsError:
+        print("Directory 'teacher-timetables' already exists.")
+    for session_teacher in teachers_dict:
+        file = open(str(session_teacher) + "-timetable.txt", "w")
+
+        # add each session to a new line
+        # close the file
     # create text file for each teacher/student group
     # formatting?
     # timetable for each teacher
