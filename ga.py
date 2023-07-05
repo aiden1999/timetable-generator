@@ -7,14 +7,15 @@ def generate_timetable():
     """Base function for the timetable generation.
 
     Basis of the timetable generation, goes through the whole of the
-    genetic algorithm
+    genetic algorithm.
     """
-    print("Generating initial population...")
     sessions, rooms, time_slots = get_config_data()
     population = generate_initial_population(sessions, rooms, time_slots)
     population_fitness, valid_solution_bool, valid_solution = \
         check_population_fitness(population)
+    # works up to here TODO: remove later
     while not valid_solution_bool:
+        print("No timetable solution found.")
         parent_a, parent_b = select_parents(population_fitness)
         # Note that parent_a and parent_b are indices
         offspring = crossover(population[parent_a],
@@ -23,18 +24,78 @@ def generate_timetable():
         mutated_offspring = mutation(offspring, time_slots, rooms, sessions)
         new_pop = mutated_offspring + population[parent_a] + \
             population[parent_b]  # add to list
+        print("New population:")
+        print(new_pop)  # debugging TODO: remove later
+        # TODO: there is some kind of problem with the next line
         population_fitness, valid_solution_bool, valid_solution \
             = check_population_fitness(new_pop)
-        if not valid_solution:  # TODO
+        if not valid_solution_bool:  # TODO
             # combine new_pop and population_fitness into a 2D array (2 *12)
             new_pop_fitness = zip(new_pop, population_fitness)
             print(new_pop_fitness)  # debugging
             # sort by fitness
             # remove last 2
+    print("Timetable solution found. Writing output to text files...")
     generate_output_text(valid_solution)
-    print("Timetable solution found. Output in timetable.txt")
+    print("Output written to files in ./teacher-timetables and \
+    ./student-group-timetables.")
     # TODO: display valid solution or output to txt or something idk
 
+
+def generate_output_text(solution):
+    # TODO: add 'person' parameter to do teacher and student
+    # session[0] = time_slot
+    # session[1] = room
+    # session[2] = student_group
+    # session[3] = module
+    # session[4] = teacher
+    """_summary_
+
+    Args:
+        solution (_type_): _description_
+    """
+
+    teachers_dict = {}
+    student_groups_dict = {}
+    file = open("config.json", "r", encoding="utf-8")
+    data = json.load(file)
+    file.close()
+    for teacher in data["teachers"]:
+        teachers_dict.update({teacher["id"]: []})
+    for student_group in data["student_groups"]:
+        student_groups_dict.update({student_group["id"]: []})
+    print(solution)  # debugging TODO: remove later
+    for session in solution:
+        # print("session: " + str(session))  # debugging TODO: remove later
+        session_teacher = session[4]
+        # print(session_teacher)  # debugging TODO: remove later
+        session_teacher_list = teachers_dict.get(session_teacher)
+        session_teacher_list.append(session)
+        teachers_dict.update({session_teacher: session_teacher_list})
+        session_student_group = session[2]
+        session_student_group_list = student_groups_dict.get(
+            session_student_group)
+        session_student_group_list.append(session)
+        student_groups_dict.update({session_student_group:
+                                    session_student_group_list})
+    print("Creating directory for teacher timetables...")
+    try:
+        os.mkdir("./teacher-timetables")
+        print("Directory 'teacher-timetables' created.")
+    except FileExistsError:
+        print("Directory 'teacher-timetables' already exists.")
+    for session_teacher in teachers_dict:
+        file = open(str(session_teacher) + "-timetable.txt", "w",
+                    encoding="utf-8")
+        teacher_sessions = teachers_dict[session_teacher]
+        for session in teacher_sessions:
+            file.write(str(session))
+        file.close()
+    print("Timetable output files created.")
+    # formatting?
+
+
+# ==================== PHASE 1: INITIAL POPULATION ====================
 
 def get_config_data():  # TODO: add ->
     """_summary_
@@ -77,11 +138,13 @@ def generate_initial_population(sessions, rooms, time_slots) -> list:
     Returns:
         list: _description_
     """
+    print("Generating initial population...")
     population = []
-    for i in range(10):  # hard coding
+    for i in range(10):  # TODO: remove hard coding
         solution = create_complete_solution(sessions, rooms, time_slots)
         population.append(solution)
     return population
+    print("Initial population generated.")
 
 
 def create_session_solution(session, rooms: list[str], time_slots: list[int]) \
@@ -123,6 +186,8 @@ def create_complete_solution(sessions, rooms, time_slots):
     return solution
 
 
+# ==================== PHASE 2: FITNESS FUNCTION ====================
+
 def check_population_fitness(population):
     """_summary_
 
@@ -132,6 +197,7 @@ def check_population_fitness(population):
     Returns:
         _type_: _description_
     """
+    print("Calculating the fitness of individuals...")
     population_fitness = []
     valid_solution_bool = False
     valid_solution = None
@@ -142,6 +208,7 @@ def check_population_fitness(population):
             valid_solution_bool = True
             valid_solution = solution
             break
+    print("Fitness of individuals calculated.")
     return population_fitness, valid_solution_bool, valid_solution
 
 
@@ -189,6 +256,8 @@ def calculate_fitness(solution):
     return fitness
 
 
+# ==================== PHASE 3: SELECTION ====================
+
 def select_parents(population_fitness):
     """_summary_
 
@@ -198,12 +267,17 @@ def select_parents(population_fitness):
     Returns:
         _type_: _description_
     """
+    print("Selecting parents for crossover...")
     fitness_values = population_fitness
     range_limits_a = normalise_values(fitness_values)
     parent_a = choose_parent(range_limits_a)
+    print(str(parent_a))  # debugging TODO: remove later
+    print("First parent selected.")
     fitness_values.remove(fitness_values[parent_a])
     range_limits_b = normalise_values(fitness_values)
     parent_b = choose_parent(range_limits_b)
+    print(str(parent_b))  # debugging TODO: remove later
+    print("Second parent selected.")
     return parent_a, parent_b
 
 
@@ -255,6 +329,8 @@ def choose_parent(range_limits):
     return parent_index
 
 
+# ==================== PHASE 4: CROSSOVER ====================
+
 def crossover(parent_a, parent_b, num_of_sessions):
     """_summary_
 
@@ -266,6 +342,7 @@ def crossover(parent_a, parent_b, num_of_sessions):
     Returns:
         _type_: _description_
     """
+    print("Producing offspring...")
     offspring = []
     for i in range(5):  # hard coding
         locus_outer = random.randint(0, num_of_sessions - 1)
@@ -289,9 +366,11 @@ def crossover(parent_a, parent_b, num_of_sessions):
         right_b = parent_a[locus_outer + 1:]
         child_b = [left_b, [centre_b], right_b]
         offspring.append(child_b)
-
+    print("Offspring produced.")
     return offspring
 
+
+# ==================== PHASE 5: MUTATION ====================
 
 def mutation(offspring_in, time_slots, rooms, sessions):
     """_summary_
@@ -305,6 +384,8 @@ def mutation(offspring_in, time_slots, rooms, sessions):
     Returns:
         _type_: _description_
     """
+    print("Mutating offspring...")
+    mutation_count = 0
     offspring = offspring_in
     for solution in offspring:
         for session in solution:
@@ -313,6 +394,7 @@ def mutation(offspring_in, time_slots, rooms, sessions):
 
                 # Mutation does occur
                 if mutate == 0:
+                    mutation_count += 1
                     match i:
 
                         # Mutation of time slot
@@ -331,56 +413,6 @@ def mutation(offspring_in, time_slots, rooms, sessions):
                             offspring[solution][session][2] = new_session[0]
                             offspring[solution][session][3] = new_session[1]
                             offspring[solution][session][4] = new_session[2]
-
+    print("Offspring mutated. " + str(mutation_count) + 
+    " mutation(s) occured.")
     return offspring
-
-
-def generate_output_text(solution):
-    # TODO: add 'person' parameter to do teacher and student
-    # session[0] = time_slot
-    # session[1] = room
-    # session[2] = student_group
-    # session[3] = module
-    # session[4] = teacher
-    """_summary_
-
-    Args:
-        solution (_type_): _description_
-    """
-
-    teachers_dict = {}
-    student_groups_dict = {}
-    file = open("config.json", "r", encoding="utf-8")
-    data = json.load(file)
-    file.close()
-    for teacher in data["teachers"]:
-        teachers_dict.update({teacher["id"]: []})
-    for student_group in data["student_groups"]:
-        student_groups_dict.update({student_group["id"]: []})
-    print(solution)  # debugging TODO: remove later
-    for session in solution:
-        session_teacher = session[4]
-        session_teacher_list = teachers_dict.get(session_teacher)
-        session_teacher_list.append(session)
-        teachers_dict.update({session_teacher: session_teacher_list})
-        session_student_group = session[2]
-        session_student_group_list = student_groups_dict.get(
-            session_student_group)
-        session_student_group_list.append(session)
-        student_groups_dict.update({session_student_group:
-                                    session_student_group_list})
-    print("Creating directory for teacher timetables...")
-    try:
-        os.mkdir("./teacher-timetables")
-        print("Directory 'teacher-timetables' created.")
-    except FileExistsError:
-        print("Directory 'teacher-timetables' already exists.")
-    for session_teacher in teachers_dict:
-        file = open(str(session_teacher) + "-timetable.txt", "w")
-
-        # add each session to a new line
-        # close the file
-    # create text file for each teacher/student group
-    # formatting?
-    # timetable for each teacher
-    # timetable for each student group

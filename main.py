@@ -6,8 +6,8 @@ def menu():
     """Print a welcome message to the user, with instructions."""
     clear()
     print("Timetable Maker\nPlease ensure that config.json is filled in \
-        correctly\nType start to create a timetable with output to a text \
-            file, or type help for more commands")
+correctly. \nType start to create a timetable with output to a text \
+file, or type help for more commands")
     get_user_input()
 
 
