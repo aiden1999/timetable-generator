@@ -3,6 +3,20 @@ import random
 import os
 
 
+class Session:
+    def __init__(self, time_slot, room, student_groups, module, teacher):
+        self.time_slot = time_slot
+        self.room = room
+        self.student_groups = student_groups
+        self.module = module
+        self.teacher = teacher
+
+
+class Timetable(list[Session]):
+    def __init__(self):
+        list.__init__()
+        
+
 def generate_timetable():
     """Base function for the timetable generation.
 
