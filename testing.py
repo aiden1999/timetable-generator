@@ -11,7 +11,7 @@ def choose_parent(range_limits):
         print("lower: ", lower, " middle: ", middle, " upper: ", upper)  # debugging
         if lower == upper - 1:
             found_parent = True
-            parent_index = upper
+            parent_index = middle
         elif range_limits[middle] < choice:
             lower = middle
         else:

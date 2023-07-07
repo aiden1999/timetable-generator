@@ -21,20 +21,19 @@ def generate_timetable():
         offspring = crossover(population[parent_a],
                               population[parent_b], len(population[0]))
         # check if any of the offspring is a valid solution
-        mutated_offspring = mutation(offspring, time_slots, rooms, sessions)
-        new_pop = mutated_offspring + population[parent_a] + \
-            population[parent_b]  # add to list
-        print("New population:")
-        print(new_pop)  # debugging TODO: remove later
+        mutated_offspring = mutate(offspring, time_slots, rooms, sessions)
+        mutated_offspring.append(population[parent_a])
+        mutated_offspring.append(population[parent_b])
         # TODO: there is some kind of problem with the next line
         population_fitness, valid_solution_bool, valid_solution \
-            = check_population_fitness(new_pop)
-        if not valid_solution_bool:  # TODO
-            # combine new_pop and population_fitness into a 2D array (2 *12)
-            new_pop_fitness = zip(new_pop, population_fitness)
-            print(new_pop_fitness)  # debugging
-            # sort by fitness
-            # remove last 2
+            = check_population_fitness(mutated_offspring)
+        if not valid_solution_bool:
+            population = mutated_offspring
+            for i in range(2):
+                worst_fitness = max(population_fitness)
+                worst_fitness_index = population_fitness.index(worst_fitness)
+                del population_fitness[worst_fitness_index]
+                del population[worst_fitness]
     print("Timetable solution found. Writing output to text files...")
     generate_output_text(valid_solution)
     print("Output written to files in ./teacher-timetables and \
@@ -64,7 +63,7 @@ def generate_output_text(solution):
         teachers_dict.update({teacher["id"]: []})
     for student_group in data["student_groups"]:
         student_groups_dict.update({student_group["id"]: []})
-    print(solution)  # debugging TODO: remove later
+    # print(solution)  # debugging TODO: remove later
     for session in solution:
         # print("session: " + str(session))  # debugging TODO: remove later
         session_teacher = session[4]
@@ -269,11 +268,13 @@ def select_parents(population_fitness):
     """
     print("Selecting parents for crossover...")
     fitness_values = population_fitness
+    print(len(fitness_values))
     range_limits_a = normalise_values(fitness_values)
+    print(range_limits_a)  # debugging TODO: remove later
     parent_a = choose_parent(range_limits_a)
-    print(str(parent_a))  # debugging TODO: remove later
     print("First parent selected.")
     fitness_values.remove(fitness_values[parent_a])
+    print(len(fitness_values))
     range_limits_b = normalise_values(fitness_values)
     parent_b = choose_parent(range_limits_b)
     print(str(parent_b))  # debugging TODO: remove later
@@ -305,6 +306,7 @@ def normalise_values(fitness_values):
 
 
 def choose_parent(range_limits):
+    # problem parent set to 10 - not working with indexing
     """_summary_
 
     Args:
@@ -321,7 +323,7 @@ def choose_parent(range_limits):
         middle = (lower + upper) // 2
         if lower == upper - 1:
             found_parent = True
-            parent_index = upper
+            parent_index = middle
         elif range_limits[middle] < choice:
             lower = middle
         else:
@@ -344,19 +346,22 @@ def crossover(parent_a, parent_b, num_of_sessions):
     """
     print("Producing offspring...")
     offspring = []
-    for i in range(5):  # hard coding
+    for i in range(5):  # hard coding - 10 offspring from 5 crossovers TODO
+        # locus_outer: session that contains the split
+        # locus_inner: split after session[locus_inner]
         locus_outer = random.randint(0, num_of_sessions - 1)
         if locus_outer == 0:
-            locus_inner = random.randint(1, 2)  # hard coding
+            locus_inner = random.randint(1, 2)  # hard coding TODO
         else:
-            locus_inner = random.randint(0, 2)  # hard coding
+            locus_inner = random.randint(0, 2)  # hard coding TODO
 
         # Crossover of child a
         left_a = parent_a[:locus_outer]
         centre_a = parent_a[locus_outer][:locus_inner] + \
             parent_b[locus_outer][locus_inner:]
         right_a = parent_b[locus_outer + 1:]
-        child_a = [left_a, [centre_a], right_a]
+        left_a.append(centre_a)
+        child_a = left_a + right_a
         offspring.append(child_a)
 
         # Crossover of child b
@@ -364,7 +369,8 @@ def crossover(parent_a, parent_b, num_of_sessions):
         centre_b = parent_b[locus_outer][:locus_inner] + \
             parent_a[locus_outer][locus_inner:]
         right_b = parent_a[locus_outer + 1:]
-        child_b = [left_b, [centre_b], right_b]
+        left_b.append(centre_b)
+        child_b = left_b + right_b
         offspring.append(child_b)
     print("Offspring produced.")
     return offspring
@@ -372,7 +378,7 @@ def crossover(parent_a, parent_b, num_of_sessions):
 
 # ==================== PHASE 5: MUTATION ====================
 
-def mutation(offspring_in, time_slots, rooms, sessions):
+def mutate(offspring_in, time_slots, rooms, sessions):
     """_summary_
 
     Args:
@@ -413,6 +419,6 @@ def mutation(offspring_in, time_slots, rooms, sessions):
                             offspring[solution][session][2] = new_session[0]
                             offspring[solution][session][3] = new_session[1]
                             offspring[solution][session][4] = new_session[2]
-    print("Offspring mutated. " + str(mutation_count) + 
-    " mutation(s) occured.")
+    print("Offspring mutated. " + str(mutation_count) +
+          " mutation(s) occured.")
     return offspring
