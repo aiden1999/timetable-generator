@@ -1,26 +1,26 @@
 # Timetable Project
 
 ## Prerequisites
-Python 3: install from https://www.python.org/downloads, or download with your
+- Python 3: install from https://www.python.org/downloads, or download with your
 OS's package manger, eg. Arch Linux and derivatives:
-    sudo pacman -S python3
+    `sudo pacman -S python3`
 Check that Python is added to PATH by typing
-    python3             (Arch)
+    `python3`             (Arch)
 or
-    python              (Windows)
+    `python`              (Windows)
 into the terminal. If an error is returned, add to PATH.
 
 ## Installation
 Download these 9 files:
-    crossover.py
-    data.json
-    fitness_function.py
-    ga.py
-    initial_population.py
-    main.py
-    mutation.py
-    selection.py
-    settings.json
+    - crossover.py
+    - data.json
+    - fitness_function.py
+    - ga.py
+    - initial_population.py
+    - main.py
+    - mutation.py
+    - selection.py
+    - settings.json
 Make sure they are in the same directory.
 
 ## Configuration
