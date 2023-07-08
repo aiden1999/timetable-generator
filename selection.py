@@ -1,24 +1,33 @@
+"""Phase 3 (selection) of genetic algorithm.
+
+Functions:
+    select_parents(population_fitness: list) -> [int, int]
+    normalise_values(fitness_values: list) -> list
+    choose_parent(range_limits: list) -> int
+"""
 import random
 
 
-def select_parents(population_fitness):
-    """_summary_
+def select_parents(population_fitness: list) -> [int, int]:
+    """Select the parents for crossover.
 
     Args:
-        population_fitness (_type_): _description_
+        population_fitness (list): The fitness values of the population.
 
     Returns:
-        _type_: _description_
+        int: Index of the first parent.
+        int: Index of the other parent.
     """
     print("Selecting parents for crossover...")
     fitness_values = population_fitness
-    print(len(fitness_values))
+    print(len(fitness_values))  # deugging: remove later
     range_limits_a = normalise_values(fitness_values)
     print(range_limits_a)  # debugging TODO: remove later
     parent_a = choose_parent(range_limits_a)
     print("First parent selected.")
     fitness_values.remove(fitness_values[parent_a])
-    print(len(fitness_values))
+
+    print(len(fitness_values))  # debugging TODO: remove later
     range_limits_b = normalise_values(fitness_values)
     parent_b = choose_parent(range_limits_b)
     print(str(parent_b))  # debugging TODO: remove later
@@ -26,14 +35,14 @@ def select_parents(population_fitness):
     return parent_a, parent_b
 
 
-def normalise_values(fitness_values):
-    """_summary_
+def normalise_values(fitness_values: list) -> list:
+    """Normalise the fitness values so that they summate to 1.
 
     Args:
-        fitness_values (_type_): _description_
+        fitness_values (list): The fitness values of the population.
 
     Returns:
-        _type_: _description_
+        list: Cumulative sums of the normalised fitness values.
     """
     fitness_total = 0
     for value in fitness_values:
@@ -49,15 +58,14 @@ def normalise_values(fitness_values):
     return range_limits  # limits are upper limits?
 
 
-def choose_parent(range_limits):
-    # problem parent set to 10 - not working with indexing
-    """_summary_
+def choose_parent(range_limits: list) -> int:
+    """Perfom a binary search to get the index of the chosen parent.
 
     Args:
-        range_limits (_type_): _description_
+        range_limits (list): Cumulative sums of the normalised fitness values.
 
     Returns:
-        _type_: _description_
+        int: The index of the chosen parent.
     """
     choice = random.random()
     lower, upper = 0, len(range_limits) - 1

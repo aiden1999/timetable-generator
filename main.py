@@ -1,3 +1,10 @@
+"""Main menu for the timetable maker.
+
+Functions:
+    menu()
+    clear()
+    get_user_input()
+"""
 from os import system, name
 import ga
 

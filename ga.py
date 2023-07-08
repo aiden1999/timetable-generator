@@ -1,3 +1,10 @@
+"""Genetic algorithm base.
+
+Functions:
+    generate_timetable()
+    get_settings_data() -> int
+    generate_output_text(solution: list)
+"""
 import initial_population as p1
 import fitness_function as p2
 import selection as p3

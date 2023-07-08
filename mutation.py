@@ -1,17 +1,24 @@
+"""Phase 5 (mutation) of genetic algorithm.
+
+Functions:
+    mutate(offspring_in: list, time_slots: list, rooms: list, sessions: list)
+          -> list
+"""
 import random
 
 
-def mutate(offspring_in, time_slots, rooms, sessions):
-    """_summary_
+def mutate(offspring_in: list, time_slots: list, rooms: list, sessions: list) \
+        -> list:
+    """Chance for offspring to mutate.
 
     Args:
-        offspring_in (_type_): _description_
-        time_slots (_type_): _description_
-        rooms (_type_): _description_
-        sessions (_type_): _description_
+        offspring_in (list): The pre-mutation offspring.
+        time_slots (list): The list of time slots.
+        rooms (list): The list of rooms.
+        sessions (list): The list of sessions.
 
     Returns:
-        _type_: _description_
+        list: List of mutated offspring.
     """
     print("Mutating offspring...")
     mutation_count = 0

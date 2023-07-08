@@ -1,12 +1,25 @@
+"""Phase 1 (initial population) of genetic algorithm.
+
+Functions:
+    get_config_data() -> [list, list, list]
+    generate_initial_population(sessions: list, rooms: list, time_slots: list)
+        -> list
+    create_session_solution(session: list, rooms: list, time_slots: list)
+        -> list
+    create_complete_solution(sessions: list, rooms: list, time_slots: list)
+        -> list
+"""
 import json
 import random
 
 
 def get_config_data() -> [list, list, list]:
-    """_summary_
+    """Get the timetable data from data.json.
 
     Returns:
-        [list, list, list]: _description_
+        list: Session consisting of module ID, student group and teacher.
+        list: List of rooms.
+        list: List of time slots.
     """
     print("Reading data file")
     file = open("data.json", "r", encoding="utf-8")
@@ -32,37 +45,40 @@ def get_config_data() -> [list, list, list]:
     return sessions, rooms_id, time_slots_id
 
 
-def generate_initial_population(sessions, rooms, time_slots) -> list:
-    """_summary_
+def generate_initial_population(sessions: list, rooms: list,
+                                time_slots: list) -> list:
+    """Generate the first population randomly from the imported data.
 
     Args:
-        sessions (_type_): _description_
-        rooms (_type_): _description_
-        time_slots (_type_): _description_
+        sessions (list): List of sessions consisting of module ID, student
+            group and teacher.
+        rooms (list): List of rooms.
+        time_slots (list): List of time slots.
 
     Returns:
-        list: _description_
+        list: The generated population.
     """
     print("Generating initial population...")
     population = []
     for i in range(10):  # TODO: remove hard coding
         solution = create_complete_solution(sessions, rooms, time_slots)
         population.append(solution)
-    return population
     print("Initial population generated.")
+    return population
 
 
-def create_session_solution(session, rooms: list[str], time_slots: list[int]) \
+def create_session_solution(session: list, rooms: list, time_slots: list) \
      -> list:
-    """_summary_
+    """Create a session, to become part of a solution.
 
     Args:
-        session (_type_): _description_
-        rooms (list[str]): _description_
-        time_slots (list[int]): _description_
+        session (list): A single session consisting of module ID, student
+            group and teacher.
+        rooms (list): List of rooms.
+        time_slots (list): List of time slots.
 
     Returns:
-        list: _description_
+        list: The complete session with time slot and room.
     """
     time_slot = random.choice(time_slots)
     room = random.choice(rooms)
@@ -73,16 +89,18 @@ def create_session_solution(session, rooms: list[str], time_slots: list[int]) \
     return solution
 
 
-def create_complete_solution(sessions, rooms, time_slots):
-    """_summary_
+def create_complete_solution(sessions: list, rooms: list, time_slots: list) \
+         -> list:
+    """Create a complete solution from a list of session solutions.
 
     Args:
-        sessions (_type_): _description_
-        rooms (_type_): _description_
-        time_slots (_type_): _description_
+        sessions (list): List of sessions consisting of module ID, student
+            group and teacher.
+        rooms (list): List of rooms.
+        time_slots (list): List of time slots.
 
     Returns:
-        _type_: _description_
+        list: A solution, which is a member of the population.
     """
     solution = []
     for session in sessions:

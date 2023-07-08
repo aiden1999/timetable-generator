@@ -1,27 +1,33 @@
+"""Phase 4 (crossover) of genetic algorithm.
+
+Functions:
+    crossover(parent_a: list, parent_b: list, num_of_sessions: int) -> list
+"""
 import random
 
 
-def crossover(parent_a, parent_b, num_of_sessions):
-    """_summary_
+def crossover(parent_a: list, parent_b: list, num_of_sessions: int) -> list:
+    """Crossover parents to produce offspring.
 
     Args:
-        parent_a (_type_): _description_
-        parent_b (_type_): _description_
-        num_of_sessions (_type_): _description_
+        parent_a (list): The first selected parent.
+        parent_b (list): The other selected parent.
+        num_of_sessions (int): How many lesson sessions are needed to make up
+            the timetable.
 
     Returns:
-        _type_: _description_
+        list: The offspring.
     """
     print("Producing offspring...")
     offspring = []
-    for i in range(5):  # hard coding - 10 offspring from 5 crossovers TODO
+    for i in range(5):  # hard coding - 10 offspring from 5 crossovers FIXME
         # locus_outer: session that contains the split
         # locus_inner: split after session[locus_inner]
         locus_outer = random.randint(0, num_of_sessions - 1)
         if locus_outer == 0:
-            locus_inner = random.randint(1, 2)  # hard coding TODO
+            locus_inner = random.randint(1, 2)  # hard coding FIXME
         else:
-            locus_inner = random.randint(0, 2)  # hard coding TODO
+            locus_inner = random.randint(0, 2)  # hard coding FIXME
 
         # Crossover of child a
         left_a = parent_a[:locus_outer]
@@ -40,5 +46,6 @@ def crossover(parent_a, parent_b, num_of_sessions):
         left_b.append(centre_b)
         child_b = left_b + right_b
         offspring.append(child_b)
+
     print("Offspring produced.")
     return offspring
