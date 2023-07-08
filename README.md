@@ -3,24 +3,30 @@
 ## Prerequisites
 - Python 3: install from https://www.python.org/downloads, or download with your
 OS's package manger, eg. Arch Linux and derivatives:
-    `sudo pacman -S python3`
-Check that Python is added to PATH by typing
-    `python3`             (Arch)
-or
-    `python`              (Windows)
+```
+sudo pacman -S python3
+```
+Check that Python is added to PATH by typing (Arch)
+```
+python3
+```
+or (Windows)
+```
+python
+```
 into the terminal. If an error is returned, add to PATH.
 
 ## Installation
 Download these 9 files:
-    - crossover.py
-    - data.json
-    - fitness_function.py
-    - ga.py
-    - initial_population.py
-    - main.py
-    - mutation.py
-    - selection.py
-    - settings.json
+- crossover.py
+- data.json
+- fitness_function.py
+- ga.py
+- initial_population.py
+- main.py
+- mutation.py
+- selection.py
+- settings.json
 Make sure they are in the same directory.
 
 ## Configuration
@@ -30,5 +36,5 @@ Parameters of the genetic algorithm can be changed in settings.json.
 
 ## Usage
 Open the terminal to the containing directory and run main.py.
-    python3 ~/path/to/directory/main.py         (Arch)
+    `python3 ~/path/to/directory/main.py`         (Arch)
 Or open main.py with Python IDLE and run (Windows).
