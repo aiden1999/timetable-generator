@@ -3,7 +3,7 @@
 Functions:
     generate_timetable()
     get_settings_data() -> [int, int]
-    generate_output_text(solution: list)
+    generate_output_text(solution: list, person_type: str)
 """
 import initial_population as p1
 import fitness_function as p2
@@ -45,7 +45,8 @@ def generate_timetable():
                 del population_fitness[worst_fitness_index]
                 del population[worst_fitness_index]
     print("Timetable solution found. Writing output to text files...")
-    generate_output_text(valid_solution)
+    generate_output_text(valid_solution, "teachers")
+    generate_output_text(valid_solution, "student_groups")
     print("Output written to files in ./teacher-timetables and \
     ./student-group-timetables.")
 
@@ -65,52 +66,39 @@ def get_settings_data() -> [int, int]:
     return population_size, mutation_chance
 
 
-def generate_output_text(solution: list):
-    # TODO: add 'person' parameter to do teacher and student
-    # session[0] = time_slot
-    # session[1] = room
-    # session[2] = student_group
-    # session[3] = module
-    # session[4] = teacher
+def generate_output_text(solution: list, person_type: str):
     """Generate output of a correct timetable to text files.
 
     Args:
         solution (list): A correct timetable solution.
+        person_type (str): Who the timetable is for, student_groups or teachers
     """
-    teachers_dict = {}
-    student_groups_dict = {}
+    dictionary = {}
     file = open("data.json", "r", encoding="utf-8")
     data = json.load(file)
     file.close()
-    for teacher in data["teachers"]:
-        teachers_dict.update({teacher["id"]: []})
-    for student_group in data["student_groups"]:
-        student_groups_dict.update({student_group["id"]: []})
-    # print(solution)  # debugging TODO: remove later
+
+    for person in data[person_type]:
+        dictionary.update({person["id"]: []})
     for session in solution:
-        # print("session: " + str(session))  # debugging TODO: remove later
-        session_teacher = session[4]
-        # print(session_teacher)  # debugging TODO: remove later
-        session_teacher_list = teachers_dict.get(session_teacher)
-        session_teacher_list.append(session)
-        teachers_dict.update({session_teacher: session_teacher_list})
-        session_student_group = session[2]
-        session_student_group_list = student_groups_dict.get(
-            session_student_group)
-        session_student_group_list.append(session)
-        student_groups_dict.update({session_student_group:
-                                    session_student_group_list})
-    print("Creating directory for teacher timetables...")
+        if person_type == "teachers":
+            session_person = session[4]
+        else:  # session_person == "student_groups"
+            session_person = session[2]
+        session_person_list = dictionary.get(session_person)
+        session_person_list.append(session)
+        dictionary.update({session_person: session_person_list})
+
+    print("Creating directory for " + str(person_type) + " timetables...")
     try:
-        os.mkdir("./teacher-timetables")
-        print("Directory 'teacher-timetables' created.")
+        os.mkdir("./" + str(person_type) + "_timetables")
+        print("Directory '" + str(person_type) + "_timetables' created.")
     except FileExistsError:
-        print("Directory 'teacher-timetables' already exists.")
-    for session_teacher in teachers_dict:
-        file = open(str(session_teacher) + "-timetable.txt", "w",
-                    encoding="utf-8")
-        teacher_sessions = teachers_dict[session_teacher]
-        for session in teacher_sessions:
+        print("Directory already exists.")
+    for session_person in dictionary:
+        file = open(str(session_person) + ".txt", "w", encoding="utf-8")
+        person_sessions = dictionary[session_person]
+        for session in person_sessions:
             file.write(str(session))
         file.close()
     print("Timetable output files created.")
