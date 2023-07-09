@@ -33,7 +33,7 @@ def get_user_input():
         case "start":
             ga.generate_timetable()
         case "help":
-            print("This is the help page that hasn't been written yet")
+            print("Please read the documentation.")
             get_user_input()
         case _:
             print("'" + user_input + "' is not a recognised command. Type \

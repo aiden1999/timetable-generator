@@ -2,7 +2,7 @@
 
 Functions:
     generate_timetable()
-    get_settings_data() -> int
+    get_settings_data() -> [int, int]
     generate_output_text(solution: list)
 """
 import initial_population as p1
@@ -19,17 +19,18 @@ def generate_timetable():
     Basis of the timetable generation, goes through the whole of the
     genetic algorithm.
     """
-    population_size = get_settings_data()
+    population_size, mutation_chance = get_settings_data()
     sessions, rooms, time_slots = p1.get_config_data()
-    population = p1.generate_initial_population(sessions, rooms, time_slots)
+    population = p1.generate_initial_population(sessions, rooms, time_slots,
+                                                population_size)
     population_fitness, valid_solution_bool, valid_solution = \
         p2.check_population_fitness(population)
     while not valid_solution_bool:
         print("No timetable solution found.")
         parent_a, parent_b = p3.select_parents(population_fitness)
         # Note that parent_a and parent_b are indices
-        offspring = p4.crossover(population[parent_a],
-                                 population[parent_b], len(population[0]))
+        offspring = p4.crossover(population[parent_a], population[parent_b],
+                                 len(population[0]), population_size)
         # check if any of the offspring is a valid solution
         mutated_offspring = p5.mutate(offspring, time_slots, rooms, sessions)
         mutated_offspring.append(population[parent_a])
@@ -47,20 +48,21 @@ def generate_timetable():
     generate_output_text(valid_solution)
     print("Output written to files in ./teacher-timetables and \
     ./student-group-timetables.")
-    # TODO: display valid solution or output to txt or something idk
 
 
-def get_settings_data() -> int:
+def get_settings_data() -> [int, int]:
     """Get settings for timetable generation.
 
     Returns:
         int: Population size set by the user.
+        int: Chance of mutation set by the user.
     """
     file = open("settings.json", "r", encoding="utf-8")
     settings = json.load(file)
     file.close()
     population_size = int(settings["population-size"])
-    return population_size
+    mutation_chance = int(settings["mutation-chance"])
+    return population_size, mutation_chance
 
 
 def generate_output_text(solution: list):
@@ -112,4 +114,4 @@ def generate_output_text(solution: list):
             file.write(str(session))
         file.close()
     print("Timetable output files created.")
-    # formatting?
+    # TODO: formatting?

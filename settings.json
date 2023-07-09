@@ -1,3 +1,4 @@
 {
-    "population-size": "100"
+    "population-size": "100",
+    "mutation-chance": "500"
 }

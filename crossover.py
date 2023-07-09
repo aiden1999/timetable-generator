@@ -1,12 +1,15 @@
 """Phase 4 (crossover) of genetic algorithm.
 
 Functions:
-    crossover(parent_a: list, parent_b: list, num_of_sessions: int) -> list
+    crossover(parent_a: list, parent_b: list, num_of_sessions: int,
+        population_size: int) -> list
 """
 import random
+import math
 
 
-def crossover(parent_a: list, parent_b: list, num_of_sessions: int) -> list:
+def crossover(parent_a: list, parent_b: list, num_of_sessions: int,
+              population_size: int) -> list:
     """Crossover parents to produce offspring.
 
     Args:
@@ -14,20 +17,23 @@ def crossover(parent_a: list, parent_b: list, num_of_sessions: int) -> list:
         parent_b (list): The other selected parent.
         num_of_sessions (int): How many lesson sessions are needed to make up
             the timetable.
+        population_size (int): The size of the population.
 
     Returns:
         list: The offspring.
     """
     print("Producing offspring...")
     offspring = []
-    for i in range(5):  # hard coding - 10 offspring from 5 crossovers FIXME
+    half_pop = math.ceiling(population_size / 2)
+    for i in range(half_pop):
         # locus_outer: session that contains the split
-        # locus_inner: split after session[locus_inner]
         locus_outer = random.randint(0, num_of_sessions - 1)
+
+        # locus_inner: split after session[locus_inner]
         if locus_outer == 0:
-            locus_inner = random.randint(1, 2)  # hard coding FIXME
+            locus_inner = random.randint(1, 2)  # TODO: hard coding
         else:
-            locus_inner = random.randint(0, 2)  # hard coding FIXME
+            locus_inner = random.randint(0, 2)  # TODO: hard coding
 
         # Crossover of child a
         left_a = parent_a[:locus_outer]
@@ -46,6 +52,10 @@ def crossover(parent_a: list, parent_b: list, num_of_sessions: int) -> list:
         left_b.append(centre_b)
         child_b = left_b + right_b
         offspring.append(child_b)
+
+    # Remove last child if the populaton size is an odd number
+    if half_pop != math.floor(population_size / 2):
+        del offspring[-1]
 
     print("Offspring produced.")
     return offspring

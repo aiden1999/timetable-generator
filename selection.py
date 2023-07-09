@@ -20,7 +20,7 @@ def select_parents(population_fitness: list) -> [int, int]:
     """
     print("Selecting parents for crossover...")
     fitness_values = population_fitness
-    print(len(fitness_values))  # deugging: remove later
+    print(len(fitness_values))  # debugging TODO: remove later
     range_limits_a = normalise_values(fitness_values)
     print(range_limits_a)  # debugging TODO: remove later
     parent_a = choose_parent(range_limits_a)

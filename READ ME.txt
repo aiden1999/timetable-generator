@@ -31,6 +31,8 @@ Configuration
 Example input data is provided in data.json. Any changes/additions need to
 follow the same pattern.
 Parameters of the genetic algorithm can be changed in settings.json.
+population-size needs to be a positive integer
+mutation-chance is a positive integer x, where the chance of mutation of 1/x.
 
 Usage
 -----

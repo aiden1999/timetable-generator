@@ -2,8 +2,8 @@
 
 Functions:
     get_config_data() -> [list, list, list]
-    generate_initial_population(sessions: list, rooms: list, time_slots: list)
-        -> list
+    generate_initial_population(sessions: list, rooms: list, time_slots: list,
+        population_size: int) -> list
     create_session_solution(session: list, rooms: list, time_slots: list)
         -> list
     create_complete_solution(sessions: list, rooms: list, time_slots: list)
@@ -46,7 +46,8 @@ def get_config_data() -> [list, list, list]:
 
 
 def generate_initial_population(sessions: list, rooms: list,
-                                time_slots: list) -> list:
+                                time_slots: list, population_size: int) \
+                                -> list:
     """Generate the first population randomly from the imported data.
 
     Args:
@@ -54,13 +55,14 @@ def generate_initial_population(sessions: list, rooms: list,
             group and teacher.
         rooms (list): List of rooms.
         time_slots (list): List of time slots.
+        population_size (int): Size of the population.
 
     Returns:
         list: The generated population.
     """
     print("Generating initial population...")
     population = []
-    for i in range(10):  # TODO: remove hard coding
+    for i in range(population_size):
         solution = create_complete_solution(sessions, rooms, time_slots)
         population.append(solution)
     print("Initial population generated.")

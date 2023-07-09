@@ -1,14 +1,14 @@
 """Phase 5 (mutation) of genetic algorithm.
 
 Functions:
-    mutate(offspring_in: list, time_slots: list, rooms: list, sessions: list)
-          -> list
+    mutate(offspring_in: list, time_slots: list, rooms: list, sessions: list,
+        mutation_chance: int) -> list
 """
 import random
 
 
-def mutate(offspring_in: list, time_slots: list, rooms: list, sessions: list) \
-        -> list:
+def mutate(offspring_in: list, time_slots: list, rooms: list, sessions: list,
+           mutation_chance: int) -> list:
     """Chance for offspring to mutate.
 
     Args:
@@ -16,6 +16,7 @@ def mutate(offspring_in: list, time_slots: list, rooms: list, sessions: list) \
         time_slots (list): The list of time slots.
         rooms (list): The list of rooms.
         sessions (list): The list of sessions.
+        mutation_chance (int): The chance of mutation.
 
     Returns:
         list: List of mutated offspring.
@@ -25,8 +26,8 @@ def mutate(offspring_in: list, time_slots: list, rooms: list, sessions: list) \
     offspring = offspring_in
     for solution in offspring:
         for session in solution:
-            for i in range(3):  # hard coding
-                mutate = random.randint(1, 1000)
+            for i in range(3):
+                mutate = random.randint(1, mutation_chance)
 
                 # Mutation does occur
                 if mutate == 0:
