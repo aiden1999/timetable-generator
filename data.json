@@ -383,35 +383,40 @@
       "id": "C110",
       "title": "Introduction to Keyboards",
       "teachers": "004",
-      "hours": "3",
+      "lecture_hours": "1",
+      "lab_hours": "2",
       "student_group": "3874"
     },
     {
       "id": "B388",
       "title": "Basics of Immortality",
       "teachers": "001",
-      "hours": "5",
+      "lecture_hours": "5",
+      "lab_hours": "0",
       "student_group": "3874"
     },
     {
       "id": "K483",
       "title": "Jam Making",
       "teachers": "003",
-      "hours": "2",
+      "lecture_hours": "1",
+      "lab_hours": "1",
       "student_group": "4389"
     },
     {
       "id": "L378",
       "title": "Coffee Brewing",
       "teachers": "005",
-      "hours": "3",
+      "lecture_hours": "2",
+      "lab_hours": "1",
       "student_group": "4389"
     },
     {
       "id": "A123",
       "title": "Avoiding Apocalyptic Scenarios",
       "teachers": "002",
-      "hours": "8",
+      "lecture_hours": "6",
+      "lab_hours": "2",
       "student_group": [
         "7368",
         "8394"
@@ -421,35 +426,40 @@
       "id": "D112",
       "title": "Legal Tax Evasion",
       "teachers": "001",
-      "hours": "4",
+      "lecture_hours": "4",
+      "lab_hours": "0",
       "student_group": "8394"
     },
     {
       "id": "J736",
       "title": "Infiltration via Pizza Delivery",
       "teachers": "002",
-      "hours": "6",
+      "lecture_hours": "5",
+      "lab_hours": "1",
       "student_group": "2938"
     },
     {
       "id": "F937",
       "title": "Autopsies 101",
       "teachers": "003",
-      "hours": "5",
+      "lecture_hours": "2",
+      "lab_hours": "3",
       "student_group": "2938"
     },
     {
       "id": "G023",
       "title": "Linux Basics",
       "teachers": "004",
-      "hours": "2",
+      "lecture_hours": "1",
+      "lab_hours": "1",
       "student_group": "9483"
     },
     {
       "id": "U843",
       "title": "Advanced Archiving",
       "teachers": "005",
-      "hours": "3",
+      "lecture_hours": "3",
+      "lab_hours": "0",
       "student_group": "9483"
     }
   ],
