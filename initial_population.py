@@ -1,7 +1,7 @@
 """Phase 1 (initial population) of genetic algorithm.
 
 Functions:
-    get_config_data() -> [list, list, list]
+    get_config_data() -> [list, list, list, list]
     generate_initial_population(sessions: list, rooms: list, time_slots: list,
         population_size: int) -> list
     create_session_solution(session: list, rooms: list, time_slots: list)
@@ -13,13 +13,14 @@ import json
 import random
 
 
-def get_config_data() -> [list, list, list]:
+def get_config_data() -> [list, list, list, list]:
     """Get the timetable data from data.json.
 
     Returns:
         list: Session consisting of module ID, student group and teacher.
         list: List of rooms.
         list: List of time slots.
+        list: List of teachers' preferred time slots.
     """
     print("Reading data file")
     file = open("data.json", "r", encoding="utf-8")
@@ -42,7 +43,29 @@ def get_config_data() -> [list, list, list]:
             time_slots_id.append(str(day_number) + str(time_number))
         day_number += 1
 
-    return sessions, rooms_id, time_slots_id
+    teacher_times = []
+    for teacher in data["teachers"]:
+        teacher_time = []
+        for day in teacher["available_times"]:
+            match day:
+                case "Monday":
+                    day_number = 1
+                case "Tuesday":
+                    day_number = 2
+                case "Wednesday":
+                    day_number = 3
+                case "Thursday":
+                    day_number = 4
+                case "Friday":
+                    day_number = 5
+                case _:
+                    day_number = 0
+            for start_time in day["start_times"]:
+                time_number = day["start_times"][start_time]
+                teacher_time.append(str(day_number) + str(time_number))
+        teacher_times.append(teacher_time)
+
+    return sessions, rooms_id, time_slots_id, teacher_times
 
 
 def generate_initial_population(sessions: list, rooms: list,

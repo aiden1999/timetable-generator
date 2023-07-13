@@ -20,7 +20,7 @@ def generate_timetable():
     genetic algorithm.
     """
     population_size, mutation_chance = get_settings_data()
-    sessions, rooms, time_slots = p1.get_config_data()
+    sessions, rooms, time_slots, teacher_times = p1.get_config_data()
     population = p1.generate_initial_population(sessions, rooms, time_slots,
                                                 population_size)
     population_fitness, valid_solution_bool, valid_solution = \
