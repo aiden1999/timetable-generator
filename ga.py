@@ -21,10 +21,11 @@ def generate_timetable():
     """
     population_size, mutation_chance = get_settings_data()
     sessions, rooms, time_slots, teacher_times = p1.get_config_data()
+    print(teacher_times)
     population = p1.generate_initial_population(sessions, rooms, time_slots,
                                                 population_size)
     population_fitness, valid_solution_bool, valid_solution = \
-        p2.check_population_fitness(population)
+        p2.check_population_fitness(population, teacher_times)
     while not valid_solution_bool:
         print("No timetable solution found.")
         parent_a, parent_b = p3.select_parents(population_fitness)
