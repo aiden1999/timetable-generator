@@ -80,12 +80,14 @@
 \section{The Timetabling Problem}
 
 The timetabling problem is a constraint satisfying problem and it is known to
-be NP-Complete. The aim is to create a university timetable where several
-constraints are met. These constraints are either hard constraints or soft
-constraints. For a solution to be valid, all the hard constraints must be met.
+be NP-Complete.
+The aim is to create a university timetable where several constraints are met.
+These constraints are either hard constraints or soft constraints.
+For a solution to be valid, all the hard constraints must be met.
 Not all (or in fact, any) of the soft constraints need to be met for the
 solution to be valid, however it is preferable for as many soft constraints to
-be met as possible. Examples of possible hard constraints include:
+be met as possible.
+Examples of possible hard constraints include:
 
 \begin{itemize}
 	\item At most only one session (i.e., a lecture or lab) is happening in a 
@@ -98,99 +100,110 @@ be met as possible. Examples of possible hard constraints include:
 	\item The room must be appropriate for the type of session, e.g., a lecture 
 		must be in a lecture theatre, and a lab session must be in a computer 
 		lab
-	\item Part time teachers can only be assigned certain time slots, e.g., they may not
-	      work on Tuesdays, so sessions they teach cannot be scheduled for time slots on
-	      Tuesday
+	\item Part time teachers can only be assigned certain time slots, e.g., they
+		may not work on Tuesdays, so sessions they teach cannot be scheduled
+		for time slots on Tuesday.
 \end{itemize}
 
 Possible soft constraints include:
 
 \begin{itemize}
 	\item Students do not have more than two consecutive hours scheduled
-	\item The capacity of a room is well suited to the size of the student group, to make
-	      an efficient use of space e.g., a group of twenty students are not going to be
-	      in a room with a capacity of two hundred
-	\item If a student or teacher has one session immediately after another, then the
-	      respective rooms are relatively close to each other
+	\item The capacity of a room is well suited to the size of the student
+		group, to make an efficient use of space e.g., a group of twenty
+		students are not going to be in a room with a capacity of two hundred
+	\item If a student or teacher has one session immediately after another,
+		then the respective rooms are relatively close to each other
 \end{itemize}
-A solution is invalid if at least of one the hard constraints are met. For 
-example, if a student is scheduled to be in two different sessions at the same 
-time - this is known as a clash.
+A solution is invalid if at least of one the hard constraints are met.
+For example, if a student is scheduled to be in two different sessions at the
+same time --- this is known as a clash.
 
 \section{Methods}
 
 \subsection{Genetic Algorithms}
 
 Genetic algorithms (GAs) made up a group of search metaheuristics, inspired by
-Darwin's theory of evolution. Here, the fittest members of a population survive
-and produce offspring, which inherit the characteristics of the parents. It is
-also possible for the offspring to have small mutations within their genetic
-code, which may or may not be beneficial towards the population's survival.
-This theory can be applied to search problems. In this case, the population
-represents the search space, which is a collection of candidate solutions to a
-problem, and the population of solutions evolves as the algorithm searches for
-a desired solution.
+Darwin's theory of evolution.
+Here, the fittest members of a population survive and produce offspring, which
+inherit the characteristics of the parents.
+It is also possible for the offspring to have small mutations within their
+genetic code, which may or may not be beneficial towards the population's
+survival.
+This theory can be applied to search problems.
+In this case, the population represents the search space, which is a collection 
+of candidate solutions to a problem, and the population of solutions evolves as
+the algorithm searches for a desired solution.
 
 There does not exist a rigorous definition of GAs, but most methods use these
 five phases:
 
 \begin{enumerate}
-	\item Initial population - populations of chromosomes
+	\item Initial population --- populations of chromosomes
 	\item Fitness function
-	\item Selection - according to fitness
-	\item Crossover - to produce new offspring
-	\item Mutation - random mutation of new offspring
+	\item Selection --- according to fitness
+	\item Crossover --- to produce new offspring
+	\item Mutation --- random mutation of new offspring
 \end{enumerate}
 
 The initial \textbf{population} is a set of \textbf{individuals}, where each
-individual represents a candidate solution to the problem. These solutions will
-almost definitely not satisfy the problem, as they are randomly generated, but
-that does not matter.
+individual represents a candidate solution to the problem.
+These solutions will almost definitely not satisfy the problem, as they are
+randomly generated, but that is not an issue.
 
 An individual (and hence that candidate solution), is defined by its
-\textbf{chromosome}. The chromosome is often encoded as a string of binary
-characters; however, any alphabet can be used. These characters are called
-\textbf{alleles}, and a single character or group of adjacent characters that
-encode a particular element of the candidate solution are known as a
-\textbf{gene}.
+\textbf{chromosome}.
+The chromosome is often encoded as a string of binary characters; however, any
+alphabet can be used.
+These characters are called \textbf{alleles}, and a single character or group of
+adjacent characters that encode a particular element of the candidate solution
+are known as a \textbf{gene}.
 
 Using the example of the university timetabling problem, several alleles may be
 used to encode a room, but together they are one gene.
 
 The \textbf{fitness} function measures how well a candidate solution solves the
-problem. For example, in the instance of the university timetabling problem,
-the fitness of the solution could be measured by the number of times in the
-solution that a hard constraint is not met. This means that a solution with a
-score of 0 is a valid solution, as there are instances of a hard constraint not
-being met.
+problem.
+For example, in the instance of the university timetabling problem, the fitness 
+of the solution could be measured by the number of times in the solution that a
+hard constraint is not met.
+This means that a solution with a score of 0 is a valid solution, as there are
+instances of a hard constraint not being met.
 
 Once the fitness function has been used to calculate the fitness of each
 individual, the fittest individuals are chosen for reproduction in the
-\textbf{selection} phase. There are several ways to select individuals to use
-for producing offspring. One way is to simply choose the two individuals with
-the best fitness. Another way is to use roulette-wheel sampling, where any
-individual could be chosen for producing offspring, but fitter individuals are
-more likely to be chosen. This second method introduces more variation into the
-offspring, to reduce the chance of convergence onto a local maximum.
+\textbf{selection} phase.
+There are several ways to select individuals to use for producing offspring.
+One way is to simply choose the two individuals with the best fitness.
+Another way is to use roulette-wheel sampling, where any individual could be
+chosen for producing offspring, but fitter individuals are more likely to be
+chosen.
+This second method introduces more variation into the offspring, to reduce the
+chance of convergence onto a local maximum.
 
 The \textbf{crossover} phase, or reproduction phase, is where genetic material
-is exchanged between two parents. The crossover operator randomly chooses a
-locus (position) in a chromosome, in between alleles. The subsequent before and
-after parts of the chromosome are swapped between the two parents to produce
-two offspring. This is repeated multiple times to produce a population of the
-same size as the initial population. Whether this is by two parents reproducing
-multiple times using different loci or not, depends on the method used in the
-selection phase.
+is exchanged between two parents.
+The crossover operator randomly chooses a locus (position) in a chromosome,
+in between alleles.
+The subsequent before and after parts of the chromosome are swapped between the
+two parents to produce two offspring.
+This is repeated multiple times to produce a population of the same size as the
+initial population.
+Whether this is by two parents reproducing multiple times using different loci
+or not, depends on the method used in the selection phase.
 
 After reproduction, \textbf{mutations} can be introduced into the offspring. 
 For example, if the chromosomes are encoded by binary strings, then some bits 
-are randomly flipped. However, there is a very small chance of this occurring 
-at each bit, a suggested probability is 0.1\%. By introducing mutations into 
-the offspring, the likelihood of reaching a local maximum is reduced.
+are randomly flipped.
+However, there is a very small chance of this occurring at each bit, a suggested
+probability is 0.1\%.
+By introducing mutations into the offspring, the likelihood of reaching a local
+maximum is reduced.
 
 Once there is a new population made up of the offspring, the process repeats 
-until a solution is found. Each repetition is called a \textbf{generation}, and 
-the entire set of generations is known as a \textbf{run}.
+until a solution is found.
+Each repetition is called a \textbf{generation}, and the entire set of
+generations is known as a \textbf{run}.
 
 \subsection{Binary Integer Programming}
 
@@ -199,9 +212,9 @@ Variables must either take a value of 1 or 0 (hence binary integer), as they
 are used to represent decisions, i.e., in the case of the university 
 timetabling problem, a teaching session is happening in a specific room, at a 
 specific time, on a specific day, with a specific teacher, with a specific 
-teacher, with a specific student group, about a specific module, or not. Then 
-constraints are applied and used with the objective function to find what value 
-each variables takes.
+teacher, with a specific student group, about a specific module, or not.
+Then constraints are applied and used with the objective function to find what
+value each variable takes.
 
 First, a mathematical model of the problem must be constructed. REF modelled 
 the features of the university timetabling problem as a group of sets:
@@ -209,33 +222,27 @@ the features of the university timetabling problem as a group of sets:
 	\item
 		\begin{math}
 			I = \{1, \dots , n_i\}
-		\end{math}
-		: set of days in the week where courses are offered
+		\end{math}: set of days in the week where courses are offered
 	\item
 		\begin{math}
 			J = \{1, \dots , n_j\}
-		\end{math}
-		: set of time slots in a day
+		\end{math}: set of time slots in a day
 	\item 
 		\begin{math}
 			K = \{1, \dots , n_k\}
-		\end{math}
-		: set of courses
+		\end{math}: set of courses
 	\item 
 		\begin{math}
 			L = \{1, \dots , n_l\}
-		\end{math}
-		: set of student groups
+		\end{math}: set of student groups
 	\item 
 		\begin{math}
 			M = \{1, \dots , n_m\}
-		\end{math}
-		: set of teachers
+		\end{math}: set of teachers
 	\item 
 		\begin{math}
 			N = \{1, \dots , n_n\}
-		\end{math}
-		: set of classrooms
+		\end{math}: set of classrooms
 \end{itemize}
 
 Next, the decision variables are defined. The basic variables
@@ -250,16 +257,16 @@ are defined as \\
 \begin{align*}
 	x_{i,j,k,l,m,n} = 
 	\begin{cases}
-		1, & \parbox[t]{9.5cm}{if a course $k$ taught by teacher $m$ for the
-		group of students $l$ is assigned to the $j^{th}$ time slot of day $i$
-		in classroom $m$} \\
+		1, & \parbox[t]{9.5cm}{if a course \(k\) taught by teacher \(m\) for the
+		group of students \(l\) is assigned to the \(j^{th}\) time slot of day 
+		\(i\) in classroom \(m\)} \\
 		0, & \text{otherwise}
 	\end{cases}	
 \end{align*}
 
 In other words, the basic variables represent the decision of whether or a not
 a course is being taught by a specific teacher for a specific group of students
-is happening in a specific time slot of a specific day in a specific classroom
+is happening in a specific time slot of a specific day in a specific classroom.
 Then (Abdellahi and Eledum, 2017) defined their auxiliary variables as \\
 
 \begin{math}
@@ -268,9 +275,9 @@ Then (Abdellahi and Eledum, 2017) defined their auxiliary variables as \\
 \begin{align*}
 	y_{i,j,k,l} = 
 	\begin{cases}
-		1, & \parbox[t]{9.5cm}{if a course $k + s$ for group of students
-		overlap with its prerequite $k$ for the same group $l$ in the $j^{th}$
-		time slot of day $i$} \\
+		1, & \parbox[t]{9.5cm}{if a course \(k + s\) for group of students
+		overlap with its prerequite \(k\) for the same group \(l\) in the 
+		\(j^{th}\) time slot of day \(i\)} \\
 		0, & \text{otherwise}
 	\end{cases}	
 \end{align*}
@@ -280,19 +287,18 @@ Then (Abdellahi and Eledum, 2017) defined their auxiliary variables as \\
 
 Finally, (people) defined two further sets of variables:
 \begin{itemize}
-	\item $z_{im}$, which represents the existence of lectures for teacher $m$
-	on day $i$
-	\item $z_{il}$, which represents the existence of lectures for student $l$
-	on day $i$
+	\item \(z_{im}\), which represents the existence of lectures for teacher 
+		\(m\) on day \(i\)
+	\item \(z_{il}\), which represents the existence of lectures for student 
+		\(l\) on day \(i\)
 \end{itemize}
-
 \begin{math}
 	\forall m \in M
 \end{math}
 \begin{align*}
 	z_{im} =
 	\begin{cases}
-		1, & \text{if $\sum_{j \in J} x_{i,j,k,l,m,n} \neq 0$} \\
+		1, & \text{if \(\sum_{j \in J} x_{i,j,k,l,m,n} \neq 0\)} \\
 		0, & \text{otherwise}
 	\end{cases}	
 \end{align*}
@@ -302,31 +308,31 @@ Finally, (people) defined two further sets of variables:
 \begin{align*}
 	z_{il} =
 	\begin{cases}
-		1, & \text{if $\sum_{j \in J} x_{i,j,k,l,m,n} \neq 0$} \\
+		1, & \text{if \(\sum_{j \in J} x_{i,j,k,l,m,n} \neq 0\)} \\
 		0, & \text{otherwise}
 	\end{cases}	
 \end{align*}
 
-$z_{im}$ and $z_{il}$ are for use with the object function, later. The next
+\(z_{im}\) and \(z_{il}\) are for use with the object function, later. The next
 thing to be modelled is the restraints. For the university modelled by
 (Abdellahi and Eledum, 2017), these were:
 
 \begin{enumerate}
 	\item There is no overlapping for courses
 	\item Each teacher cannot be assigned to more than one course for any given
-	period
+		period
 	\item Each classroom cannot hold more than one course for any given period
 	\item A student has some courses amount to 18 hours per week. Each course
-	consists of 3 hours and taught in 2 periods (each period is 90 minutes
-	long), which is expressed as the number of slots worked per day.
+		consists of 3 hours and taught in 2 periods (each period is 90 minutes
+		long), which is expressed as the number of slots worked per day.
 	\item For a student, each course occupies only one slot per day
 	\item The lectures of each course must be distributed in such a way that
-	there is one day off between them
+		there is one day off between them
 	\item All lectures of a given course in a week must be held in the same
-	classroom
+		classroom
 	\item The overlap of course with prerequisites for the same group of
-	undergrad students l is permitted (note: (Abdellahi and Eledum, 2017) refer
-	to undergrad students as pre-graduated students)
+		undergrad students l is permitted (note: (Abdellahi and Eledum, 2017)
+		refer to undergrad students as pre-graduated students)
 \end{enumerate}
 
 As an example, the first restraint is modelled as:
@@ -336,30 +342,32 @@ As an example, the first restraint is modelled as:
 \end{align*}
 The objective function needs to be either minimised or maximised (dependent on
 how it is modelled), by changing the values assigned to the variables, whilst
-ensuring that the constraints are met. In this instance, the total
-dissatisfaction of teachers and students needs to be minimised, which is
-equivalent to maximising the number of lectures per day, which implies
-decreasing the waiting time between lectures (Abdellahi and Eledum, 2017).
+ensuring that the constraints are met.
+In this instance, the total dissatisfaction of teachers and students needs to be
+minimised, which is equivalent to maximising the number of lectures per day,
+which implies decreasing the waiting time between lectures (Abdellahi and
+Eledum, 2017).
 \begin{align*}
 	\parbox[t]{10cm}{(Total dissatisfaction) = Teacher\{number of lectures per
 	day\} + Regular student\{number of lectures per day\} + Predicted graduate
 	student\{number of lectures per day\}}
 \end{align*}
 The model produced may not be tractable, meaning that the problem may not be
-able to be solved in a reasonable period. To make the problem easier to be
-solved, the model needs to be reduced. (Abdellahi and Eledum, 2017) achieved
-this by removing the index representing classrooms ($n\in N$) and by adding
-another constraint, that the number of courses cannot exceed the number of
-classrooms in a timeslot $j$ in a given day $i$ (constraint 9). To further
-simplify the model, the term corresponding to the overlapping of courses
-and their prerequisites has been removed from the objective function, with the
-related constraint 8.
+able to be solved in a reasonable period.
+To make the problem easier to be solved, the model needs to be reduced.
+(Abdellahi and Eledum, 2017) achieved this by removing the index representing
+classrooms (\(n\in N\)) and by adding another constraint, that the number of
+courses cannot exceed the number of classrooms in a timeslot \(j\) in a given
+day \(i\) (constraint 9).
+To further simplify the model, the term corresponding to the overlapping of
+courses and their prerequisites has been removed from the objective function,
+with the related constraint 8.
 
 The model is now:
 \begin{align*}
-	\max\{1.5 \sum_{j \in J} \sum_{k \in K} \sum_{l \in L} \sum_{m \in M} x_{i,j
-	k,l,m} + \sum_{m \in M} z_{im} + \sum_{l \in L}z_{il} \} & \text{(objective
-	function)}
+	\max \{1.5 \sum_{j \in J} \sum_{k \in K} \sum_{l \in L} \sum_{m \in M}
+	x_{i,j,k,l,m} + \sum_{m \in M} z_{im} + \sum_{l \in L}z_{il} \} &
+	\text{(objective function)}
 \end{align*}
 subject to
 \begin{align*}
@@ -382,83 +390,92 @@ subject to
 	x_{i,j,k,l,m}, y_{i,j,k,l,m}, z_{im}, z_{il} &\leq 0 & \text{(so all
 	variables are non-negative)}
 \end{align*}
+
 The model can be reduced further into two models, one for students and one for
 teachers.
 The problem is solved with using an external penalty function method. Penalty
 functions convert constrained problems to those without constraints by
-introducing a penalty for violating the constraints. By using a penalty
-function, (Abdellahi and Eledum, 2017) found a real solution to the
-unrestrained problem, and then approximated it to a binary solution with an
-algorithm.
+introducing a penalty for violating the constraints.
+By using a penalty function, (Abdellahi and Eledum, 2017) found a real solution
+to the unrestrained problem, and then approximated it to a binary solution with
+an algorithm.
 
 \subsection{Tabu Search}
+
 Tabu search is a metaheuristic that guides a local search to explore the
-solution space outside of the local optimum, by using a \textbf{Tabu list}. A
-Tabu list is flexible memory structures that stores solutions that are not to
-be used. Tabu search is used to solve combinatorial optimisation problems,
-which have a finite solution set. The university timetabling problem has a
-finite solution set, as there are a finite number of teachers, student groups,
-time slots, rooms, courses, etc., so there is a finite number of different way
-that the timetable can be created. Tabu search makes uses of three main
-strategies:
+solution space outside of the local optimum, by using a \textbf{Tabu list}.
+A Tabu list is flexible memory structure that stores solutions that are not to
+be used.
+Tabu search is used to solve combinatorial optimisation problems, which have a
+finite solution set.
+The university timetabling problem has a finite solution set, as there are a
+finite number of teachers, student groups, time slots, rooms, courses, etc., so
+there is a finite number of different ways that the timetable can be created.
+Tabu search makes uses of three main strategies:
 \begin{itemize}
 	\item Forbidding strategy: this controls what enters the Tabu list
 	\item Freeing strategy: this controls what exits the Tabu list
 	\item Short-term strategy: this is for managing interplay between the
-	forbidding strategy and the freeing strategy to select trial solutions
+		forbidding strategy and the freeing strategy to select trial solutions
 \end{itemize}
 Tabu search examines neighbouring solutions, which are solutions that are one
-“step” away from the current solution. Using the travelling salesman problem as
-an example, suppose the current solution is B C D A F E, where each letter
-represents a city. An example neighbouring solution is E C D A F B, where only
-one swap has occurred, between the positions of B and E. However, the solution
-E C D F A B is not in the neighbourhood of the current solution, as two swaps
-have occurred. If a solution has been used, then it is put into the Tabu list,
-until it meets an \textbf{aspiration criterion}. Aspiration criteria provide
-reasons for a solution to be freed from the Tabu table (freeing strategy). For
-example, if a using a Tabu move results in a solution better than any other so
-far, then it can come out of the Tabu table. Much like with genetic algorithms,
-a fitness function is used to measure how optimal a solution is.
+“step” away from the current solution.
+Using the travelling salesman problem as an example, suppose the current
+solution is B C D A F E, where each letter represents a city.
+An example neighbouring solution is E C D A F B, where only one swap has
+occurred, between the positions of B and E.
+However, the solution E C D F A B is not in the neighbourhood of the current
+solution, as two swaps have occurred.
+If a solution has been used, then it is put into the Tabu list, until it meets
+an \textbf{aspiration criterion}.
+Aspiration criteria provide reasons for a solution to be freed from the Tabu
+table (freeing strategy).
+For example, if a using a Tabu move results in a solution better than any other
+so far, then it can come out of the Tabu table. Much like with genetic
+algorithms, a fitness function is used to measure how optimal a solution is.
 
 A basic algorithm is:
 \begin{enumerate}
-	\item 	Choose an initial solution $i$ in the solution space $S$. Set
-	$i^\prime=i$ and $k=0$, where $k$ is the number of iterations.
-	\item Set $k=k+1$ and generate a set of possible solutions $N(i,k)$,
-	where $N(i,k)$ is the set of neighbouring solutions.
-	\item Choose a best $j\in N(i,k)$, where $j$ is not Tabu (in the
-	Tabu list). If $j$ is Tabu, but meets an aspiration criterion, then 
-	choose$j$. Set $i =j$.
-	\item If $f(i)>f(i\prime)$ (where $f$ is the fitness
-	function), set $i^\prime=i$. Note this is for the case when a higher fitness
-	function is better. For the case when a lower fitness function is better,
-	set $i^\prime=i$ when $f(i)<f(i^\prime)$.
-	\item Put $i$ into the Tabu table. Update aspiration criteria.
+	\item Choose an initial solution \(i\) in the solution space \(S\).
+		Set \(i^\prime=i\) and \(k=0\), where \(k\) is the number of iterations.
+	\item Set \(k=k+1\) and generate a set of possible solutions \(N(i,k)\),
+		where \(N(i,k)\) is the set of neighbouring solutions.
+	\item Choose a best \(j\in N(i,k)\), where \(j\) is not Tabu (in the
+		Tabu list).
+		If \(j\) is Tabu, but meets an aspiration criterion, then choose \(j\).
+		Set \(i = j\).
+	\item If \( f(i) > f(i\prime) \) (where \(f\) is the fitness function), set 
+		\(i^\prime = i\).
+		Note this is for the case when a higher fitness function is better.
+		For the case when a lower fitness function is better, set \(i^\prime=i\)
+		when \(f(i) < f(i^\prime)\).
+	\item Put \(i\) into the Tabu table. Update aspiration criteria.
 	\item If a stopping condition is met, stop. Else, go to step 2.
 \end{enumerate}
 There are several possible stopping criteria, such as:
 \begin{itemize}
 	\item There are no more feasible solutions in the neighbourhood of the
-	current solution
-	\item $k$ is larger than the maximum number of allowed iterations
-	\item The number of iterations since the last improvement of $i^\prime$ is
-	greater than a specified number – meaning that convergence has been
-	reached, and that there are diminishing returns on finding a more optimal
-	solution
-	\item An optimal solution has been obtained. There would need to be a
-	method to find what the vicinity of the optimal solution, so that upper
-	lower bounds can be set.
+		current solution
+	\item \(k\) is larger than the maximum number of allowed iterations
+	\item The number of iterations since the last improvement of \( i^\prime \)
+		is greater than a specified number –-- meaning that convergence has been
+		reached, and that there are diminishing returns on finding a more
+		optimal solution
+	\item An optimal solution has been obtained.
+		There would need to be a method to find what the vicinity of the optimal
+		solution, so that upper lower bounds can be set.
 \end{itemize}
 Tabu search has been used to solve the university timetabling problem (Awad et
 al, 2021). They defined four different neighbourhoods:
 \begin{itemize}
 	\item Nb1: Randomly choose a particular course and progress to a feasible
-	timeslot, which can produce the smallest cost
+		timeslot, which can produce the smallest cost
 	\item Nb2: Randomly select a room. Also, randomly select two courses for
-	that room. Next, swap timeslots.
+		that room. Next, swap timeslots.
 	\item Nb3: Randomly select two times. Next, swap timeslots.
 	\item Nb4: Randomly select a particular time and swap it with another time,
-	in the range between 0 and 44, which can produce the smallest penalty cost.
+		in the range between 0 and 44, which can produce the smallest penalty
+		cost.
 \end{itemize}
 In order to produce an initial solution which met all the hard constraints, a
 least saturation degree algorithm is used, where events that are more different
@@ -474,33 +491,38 @@ Answer set programming (ASP) reduces problems to logic programs, and then
 answer set solvers are used to do the search. The logic programs are sets of
 rules that take the form:
 \begin{center}
-	$a_0$ \verb|:-| $a_1, \ldots, a_m$ \verb|not| $a_{m+1}, \ldots,$ \verb|not|
-	$a_n$
+	\( a_0 \) \verb|:-| \( a_1, \ldots, a_m \) \verb|not| \( a_{m+1}, \ldots, \)
+	\verb|not| \( a_n \)
 \end{center}
-where every $a_i$ is a propositional atom and \verb|not| is default negation. If $n=0$
-then a rule is a fact. A rule is an integrity constraint if $a_0$ is omitted. A
-logic program induces a collection of answer sets, which are recognized models
+where every \( a_i \) is a propositional atom and \verb|not| is default 
+negation.
+If \( n=0 \) then a rule is a fact. A rule is an integrity constraint if \( a_0
+\) is omitted.
+A logic program induces a collection of answer sets, which are recognized models
 of the program determined by answer set semantics.
 
-To make ASP better for real-world use, some extensions were developed. Rules
-with first-order variables are viewed as shorthand for the set of their ground
-instances. Additionally, there are conditional literals that take the form:
+To make ASP better for real-world use, some extensions were developed.
+Rules with first-order variables are viewed as shorthand for the set of their
+ground instances.
+Additionally, there are conditional literals that take the form:
 \begin{center}
-	\verb|a: | $b_1, \ldots, b_m$
+	\verb|a: | \( b_1, \ldots, b_m \)
 \end{center}
-where \verb|a| and $b_i$ are possibly default-negated variables. There are also
-cardinality constraints which take the form:
+where \verb|a| and \( b_i \) are possibly default-negated variables.
+There are also cardinality constraints which take the form:
 \begin{center}
-	\verb|s|$\{c_1, \ldots, c_n\}$\verb|t|
+	\verb|s| \( \{c_1, \ldots, c_n\} \) \verb|t|
 \end{center}
-where each $c_j$ is a conditional literal. \verb|s| and \verb|t| provide lower
-and upper bounds on the number of satisfied literals in the cardinality
-constraint. For example, \verb|2{a(X):b(X)}4| is true when 2, 3 or 4
-instances of \verb|(X)| (subject to \verb|b(X)|) are true. Also $N=c_1,\ldots
-c_n$ binds $N$ to the number of satisfied conditional literals $c_j$. And
-objective functions that minimise the sum of weights $w_j$ of conditional
-literals $c_j$ are expressed as
-\verb|#minimize{|$w_1:c_1,\ldots, w_n:c_n$\verb|}|.
+where each \( c_j \) is a conditional literal.
+\verb|s| and \verb|t| provide lower and upper bounds on the number of satisfied
+literals in the cardinality constraint.
+For example, \verb|2{a(X):b(X)}4| is true when 2, 3 or 4 instances of \verb|(X)|
+(subject to \verb|b(X)|) are true. 
+Also \( N=c_1,\ldots c_n \) binds \( N \) to the number of satisfied conditional
+literals \( c_j \).
+And objective functions that minimise the sum of weights \( w_j \) of
+conditional literals \( c_j \) are expressed as \verb|#minimize{| \( w_1:c_1,
+\ldots, w_n:c_n \) \verb|}|.
 
 The logic programs can be written in a language called AnsProlog (Answer Set
 Programming in Logic), which can be used with answer set solvers such as
