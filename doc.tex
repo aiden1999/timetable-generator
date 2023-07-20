@@ -5,24 +5,21 @@
 \usepackage{color}
 \usepackage{url}
 \usepackage{fancybox}
-\usepackage{parskip}
 \usepackage{examplep}
-
-% Choose your bibliography style
-%\bibliographystyle{}
-
 \usepackage[includeheadfoot,margin=3.5cm]{geometry}
 \usepackage{fancyhdr}
 \usepackage{titlesec}
 \usepackage{amsmath}
+\usepackage{parskip}
+
+% Choose your bibliography style
+%\bibliographystyle{}
 
 \linespread{1.3}
 
 % Setup headers and footers
 \fancyhf{}
-
-% Page number placed on right side on odd pages and left side on even pages
-\fancyfoot[RO, LE] {\thepage}
+\fancyfoot[C] {\thepage}
 
 \begin{document}
 
@@ -33,34 +30,38 @@
 \fancypage{}{\fbox}
 
 \begin{center}
+
 	\Large{
 		\hfill \begin{tabular}{l}
-			Computer Science \\ and Mathematics \\
-			COC255           \\
-			B827126
+			Computer Science \\ and Mathematics \\ COC255 \\ B827126
 		\end{tabular}
 	}
 
 	\vspace*{\fill}
 
-	\Large{\textbf{TIMETABLE CREATION \\ USING \\
-			ARTIFICIAL INTELLIGENCE}}
+	\Large{\textbf{TIMETABLE CREATION \\ USING \\ARTIFICIAL INTELLIGENCE}}
+
 	\vspace*{\fill}
 
 	by
+
 	\vspace*{\fill}
 
 	Aiden Nico Tempest
 
 	\vspace*{\fill}
+
 	Supervisor: Dr.\ S. Fatima
+
 	\vspace*{\fill}
 
-	\underline{Department of Computer Science} \\
-	\underline{Loughborough University}
+	\underline{Department of Computer Science} \\ \underline{Loughborough
+	University}
+
 	\vspace*{\fill}
 	
 	August 2023
+
 \end{center} % Front Page ends
 
 \newpage
@@ -115,6 +116,7 @@ Possible soft constraints include:
 	\item If a student or teacher has one session immediately after another,
 		then the respective rooms are relatively close to each other
 \end{itemize}
+
 A solution is invalid if at least of one the hard constraints are met.
 For example, if a student is scheduled to be in two different sessions at the
 same time --- this is known as a clash.
@@ -221,27 +223,27 @@ the features of the university timetabling problem as a group of sets:
 \begin{itemize}
 	\item
 		\begin{math}
-			I = \{1, \dots , n_i\}
+			I = \{ 1, \dots , n_i \}
 		\end{math}: set of days in the week where courses are offered
 	\item
 		\begin{math}
-			J = \{1, \dots , n_j\}
+			J = \{ 1, \dots , n_j \}
 		\end{math}: set of time slots in a day
 	\item 
 		\begin{math}
-			K = \{1, \dots , n_k\}
+			K = \{ 1, \dots , n_k \}
 		\end{math}: set of courses
 	\item 
 		\begin{math}
-			L = \{1, \dots , n_l\}
+			L = \{ 1, \dots , n_l \}
 		\end{math}: set of student groups
 	\item 
 		\begin{math}
-			M = \{1, \dots , n_m\}
+			M = \{ 1, \dots , n_m \}
 		\end{math}: set of teachers
 	\item 
 		\begin{math}
-			N = \{1, \dots , n_n\}
+			N = \{ 1, \dots , n_n \}
 		\end{math}: set of classrooms
 \end{itemize}
 
@@ -249,7 +251,7 @@ Next, the decision variables are defined. The basic variables
 \begin{math}
 	x_{i,j,k,l,m,n}
 \end{math}
-are defined as \\
+are defined as
 \begin{math}
 	\forall i \in I, \forall j \in J, \forall k \in K, \forall l \in L, \forall
 	m \in M, \forall n \in N
@@ -257,17 +259,17 @@ are defined as \\
 \begin{align*}
 	x_{i,j,k,l,m,n} = 
 	\begin{cases}
-		1, & \parbox[t]{9.5cm}{if a course \(k\) taught by teacher \(m\) for the
-		group of students \(l\) is assigned to the \(j^{th}\) time slot of day 
-		\(i\) in classroom \(m\)} \\
+		1, & \parbox[t]{9.5cm}{if a course \( k \) taught by teacher \( m \) for
+		the group of students \( l \) is assigned to the \( j^{th} \) time slot 
+		of day \( i \) in classroom \( m \)} \\
 		0, & \text{otherwise}
-	\end{cases}	
+	\end{cases}
 \end{align*}
 
 In other words, the basic variables represent the decision of whether or a not
 a course is being taught by a specific teacher for a specific group of students
 is happening in a specific time slot of a specific day in a specific classroom.
-Then (Abdellahi and Eledum, 2017) defined their auxiliary variables as \\
+Then (Abdellahi and Eledum, 2017) defined their auxiliary variables as
 
 \begin{math}
 	\forall i \in I, \forall j \in J, \forall l \in L
@@ -275,9 +277,9 @@ Then (Abdellahi and Eledum, 2017) defined their auxiliary variables as \\
 \begin{align*}
 	y_{i,j,k,l} = 
 	\begin{cases}
-		1, & \parbox[t]{9.5cm}{if a course \(k + s\) for group of students
-		overlap with its prerequite \(k\) for the same group \(l\) in the 
-		\(j^{th}\) time slot of day \(i\)} \\
+		1, & \parbox[t]{9.5cm}{if a course \( k + s \) for group of students
+		overlap with its prerequite \( k \) for the same group \( l \) in the 
+		\( j^{th} \) time slot of day \( i \)} \\
 		0, & \text{otherwise}
 	\end{cases}	
 \end{align*}
@@ -287,10 +289,10 @@ Then (Abdellahi and Eledum, 2017) defined their auxiliary variables as \\
 
 Finally, (people) defined two further sets of variables:
 \begin{itemize}
-	\item \(z_{im}\), which represents the existence of lectures for teacher 
-		\(m\) on day \(i\)
-	\item \(z_{il}\), which represents the existence of lectures for student 
-		\(l\) on day \(i\)
+	\item \( z_{im} \), which represents the existence of lectures for teacher 
+		\( m \) on day \( i \)
+	\item \( z_{il} \), which represents the existence of lectures for student 
+		\( l \) on day \( i \)
 \end{itemize}
 \begin{math}
 	\forall m \in M
@@ -298,7 +300,7 @@ Finally, (people) defined two further sets of variables:
 \begin{align*}
 	z_{im} =
 	\begin{cases}
-		1, & \text{if \(\sum_{j \in J} x_{i,j,k,l,m,n} \neq 0\)} \\
+		1, & \text{if \( \sum_{j \in J} x_{i,j,k,l,m,n} \neq 0 \)} \\
 		0, & \text{otherwise}
 	\end{cases}	
 \end{align*}
@@ -308,13 +310,13 @@ Finally, (people) defined two further sets of variables:
 \begin{align*}
 	z_{il} =
 	\begin{cases}
-		1, & \text{if \(\sum_{j \in J} x_{i,j,k,l,m,n} \neq 0\)} \\
+		1, & \text{if \( \sum_{j \in J} x_{i,j,k,l,m,n} \neq 0 \)} \\
 		0, & \text{otherwise}
 	\end{cases}	
 \end{align*}
 
-\(z_{im}\) and \(z_{il}\) are for use with the object function, later. The next
-thing to be modelled is the restraints. For the university modelled by
+\( z_{im} \) and \( z_{il} \) are for use with the object function, later. The
+next thing to be modelled is the restraints. For the university modelled by
 (Abdellahi and Eledum, 2017), these were:
 
 \begin{enumerate}
@@ -337,7 +339,7 @@ thing to be modelled is the restraints. For the university modelled by
 
 As an example, the first restraint is modelled as:
 \begin{align*}
-	\sum_{k \in K} \sum_{m \in M} \sum_{n \in N} x_{i,j,k,l,m,n} \leq 1,
+	\sum_{k \in K} \sum_{m \in M} \sum_{n \in N} x_{i,j,k,l,m,n} \leq 1 \quad
 	\forall i \in I, \forall j \in J, \forall l \in L
 \end{align*}
 The objective function needs to be either minimised or maximised (dependent on
@@ -356,40 +358,63 @@ The model produced may not be tractable, meaning that the problem may not be
 able to be solved in a reasonable period.
 To make the problem easier to be solved, the model needs to be reduced.
 (Abdellahi and Eledum, 2017) achieved this by removing the index representing
-classrooms (\(n\in N\)) and by adding another constraint, that the number of
-courses cannot exceed the number of classrooms in a timeslot \(j\) in a given
-day \(i\) (constraint 9).
+classrooms (\( n\in N \)) and by adding another constraint, that the number of
+courses cannot exceed the number of classrooms in a timeslot \( j \) in a given
+day \( i \) (constraint 9).
 To further simplify the model, the term corresponding to the overlapping of
 courses and their prerequisites has been removed from the objective function,
 with the related constraint 8.
 
 The model is now:
-\begin{align*}
+\begin{equation*}
 	\max \{1.5 \sum_{j \in J} \sum_{k \in K} \sum_{l \in L} \sum_{m \in M}
-	x_{i,j,k,l,m} + \sum_{m \in M} z_{im} + \sum_{l \in L}z_{il} \} &
-	\text{(objective function)}
-\end{align*}
+	x_{i,j,k,l,m} + \sum_{m \in M} z_{im} + \sum_{l \in L}z_{il} \}
+\end{equation*}
+\text{\rightline{(objective function)}}
 subject to
-\begin{align*}
-	\sum_{k \in K} \sum_{m \in M} x_{i,j,k,l,m} &\leq 1 & \forall i \in I
-	\forall j \in J, \forall l \in L & \text{ (constraint 1)} \\
-	\sum_{l \in L} \sum_{k \in K} x_{i,j,k,l,m} &\leq 1 & \forall i \in I,
-	\forall j \in J, \forall m \in M & \text{ (constraint 2)} \\
-	\sum_{j \in J} \sum_{k \in K} \sum_{m \in M} x_{i,j,k,l,m} &\leq n_j &
-	\forall i \in I, \forall l \in L & \text{ (constraint 4)} \\
-	\sum_{j \in J}x_{i,j,k,l,m} &\leq 1 & \forall i \in I, \forall k \in K,
-	\forall l \in L, \forall m \in M & \text{ (constraint 5)} \\
-	\sum_{j \in J}(x_{i,j,k,l,m} + x_{i+2,j,k,l,m} = 2), i + 2 &\leq 5 & \forall
-	i \in I, \forall k \in K, \forall l \in L, \forall m \in M & 
-	\text{ (constraint 6)} \\
-	\sum_{k \in K} \sum_{l \in L} \sum_{m \in M} x_{i,j,k,l,m} &\leq n_n &
-	\forall i \in I, \forall j \in J & \text{ (constraint 9)} \\
-	s \in \{1, \ldots, n_k - 1\}, k + s &\leq n_k \\
-	\sum_{m \in M}z_{im} &\leq 1 & \forall i \in I \\
-	\sum_{l \in L} z_{il} &\leq n_l & \forall i \in I \\
-	x_{i,j,k,l,m}, y_{i,j,k,l,m}, z_{im}, z_{il} &\leq 0 & \text{(so all
+\begin{equation*}
+	\sum_{k \in K} \sum_{m \in M} x_{i,j,k,l,m} \leq 1 \quad \forall i \in I
+	\forall j \in J, \forall l \in L
+\end{equation*}
+\text{\rightline{(Constraint 1)}}
+\begin{equation*}
+	\sum_{l \in L} \sum_{k \in K} x_{i,j,k,l,m} \leq 1 \quad \forall i \in I,
+	\forall j \in J, \forall m \in M
+\end{equation*}
+\text{\rightline{(Constraint 2)}}
+\begin{equation*}
+	\sum_{j \in J} \sum_{k \in K} \sum_{m \in M} x_{i,j,k,l,m} \leq n_j \quad 
+	\forall i \in I, \forall l \in L
+\end{equation*}
+\text{\rightline{(Constraint 3)}}
+\begin{equation*}
+	\sum_{j \in J}x_{i,j,k,l,m} \leq 1 \quad \forall i \in I, \forall k \in K,
+	\forall l \in L, \forall m \in M
+\end{equation*}
+\text{\rightline{(Constraint 4)}}
+\begin{equation*}
+	\sum_{j \in J}(x_{i,j,k,l,m} + x_{i+2,j,k,l,m} = 2), i + 2 \leq 5 \quad
+	\forall i \in I, \forall k \in K, \forall l \in L, \forall m \in M
+\end{equation*}
+\text{\rightline{(Constraint 5)}}
+\begin{equation*}
+	\sum_{k \in K} \sum_{l \in L} \sum_{m \in M} x_{i,j,k,l,m} \leq n_n \quad
+	\forall i \in I, \forall j \in J 
+\end{equation*}
+\text{\rightline{(Constraint 9)}}
+\begin{equation*}
+	s \in \{1, \ldots, n_k - 1\}, k + s \leq n_k
+\end{equation*}
+\begin{equation*}
+	\sum_{m \in M}z_{im} \leq 1 \quad \forall i \in I
+\end{equation*}
+\begin{equation*}
+	\sum_{l \in L} z_{il} \leq n_l \quad \forall i \in I
+\end{equation*}
+\begin{equation*}
+	x_{i,j,k,l,m}, y_{i,j,k,l,m}, z_{im}, z_{il} \leq 0 \quad \text{(so all
 	variables are non-negative)}
-\end{align*}
+\end{equation*}
 
 The model can be reduced further into two models, one for students and one for
 teachers.
@@ -436,27 +461,29 @@ algorithms, a fitness function is used to measure how optimal a solution is.
 
 A basic algorithm is:
 \begin{enumerate}
-	\item Choose an initial solution \(i\) in the solution space \(S\).
-		Set \(i^\prime=i\) and \(k=0\), where \(k\) is the number of iterations.
-	\item Set \(k=k+1\) and generate a set of possible solutions \(N(i,k)\),
-		where \(N(i,k)\) is the set of neighbouring solutions.
-	\item Choose a best \(j\in N(i,k)\), where \(j\) is not Tabu (in the
+	\item Choose an initial solution \( i \) in the solution space \( S \).
+		Set \( i^\prime=i \) and \( k = 0 \), where \( k \) is the number of
+		iterations.
+	\item Set \( k = k + 1 \) and generate a set of possible solutions
+		\( N(i,k) \), where \( N(i,k) \) is the set of neighbouring solutions.
+	\item Choose a best \( j \in N(i,k) \), where \( j \) is not Tabu (in the
 		Tabu list).
-		If \(j\) is Tabu, but meets an aspiration criterion, then choose \(j\).
-		Set \(i = j\).
-	\item If \( f(i) > f(i\prime) \) (where \(f\) is the fitness function), set 
-		\(i^\prime = i\).
+		If \( j \) is Tabu, but meets an aspiration criterion, then choose
+		\( j \).
+		Set \( i = j \).
+	\item If \( f(i) > f(i^\prime) \) (where \( f \) is the fitness function),
+		set \( i^\prime = i \).
 		Note this is for the case when a higher fitness function is better.
-		For the case when a lower fitness function is better, set \(i^\prime=i\)
-		when \(f(i) < f(i^\prime)\).
-	\item Put \(i\) into the Tabu table. Update aspiration criteria.
+		For the case when a lower fitness function is better, set
+		\( i^\prime = i \) when \( f(i) < f(i^\prime) \).
+	\item Put \( i \) into the Tabu table. Update aspiration criteria.
 	\item If a stopping condition is met, stop. Else, go to step 2.
 \end{enumerate}
 There are several possible stopping criteria, such as:
 \begin{itemize}
 	\item There are no more feasible solutions in the neighbourhood of the
 		current solution
-	\item \(k\) is larger than the maximum number of allowed iterations
+	\item \( k \) is larger than the maximum number of allowed iterations
 	\item The number of iterations since the last improvement of \( i^\prime \)
 		is greater than a specified number –-- meaning that convergence has been
 		reached, and that there are diminishing returns on finding a more
@@ -479,12 +506,14 @@ al, 2021). They defined four different neighbourhoods:
 \end{itemize}
 In order to produce an initial solution which met all the hard constraints, a
 least saturation degree algorithm is used, where events that are more different
-to schedule are scheduled first. If that did not produce a feasible solution,
-then Nb1 is used for a specific number of repetitions, then Nb2 is used for a
-specific number of repetitions if Nb1 did not reach a feasible solution. Next
-an improvement algorithm was used with Nb3 and Nb4, specifically adaptive Tabu
-search. The penalty cost is checked every 1,000 iterations and if the penalty
-cost has not changed, then two solutions are removed from the Tabu List.
+to schedule are scheduled first.
+If that did not produce a feasible solution, then Nb1 is used for a specific
+number of repetitions, then Nb2 is used for a specific number of repetitions if
+Nb1 did not reach a feasible solution.
+Next an improvement algorithm was used with Nb3 and Nb4, specifically adaptive
+Tabu search.
+The penalty cost is checked every 1,000 iterations and if the penalty cost has
+not changed, then two solutions are removed from the Tabu List.
 
 \subsection{Answer Set Programming}
 Answer set programming (ASP) reduces problems to logic programs, and then
@@ -496,8 +525,8 @@ rules that take the form:
 \end{center}
 where every \( a_i \) is a propositional atom and \verb|not| is default 
 negation.
-If \( n=0 \) then a rule is a fact. A rule is an integrity constraint if \( a_0
-\) is omitted.
+If \( n = 0 \) then a rule is a fact. A rule is an integrity constraint if
+\( a_0 \) is omitted.
 A logic program induces a collection of answer sets, which are recognized models
 of the program determined by answer set semantics.
 
