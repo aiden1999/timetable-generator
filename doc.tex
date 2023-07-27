@@ -1,19 +1,20 @@
 \documentclass[a4paper, 12pt]{report}
 
+\usepackage{amsmath}
+\usepackage{color}
+\usepackage{enumitem}
+\usepackage{examplep}
+\usepackage{fancybox}
+\usepackage{fancyhdr}
+\usepackage[includeheadfoot,margin=3.5cm]{geometry}
 \usepackage[dvips]{graphicx}
 \usepackage{listings}
-\usepackage{color}
-\usepackage{url}
-\usepackage{fancybox}
-\usepackage{examplep}
-\usepackage[includeheadfoot,margin=3.5cm]{geometry}
-\usepackage{fancyhdr}
-\usepackage{titlesec}
-\usepackage{amsmath}
 \usepackage{parskip}
+\usepackage{titlesec}
+\usepackage{url}
 
 % Choose your bibliography style
-%\bibliographystyle{}
+\bibliographystyle{apalike}
 
 \linespread{1.3}
 
@@ -66,7 +67,7 @@
 
 \newpage
 
-\fancypage{}{}  %Reset so that next pages do not have a box around them
+\fancypage{}{}  % Reset so that next pages do not have a box around them
 
 \begin{abstract}
 	lol placeholder text for abstract lorem ipsum etc test
@@ -126,7 +127,7 @@ same time --- this is known as a clash.
 \subsection{Genetic Algorithms}
 
 Genetic algorithms (GAs) made up a group of search metaheuristics, inspired by
-Darwin's theory of evolution.
+Darwin's theory of evolution\cite{ga_mitchell}.
 Here, the fittest members of a population survive and produce offspring, which
 inherit the characteristics of the parents.
 It is also possible for the offspring to have small mutations within their
@@ -557,41 +558,78 @@ The logic programs can be written in a language called AnsProlog (Answer Set
 Programming in Logic), which can be used with answer set solvers such as
 smodels.
 
-\subsection{Bat Inspired Algorithm}
+\subsection{Bat Inspired Algorithm}  % #TODO: bat inpired algorithm
 
-\section{Comparison of Methods}
+\section{Comparison of Methods}  % #TODO: comparison of methods
 
-\section{Chosen Method}
+\section{Chosen Method}  % #TODO: chosen method
 
-\chapter{Requirements}
+\chapter{Requirements}  % #TODO: requirements
 
-\chapter{Design and Implementation}
+\section{Necessary Requirements}
 
-\section{Program Overview}
+These are requirements that are specified by the project briefing, and it is
+ideal that they are all achieved.
+\begin{enumerate}
+	\item The required information for the timetable can be entered by the user.
+	\item A correct timetable is generated, where:
+	\begin{enumerate}
+		\item Every module has all its hours timetabled.
+		\item A room is being used for at most one learning session in a time 
+			slot.
+		\item A student has at most one learning session in a time slot.
+		\item A teacher has at most one learning session in a time slot.
+		\item A session is in the correct type of room, for example, a lecture
+			is in a lecture theatre, and a lab session is in a lab.
+		\item The number of students in the room must not exceed the capacity of
+			the room.
+		\item The size of the room is optimal for the number of students,
+			meaning that the size of the room as small as possible.
+		\item Teachers can make preferences for when they are teaching.
+	\end{enumerate}
+	\item The generated timetable is returned to the user in a way that they can
+		understand.
+\end{enumerate}
 
-\section{Genetic Algorithm}
+\section{Aspirational Requirements}  % #TODO: aspirational requirements
 
-\subsection{Initial Population}
+These are requirements that could be achieved, but are not essential for
+completion.
+\begin{itemize}
+	\item Use a graphical user interface.
+	\item Allow the user to change the parameters of the genetic algorithm.
+	\item Return the final timetable as multiple timetables individualised to
+		each teacher, student group, room, etc. The timetables should be in a
+		very legible format, such as in a traditional tabular timetable format.
+\end{itemize}
 
-\subsection{Fitness Function}
+\chapter{Design and Implementation}  % #TODO: design and implementation
 
-\subsection{Selection}
+\section{Program Overview}  % #TODO: program overview
 
-\subsection{Crossover}
+\section{Genetic Algorithm}  % #TODO: genetic algorithm
 
-\subsection{Mutation}
+\subsection{Initial Population}  % #TODO: initial population
 
-\chapter{Testing}
+\subsection{Fitness Function}  % #TODO: fitness function
 
-\chapter{Evaluation}
+\subsection{Selection}  % #TDOD: selection
 
-\chapter{Conclusion}
+\subsection{Crossover}  % #TODO: crossover
+
+\subsection{Mutation}  % #TODO: mutation
+
+\chapter{Testing}  % #TODO: testing
+
+\chapter{Evaluation}  % #TODO: evaluation
+
+\chapter{Conclusion}  % #TODO: conclusion
 
 % Rename Bibliography to References
-% \renewcommand\bibname{References}
-%\bibliography{<Path to .bib file>}
+\renewcommand\bibname{References}  % #TDOD: add the rest of the refercnes
+\bibliography{references.bib}
 
 % Include appendix section if needed
-%\include{Appendix/Appendix}
+%\include{Appendix/Appendix}  % #TODO: add source code and diagrams?
 
 \end{document}
