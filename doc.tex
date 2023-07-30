@@ -558,6 +558,85 @@ The logic programs can be written in a language called AnsProlog (Answer Set
 Programming in Logic), which can be used with answer set solvers such as
 smodels.
 
+Banbara et al used Answer Set Programming to solve the timetabling problem.
+They split their constraints into hard and soft constraints, where the soft
+constraints have either constant cost or calculated cost.
+If a constraint has constant cost, then there is one penalty point per
+violation, whereas constraints that have a calculated cost attatched to them
+have their penalty points calculated dynamically with each violation.
+The authors defined their constraints as:
+\begin{itemize}
+	\item \( H_1 \) \textbf{Lectures}: All lectures of each course must be 
+		scheduled, and they must be assigned to distinct timeslots.
+	\item \( H_2 \) \textbf{Conflicts}: Lectures of courses in the same 
+		curriculum or taught by the same teacher must be all scheduled in 
+		different timeslots.
+	\item \( H_3 \) \textbf{RoomOccupancy}: Two lectures cannot take place in 
+		in the same room in the same timeslot.
+	\item \( H_4 \) \textbf{Availability}: If the teacher of the course is 
+		unavailable to teach that course at a given timeslot, then no lecture of
+		the course can be scheduled at that timeslot.
+	\item \( S_1 \) \textbf{RoomCapacity}: For each lecture, the number of
+		students that attend the course must be less than or equal the number of
+		seats of all the room that host its lectures.
+		The penalty points, reflecting the number of students above the
+		capacity, are imposed on each violation.
+	\item \( S_2 \) \textbf{MinWorkingDays}: The lectures of each course must be
+		spread into a given minimum number of days.
+		The penalty points, reflecting the number of days below the minimum, are
+		imposed on each violation.
+	\item \( S_3 \) \textbf{IsolatedLectures}: Lectures belonging to a
+		curriculum should be adjacent to each other in consecutive timeslots.
+		For a given curriculum we account for a violation every time there is 
+		one lecture not adjacent to any other lecture within the same day.
+		Each isolated lecture in a curriculum counts as one violation.
+	\item \( S_4 \) \textbf{Windows}: Lectures belonging to a curriculum should 
+		not have time windows (periods without teaching) between them.
+		For a given curriculum we account for a violation every time there is
+		one window between two lectures within the same day.
+		The penalty points, reflecting the length in periods of time window, are
+		imposed on each violation.
+	\item \( S_5 \) \textbf{RoomStability}: All lectures of a course should be
+		given in the same room.
+		The penalty points, reflecting the number of distinct room but the
+		firest, are imposed on each violation.
+	\item \( S_6 \) \textbf{StudentMinMaxLoad}: For each curriculum, the number
+		of daily lectures should be within a given range.
+		The penalty points, reflecting the number of lectures below the minimum
+		or above the maximum, are imposed on each violation.
+	\item \( S_7 \) \textbf{TravelDistance}: Students should have the time to
+		move from one building to another one between two lectures.
+		For a given curriculum we acount for a violation every time there is an
+		instaneous move: two lectures in rooms located in different buildings in
+		two adjacent periods within the same day.
+		Each instaneous move in a curriculum counts as 1 violation.
+	\item \( S_8 \) \textbf{RoomSuitability}: Some rooms may not be suitable for
+		a given course becuase of the absence of necessary equipment.
+		Each lecture of a course in an unsuitable room counts as 1 violation.
+	\item \( S_9 \) \textbf{DoubleLectures}: Some courses require that lectures
+		in the same day are grouped together (double lectures).
+		For a course that requires grouped lectures, every time there is more
+		than one lecture in one day, a lecture non-grouped to aother is not
+		allowed.
+		Two lectures are grouped if they are adjacent and in the same room.
+		Each non-grouped lecture counts as 1 violation.
+\end{itemize}
+A solution is feasible when all the hard constraints are satisfied, but the
+objective is to find a solution with the minimal penalty cost.
+The authors formulated the problem in different ways, where a formulation is
+defined as specific set of soft constraints togther with weights associated with
+each of them.
+Different formulations allow for timetables to be generated for different
+scenarios --- for instance, double lectures may not be required, so the 
+constaint \( S_9 \) would not be used.
+Formally, the timetabling problem is formulaated as a combinatorial optimisation
+problem with the objective function to minimise the weighted sum of the penalty
+points.
+
+Next, the authors encoded the constraints and facts into the correct format 
+for the specific ASP system, which then returned an assignment representing a
+solution.
+
 \subsection{Bat Inspired Algorithm}  % #TODO: bat inpired algorithm
 
 \section{Comparison of Methods}  % #TODO: comparison of methods
