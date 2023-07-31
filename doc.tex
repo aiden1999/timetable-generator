@@ -6,7 +6,7 @@
 \usepackage{examplep}
 \usepackage{fancybox}
 \usepackage{fancyhdr}
-\usepackage[includeheadfoot,margin=3.5cm]{geometry}
+\usepackage[includeheadfoot,margin=3cm]{geometry}
 \usepackage[dvips]{graphicx}
 \usepackage{listings}
 \usepackage{parskip}
@@ -562,7 +562,7 @@ Banbara et al used Answer Set Programming to solve the timetabling problem.
 They split their constraints into hard and soft constraints, where the soft
 constraints have either constant cost or calculated cost.
 If a constraint has constant cost, then there is one penalty point per
-violation, whereas constraints that have a calculated cost attatched to them
+violation, whereas constraints that have a calculated cost attached to them
 have their penalty points calculated dynamically with each violation.
 The authors defined their constraints as:
 \begin{itemize}
@@ -598,25 +598,25 @@ The authors defined their constraints as:
 		imposed on each violation.
 	\item \( S_5 \) \textbf{RoomStability}: All lectures of a course should be
 		given in the same room.
-		The penalty points, reflecting the number of distinct room but the
-		firest, are imposed on each violation.
+		The penalty points, reflecting the number of distinct rooms but the
+		first, are imposed on each violation.
 	\item \( S_6 \) \textbf{StudentMinMaxLoad}: For each curriculum, the number
 		of daily lectures should be within a given range.
 		The penalty points, reflecting the number of lectures below the minimum
 		or above the maximum, are imposed on each violation.
 	\item \( S_7 \) \textbf{TravelDistance}: Students should have the time to
 		move from one building to another one between two lectures.
-		For a given curriculum we acount for a violation every time there is an
-		instaneous move: two lectures in rooms located in different buildings in
-		two adjacent periods within the same day.
-		Each instaneous move in a curriculum counts as 1 violation.
+		For a given curriculum we account for a violation every time there is an
+		instantaneous move: two lectures in rooms located in different buildings
+		in two adjacent periods within the same day.
+		Each instantaneous move in a curriculum counts as 1 violation.
 	\item \( S_8 \) \textbf{RoomSuitability}: Some rooms may not be suitable for
-		a given course becuase of the absence of necessary equipment.
+		a given course because of the absence of necessary equipment.
 		Each lecture of a course in an unsuitable room counts as 1 violation.
 	\item \( S_9 \) \textbf{DoubleLectures}: Some courses require that lectures
 		in the same day are grouped together (double lectures).
 		For a course that requires grouped lectures, every time there is more
-		than one lecture in one day, a lecture non-grouped to aother is not
+		than one lecture in one day, a lecture non-grouped to another is not
 		allowed.
 		Two lectures are grouped if they are adjacent and in the same room.
 		Each non-grouped lecture counts as 1 violation.
@@ -624,12 +624,12 @@ The authors defined their constraints as:
 A solution is feasible when all the hard constraints are satisfied, but the
 objective is to find a solution with the minimal penalty cost.
 The authors formulated the problem in different ways, where a formulation is
-defined as specific set of soft constraints togther with weights associated with
-each of them.
+defined as specific set of soft constraints together with weights associated
+with each of them.
 Different formulations allow for timetables to be generated for different
 scenarios --- for instance, double lectures may not be required, so the 
-constaint \( S_9 \) would not be used.
-Formally, the timetabling problem is formulaated as a combinatorial optimisation
+constraint \( S_9 \) would not be used.
+Formally, the timetabling problem is formulated as a combinatorial optimisation
 problem with the objective function to minimise the weighted sum of the penalty
 points.
 
@@ -637,7 +637,109 @@ Next, the authors encoded the constraints and facts into the correct format
 for the specific ASP system, which then returned an assignment representing a
 solution.
 
-\subsection{Bat Inspired Algorithm}  % #TODO: bat inpired algorithm
+\subsection{Bat Inspired Algorithm}
+
+The Bat Inspired Algorithm (BA) is a heuristic method originally proposed by 
+Yang (2010).
+It is inspired by echolocation, which is a method used by bats and other animals
+to navigate, using sound.
+To simplify echolocation, Yang suggested these rules:
+\begin{enumerate}
+	\item Bats use echolocation to determine distance, and they can
+		differentiate between food and barriers.
+	\item Bats fly randomly with velocity \( v_i \) at position \( x_i \) having
+		a fixed frequency \( f_{\min} \), varying wavelength \( \lambda \) and 
+		loudness \( A_i \) to search for prey.
+		In this rule, it is assumed that bats can adjust automatically the
+		frequency (or wavelength) of their emitted pulses as wall the rate of
+		pulse emission \( r \in [0,1] \).
+		The automatic adjustment relies on the proximity of the target.
+	\item The loudness of the bats can vary in many ways, however, it is assumed
+		that the loudness can vary from between positive values \( A_0 \) and 
+		\( A_{\min} \).
+\end{enumerate}
+Pseudocode for the Bat Algorithm can be described as:
+\begin{verbatim}
+	Define the objective function f(x)
+	Generate initial population of the bat X = {x1, ..., xn}
+	For each bat xi in X
+	    Initialise the pulse rate ri, velocity vi and loudness Ai
+	    Define the pulse frequency fi
+	End for
+	While termination criterion not reached
+	    For each bat xi in X
+	        Generate new solutions using equations (1.1), (1.2) and (1.3)
+	        Generate a random number rand
+	        If rand > ri
+	            Select one solution among the best one
+	            Generate a a local solution around one of the best
+	        End if
+	        If (rand < Ai) and (f(xi) < f(x*))
+	            Accept the new solution
+	            Increase ri and reduce f(xi)
+	        End if
+	    End for
+	End while
+	Ranks the bats and obtain the current best bat
+\end{verbatim}
+
+In the first step, the bat population initialised with parameters position
+\( x_i \), velocity \( v_i \) and frequency \( f_i \).
+With each generation, every bat moves by changing velocity \( v_i^t \) and 
+position \( x_i^t \) at time \( t \) with the equations:
+\begin{equation}
+	f_i = f_{\min} + (f_{\max} - f_{\min}) \beta
+\end{equation}
+\begin{equation}
+	v_i^t = v_i^{t-1} + (x_i^{t-1} - x_*) f_i
+\end{equation}
+\begin{equation}
+	x_i^t = x_i^{t-1} + v_i^t
+\end{equation}
+where \( \beta \) is a random number from the interval \( [0,1] \) and \( x_* \)
+represents the current best global solution among all the bats in the
+population.
+
+In the local search part, a new solution for each bat is generated using a
+random walk:
+\begin{equation*}
+	x_{new} = x_{old} + \epsilon < A^t >
+\end{equation*}
+where \( \epsilon \) is a random number from the interval \( [0,1] \) and
+\( < A^t > \) is the average loudness of the bats in the population at a
+specific time step \( t \).
+Also the rate of sound pulse emission \( r_i \) and the loudness \( A_i \) of 
+each bat needs to updated with the equation,:
+\begin{equation*}
+	A_i^t = \alpha A_i^{t-1}
+\end{equation*}
+\begin{equation*}
+	r_i^t = r_i^0 [1 - e^{-\gamma t}]
+\end{equation*}
+where \( \alpha \) and \( \gamma \) are constants.
+
+The above BA was designed for continuous optimisation problems, but as the
+timetabling problem is a discrete combinatorial optimisation problem, the
+authors modified the algorithm.
+In the context of the timetabling problem, \( i \) represents a candidate 
+solution and each position \( x_i \) is initialised by randomly choosing a
+lecture and then an algorithm tries to find timeslots without clashes and a 
+large enough room. This is to start with a good initial timetable.
+
+The parameter frequency \( f_i \) is fixed to \( 1 \) to reduce the complexity 
+of the algorithm, meaning that velocity is now calculated as:
+\begin{equation*}
+	v_i^t = f(x_i) - f(x_*)
+\end{equation*}
+\( v_i \) can be interpreted as the number of operations that bat \( i \) will 
+perform in updating the current position. The new position \( x_i^t \) is
+calculated with Equation 1.3, which implies that the current position is
+dependent on velocity and the previous position. But now, this can be 
+interpreted to mean that the current position is obtained by performing 
+\( v_i^t \) moves.
+
+To update the current solution of an instance of the timetabling problem, a
+lecture is moved from one timeslot to another randomly selected one.
 
 \section{Comparison of Methods}  % #TODO: comparison of methods
 
@@ -670,7 +772,7 @@ ideal that they are all achieved.
 		understand.
 \end{enumerate}
 
-\section{Aspirational Requirements}  % #TODO: aspirational requirements
+\section{Aspirational Requirements}
 
 These are requirements that could be achieved, but are not essential for
 completion.
@@ -692,7 +794,7 @@ completion.
 
 \subsection{Fitness Function}  % #TODO: fitness function
 
-\subsection{Selection}  % #TDOD: selection
+\subsection{Selection}  % #TODO: selection
 
 \subsection{Crossover}  % #TODO: crossover
 
@@ -705,7 +807,7 @@ completion.
 \chapter{Conclusion}  % #TODO: conclusion
 
 % Rename Bibliography to References
-\renewcommand\bibname{References}  % #TDOD: add the rest of the refercnes
+\renewcommand\bibname{References}  % #TODO: add the rest of the references
 \bibliography{references.bib}
 
 % Include appendix section if needed
