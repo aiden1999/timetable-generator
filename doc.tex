@@ -1,6 +1,7 @@
 \documentclass[a4paper, 12pt]{report}
 
 \usepackage{amsmath}
+\usepackage{courier}
 \usepackage{color}
 \usepackage{enumitem}
 \usepackage{examplep}
@@ -127,7 +128,7 @@ same time --- this is known as a clash.
 \subsection{Genetic Algorithms}
 
 Genetic algorithms (GAs) made up a group of search metaheuristics, inspired by
-Darwin's theory of evolution\cite{ga_mitchell}.
+Darwin's theory of evolution \cite{ga_mitchell}.
 Here, the fittest members of a population survive and produce offspring, which
 inherit the characteristics of the parents.
 It is also possible for the offspring to have small mutations within their
@@ -207,6 +208,17 @@ Once there is a new population made up of the offspring, the process repeats
 until a solution is found.
 Each repetition is called a \textbf{generation}, and the entire set of
 generations is known as a \textbf{run}.
+
+A version of a genetic algorithm was implemented by Perzina (date?) and was
+applied to a timetabling problem with real world data.
+Timetables were generated for 1807 students, but for how courses are organised 
+at this university, there are no groups of students with the same timetable, and
+it is unlikely that two students would even have the same timetable.
+Because of this, the author expected that it would be too difficult to generate
+timetables with clashes at all, and instead aimed to minimise the number of
+clashes.
+The best solution found had 83 students with at least one clash on their
+timetable, or 4.59\% of the students.
 
 \subsection{Binary Integer Programming}
 
@@ -426,6 +438,10 @@ By using a penalty function, (Abdellahi and Eledum, 2017) found a real solution
 to the unrestrained problem, and then approximated it to a binary solution with
 an algorithm.
 
+When demonstrating their model, the authors assigned very small numbers to their
+parameters: 5 workable days per week, 2 slots per day, 3 courses to be assigned,
+2 student groups and 2 classrooms. A timetable was generated.
+
 \subsection{Tabu Search}
 
 Tabu search is a metaheuristic that guides a local search to explore the
@@ -515,6 +531,15 @@ Next an improvement algorithm was used with Nb3 and Nb4, specifically adaptive
 Tabu search.
 The penalty cost is checked every 1,000 iterations and if the penalty cost has
 not changed, then two solutions are removed from the Tabu List.
+
+The authors compared their algorithm to the work of others, by running 11
+different datasets through them, and totalling the number of violations of their
+hard and soft constraints. The authors' algorithm performed best against other 
+implementations of Tabu search, and  was also compared to other algorithms that did not 
+use Tabu search at all. The authors' implementation performed better than all 
+the other algorithms, except variable neighbourhood search on the largest 
+dataset, and simulated annealing which performed better across all dataset
+sizes.
 
 \subsection{Answer Set Programming}
 Answer set programming (ASP) reduces problems to logic programs, and then
@@ -637,6 +662,14 @@ Next, the authors encoded the constraints and facts into the correct format
 for the specific ASP system, which then returned an assignment representing a
 solution.
 
+When testing, the authors used multiple sets of input data, some of which were 
+very large, for instance, one of them consisted of 850 courses, 132 rooms, 850 
+curricula, 7,780 unavailability constraints, and 45,603 room constraints.
+The system was run on a cluster of machines with server-grade hardware, which 
+was probably necessary given the size of the datasets.
+They also used different configurations for their ASP system, all of which 
+managed to produce optimal solutions.
+
 \subsection{Bat Inspired Algorithm}
 
 The Bat Inspired Algorithm (BA) is a heuristic method originally proposed by 
@@ -741,6 +774,11 @@ interpreted to mean that the current position is obtained by performing
 To update the current solution of an instance of the timetabling problem, a
 lecture is moved from one timeslot to another randomly selected one.
 
+When testing their algorithm, the authors (who?) used input data consisting of 
+124 courses, 273 lectures, 10 rooms and 5551 students. They ran their algorithm 
+4 times, and each time generated timetables where all the hard constraints were
+satisfied.
+
 \section{Comparison of Methods}  % #TODO: comparison of methods
 
 \section{Chosen Method}  % #TODO: chosen method
@@ -811,6 +849,31 @@ completion.
 \bibliography{references.bib}
 
 % Include appendix section if needed
-%\include{Appendix/Appendix}  % #TODO: add source code and diagrams?
+\appendix  % #TODO: add source code and diagrams?
+
+\chapter{Source Code}
+
+\lstset{basicstyle=\ttfamily, breaklines=true}
+
+\section{main.py}
+\lstinputlisting[language=Python]{main.py}
+
+\section{ga.py}
+\lstinputlisting[language=Python]{ga.py}
+
+\section{initial population.py}
+\lstinputlisting[language=Python]{initial_population.py}
+
+\section{fitness function.py}
+\lstinputlisting[language=Python]{fitness_function.py}
+
+\section{selection.py}
+\lstinputlisting[language=Python]{selection.py}
+
+\section{crossover.py}
+\lstinputlisting[language=Python]{crossover.py}
+
+\section{mutation.py}
+\lstinputlisting[language=Python]{mutation.py}
 
 \end{document}
