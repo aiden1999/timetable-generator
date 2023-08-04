@@ -7,15 +7,16 @@
 \usepackage{examplep}
 \usepackage{fancybox}
 \usepackage{fancyhdr}
-\usepackage[includeheadfoot,margin=3cm]{geometry}
+\usepackage[includeheadfoot,margin=1.5cm]{geometry}
 \usepackage[dvips]{graphicx}
 \usepackage{listings}
 \usepackage{parskip}
 \usepackage{titlesec}
+\usepackage[nottoc]{tocbibind}
 \usepackage{url}
 
 % Choose your bibliography style
-\bibliographystyle{apalike}
+\bibliographystyle{plain}
 
 \linespread{1.3}
 
@@ -128,7 +129,7 @@ same time --- this is known as a clash.
 \subsection{Genetic Algorithms}
 
 Genetic algorithms (GAs) made up a group of search metaheuristics, inspired by
-Darwin's theory of evolution \cite{ga_mitchell}.
+Darwin's theory of evolution~\cite{ga_book}.
 Here, the fittest members of a population survive and produce offspring, which
 inherit the characteristics of the parents.
 It is also possible for the offspring to have small mutations within their
@@ -209,8 +210,9 @@ until a solution is found.
 Each repetition is called a \textbf{generation}, and the entire set of
 generations is known as a \textbf{run}.
 
-A version of a genetic algorithm was implemented by Perzina (date?) and was
-applied to a timetabling problem with real world data.
+A version of a genetic algorithm was implemented by Perzina 
+(2006)~\cite{ga_example} and was applied to a timetabling problem with real 
+world data.
 Timetables were generated for 1807 students, but for how courses are organised 
 at this university, there are no groups of students with the same timetable, and
 it is unlikely that two students would even have the same timetable.
@@ -227,12 +229,14 @@ Variables must either take a value of 1 or 0 (hence binary integer), as they
 are used to represent decisions, i.e., in the case of the university 
 timetabling problem, a teaching session is happening in a specific room, at a 
 specific time, on a specific day, with a specific teacher, with a specific 
-teacher, with a specific student group, about a specific module, or not.
+teacher, with a specific student group, about a specific module, or 
+not~\cite{bip_example}.
 Then constraints are applied and used with the objective function to find what
 value each variable takes.
 
-First, a mathematical model of the problem must be constructed. REF modelled 
-the features of the university timetabling problem as a group of sets:
+First, a mathematical model of the problem must be constructed.
+Abdellahi and Eledum (2006)~\cite{bip_example} modelled the features of the
+university timetabling problem as a group of sets:
 \begin{itemize}
 	\item
 		\begin{math}
@@ -282,7 +286,7 @@ are defined as
 In other words, the basic variables represent the decision of whether or a not
 a course is being taught by a specific teacher for a specific group of students
 is happening in a specific time slot of a specific day in a specific classroom.
-Then (Abdellahi and Eledum, 2017) defined their auxiliary variables as
+Then the authors defined their auxiliary variables as
 
 \begin{math}
 	\forall i \in I, \forall j \in J, \forall l \in L
@@ -329,8 +333,8 @@ Finally, (people) defined two further sets of variables:
 \end{align*}
 
 \( z_{im} \) and \( z_{il} \) are for use with the object function, later. The
-next thing to be modelled is the restraints. For the university modelled by
-(Abdellahi and Eledum, 2017), these were:
+next thing to be modelled is the restraints.
+For the university modelled by the authors, these were:
 
 \begin{enumerate}
 	\item There is no overlapping for courses
@@ -346,8 +350,8 @@ next thing to be modelled is the restraints. For the university modelled by
 	\item All lectures of a given course in a week must be held in the same
 		classroom
 	\item The overlap of course with prerequisites for the same group of
-		undergrad students l is permitted (note: (Abdellahi and Eledum, 2017)
-		refer to undergrad students as pre-graduated students)
+		undergrad students l is permitted (note: the authors refer to undergrad 
+		students as pre-graduated students)
 \end{enumerate}
 
 As an example, the first restraint is modelled as:
@@ -357,11 +361,10 @@ As an example, the first restraint is modelled as:
 \end{align*}
 The objective function needs to be either minimised or maximised (dependent on
 how it is modelled), by changing the values assigned to the variables, whilst
-ensuring that the constraints are met.
+ensuring that the constraints are met~\cite{objective_function}.
 In this instance, the total dissatisfaction of teachers and students needs to be
 minimised, which is equivalent to maximising the number of lectures per day,
-which implies decreasing the waiting time between lectures (Abdellahi and
-Eledum, 2017).
+which implies decreasing the waiting time between lectures.
 \begin{align*}
 	\parbox[t]{10cm}{(Total dissatisfaction) = Teacher\{number of lectures per
 	day\} + Regular student\{number of lectures per day\} + Predicted graduate
@@ -370,7 +373,7 @@ Eledum, 2017).
 The model produced may not be tractable, meaning that the problem may not be
 able to be solved in a reasonable period.
 To make the problem easier to be solved, the model needs to be reduced.
-(Abdellahi and Eledum, 2017) achieved this by removing the index representing
+Abdellahi and Eledum achieved this by removing the index representing
 classrooms (\( n\in N \)) and by adding another constraint, that the number of
 courses cannot exceed the number of classrooms in a timeslot \( j \) in a given
 day \( i \) (constraint 9).
@@ -433,8 +436,8 @@ The model can be reduced further into two models, one for students and one for
 teachers.
 The problem is solved with using an external penalty function method. Penalty
 functions convert constrained problems to those without constraints by
-introducing a penalty for violating the constraints.
-By using a penalty function, (Abdellahi and Eledum, 2017) found a real solution
+introducing a penalty for violating the constraints~(\cite{penalty_function}).
+By using a penalty function, the authors found a real solution
 to the unrestrained problem, and then approximated it to a binary solution with
 an algorithm.
 
@@ -474,7 +477,8 @@ Aspiration criteria provide reasons for a solution to be freed from the Tabu
 table (freeing strategy).
 For example, if a using a Tabu move results in a solution better than any other
 so far, then it can come out of the Tabu table. Much like with genetic
-algorithms, a fitness function is used to measure how optimal a solution is.
+algorithms, a fitness function is used to measure how optimal a solution 
+is~\cite{tabu_video}.
 
 A basic algorithm is:
 \begin{enumerate}
@@ -509,8 +513,9 @@ There are several possible stopping criteria, such as:
 		There would need to be a method to find what the vicinity of the optimal
 		solution, so that upper lower bounds can be set.
 \end{itemize}
-Tabu search has been used to solve the university timetabling problem (Awad et
-al, 2021). They defined four different neighbourhoods:
+Tabu search has been used to solve the university timetabling
+problem~\cite{tabu_example}.
+Awad et al.\ defined four different neighbourhoods:
 \begin{itemize}
 	\item Nb1: Randomly choose a particular course and progress to a feasible
 		timeslot, which can produce the smallest cost
@@ -534,25 +539,26 @@ not changed, then two solutions are removed from the Tabu List.
 
 The authors compared their algorithm to the work of others, by running 11
 different datasets through them, and totalling the number of violations of their
-hard and soft constraints. The authors' algorithm performed best against other 
-implementations of Tabu search, and  was also compared to other algorithms that did not 
-use Tabu search at all. The authors' implementation performed better than all 
-the other algorithms, except variable neighbourhood search on the largest 
-dataset, and simulated annealing which performed better across all dataset
-sizes.
+hard and soft constraints. 
+The authors' algorithm performed best against other implementations of Tabu 
+search, and  was also compared to other algorithms that did not use Tabu search 
+at all.
+The authors' implementation performed better than all the other algorithms, 
+except variable neighbourhood search on the largest dataset, and simulated 
+annealing which performed better across all dataset sizes.
 
 \subsection{Answer Set Programming}
 Answer set programming (ASP) reduces problems to logic programs, and then
-answer set solvers are used to do the search. The logic programs are sets of
-rules that take the form:
+answer set solvers are used to do the search~\cite{asp_example}. 
+The logic programs are sets of rules that take the form:
 \begin{center}
 	\( a_0 \) \verb|:-| \( a_1, \ldots, a_m \) \verb|not| \( a_{m+1}, \ldots, \)
 	\verb|not| \( a_n \)
 \end{center}
 where every \( a_i \) is a propositional atom and \verb|not| is default 
 negation.
-If \( n = 0 \) then a rule is a fact. A rule is an integrity constraint if
-\( a_0 \) is omitted.
+If \( n = 0 \) then a rule is a fact. 
+A rule is an integrity constraint if \( a_0 \) is omitted.
 A logic program induces a collection of answer sets, which are recognized models
 of the program determined by answer set semantics.
 
@@ -583,7 +589,8 @@ The logic programs can be written in a language called AnsProlog (Answer Set
 Programming in Logic), which can be used with answer set solvers such as
 smodels.
 
-Banbara et al used Answer Set Programming to solve the timetabling problem.
+Banbara et al. (2019)\cite{asp_example} used Answer Set Programming to solve the 
+timetabling problem.
 They split their constraints into hard and soft constraints, where the soft
 constraints have either constant cost or calculated cost.
 If a constraint has constant cost, then there is one penalty point per
@@ -673,7 +680,7 @@ managed to produce optimal solutions.
 \subsection{Bat Inspired Algorithm}
 
 The Bat Inspired Algorithm (BA) is a heuristic method originally proposed by 
-Yang (2010).
+Yang (2010)~\cite{yang_bat}.
 It is inspired by echolocation, which is a method used by bats and other animals
 to navigate, using sound.
 To simplify echolocation, Yang suggested these rules:
@@ -715,6 +722,7 @@ Pseudocode for the Bat Algorithm can be described as:
 	End while
 	Ranks the bats and obtain the current best bat
 \end{verbatim}
+~\cite{ba_example}
 
 In the first step, the bat population initialised with parameters position
 \( x_i \), velocity \( v_i \) and frequency \( f_i \).
@@ -752,8 +760,8 @@ each bat needs to updated with the equation,:
 where \( \alpha \) and \( \gamma \) are constants.
 
 The above BA was designed for continuous optimisation problems, but as the
-timetabling problem is a discrete combinatorial optimisation problem, the
-authors modified the algorithm.
+timetabling problem is a discrete combinatorial optimisation problem, Limota et
+al. (2021)~\cite{ba_example} modified the algorithm.
 In the context of the timetabling problem, \( i \) represents a candidate 
 solution and each position \( x_i \) is initialised by randomly choosing a
 lecture and then an algorithm tries to find timeslots without clashes and a 
@@ -774,7 +782,7 @@ interpreted to mean that the current position is obtained by performing
 To update the current solution of an instance of the timetabling problem, a
 lecture is moved from one timeslot to another randomly selected one.
 
-When testing their algorithm, the authors (who?) used input data consisting of 
+When testing their algorithm, the authors used input data consisting of 
 124 courses, 273 lectures, 10 rooms and 5551 students. They ran their algorithm 
 4 times, and each time generated timetables where all the hard constraints were
 satisfied.

@@ -1,3 +1,55 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{10}
+
+\bibitem{tabu_video}
+IIT Kharagpur~July 2018.
+\newblock Lecture 37: Tabu search.
+\newblock \url{https://www.youtube.com/watch?v=A7cTp1Fhg9o}, Sept. 2018.
+
+\bibitem{bip_example}
+Moustapha Abdellahi and Hussein Eledum.
+\newblock The university timetabling problem: modeling and solution using binary integer programming with penalty functions.
+\newblock {\em International Journal of Applied Mathematics and Statistics}, 56(6):164--178, 2017.
+
+\bibitem{tabu_example}
+Fouad~H Awad, Ali Al-Kubaisi, and Maha Mahmood.
+\newblock Large-scale timetabling problems with adaptive tabu search.
+\newblock {\em Journal of Intelligent Systems}, 31(1):168--176, 2022.
+
+\bibitem{asp_example}
+Mutsunori Banbara, Katsumi Inoue, Benjamin Kaufmann, Tenda Okimoto, Torsten Schaub, Takehide Soh, Naoyuki Tamura, and Philipp Wanko.
+\newblock teaspoon: solving the curriculum-based course timetabling problems with answer set programming.
+\newblock {\em Annals of Operations Research}, 275:3--37, 2019.
+
+\bibitem{objective_function}
+Cuemath.
+\newblock Objective function.
+\newblock \url{https://www.cuemath.com/algebra/objective-function/}.
+\newblock Accessed: 2022-12-22.
+
+\bibitem{ba_example}
+Ushindi Limota, Egbert Mujuni, and Allen Mushi.
+\newblock Solving the university course timetabling problem using bat inspired algorithm.
+\newblock {\em Tanzania Journal of Science}, 47(2):674--685, 2021.
+
+\bibitem{ga_book}
+Melanie Mitchell.
+\newblock {\em An introduction to genetic algorithms}.
+\newblock MIT press, 1998.
+
+\bibitem{ga_example}
+Radom{\'\i}r Perzina.
+\newblock Solving the university timetabling problem with optimized enrollment of students by a self-adaptive genetic algorithm.
+\newblock In {\em International Conference on the Practice and Theory of Automated Timetabling}, pages 248--263. Springer, 2006.
+
+\bibitem{penalty_function}
+Stanford University.
+\newblock Penalty functions.
+\newblock \url{https://web.stanford.edu/group/sisl/k12/optimization/MO-unit5-pdfs/5.6penaltyfunctions.pdf}.
+\newblock Accessed: 2022-12-22.
+
+\bibitem{yang_bat}
+Xin-She Yang.
+\newblock A new metaheuristic bat-inspired algorithm.
+\newblock In {\em Nature inspired cooperative strategies for optimization (NICSO 2010)}, pages 65--74. Springer, 2010.
 
 \end{thebibliography}
