@@ -1,6 +1,7 @@
 \documentclass[a4paper, 12pt]{report}
 
 \usepackage{amsmath}
+\usepackage{booktabs}
 \usepackage{courier}
 \usepackage{color}
 \usepackage{enumitem}
@@ -10,6 +11,7 @@
 \usepackage[includeheadfoot,margin=1.5cm]{geometry}
 \usepackage[dvips]{graphicx}
 \usepackage{listings}
+\usepackage{multirow}
 \usepackage{parskip}
 \usepackage{titlesec}
 \usepackage[nottoc]{tocbibind}
@@ -17,9 +19,7 @@
 
 % Choose your bibliography style
 \bibliographystyle{plain}
-
 \linespread{1.3}
-
 % Setup headers and footers
 \fancyhf{}
 \fancyfoot[C] {\thepage}
@@ -27,19 +27,14 @@
 \begin{document}
 
 % Front Page
-
 \thispagestyle{empty}
-
 \fancypage{}{\fbox}
-
 \begin{center}
-
 	\Large{
 		\hfill \begin{tabular}{l}
 			Computer Science \\ and Mathematics \\ COC255 \\ B827126
 		\end{tabular}
 	}
-
 	\vspace*{\fill}
 
 	\Large{\textbf{TIMETABLE CREATION \\ USING \\ARTIFICIAL INTELLIGENCE}}
@@ -68,9 +63,7 @@
 \end{center} % Front Page ends
 
 \newpage
-
 \fancypage{}{}  % Reset so that next pages do not have a box around them
-
 \begin{abstract}
 	lol placeholder text for abstract lorem ipsum etc test
 \end{abstract}
@@ -216,9 +209,9 @@ world data.
 Timetables were generated for 1807 students, but for how courses are organised 
 at this university, there are no groups of students with the same timetable, and
 it is unlikely that two students would even have the same timetable.
-Because of this, the author expected that it would be too difficult to generate
-timetables with clashes at all, and instead aimed to minimise the number of
-clashes.
+Because of this, the author anticipated that it would be too difficult to
+generate timetables without any clashes at all, and instead aimed to minimise
+the number of clashes.
 The best solution found had 83 students with at least one clash on their
 timetable, or 4.59\% of the students.
 
@@ -548,6 +541,7 @@ except variable neighbourhood search on the largest dataset, and simulated
 annealing which performed better across all dataset sizes.
 
 \subsection{Answer Set Programming}
+
 Answer set programming (ASP) reduces problems to logic programs, and then
 answer set solvers are used to do the search~\cite{asp_example}. 
 The logic programs are sets of rules that take the form:
@@ -787,7 +781,48 @@ When testing their algorithm, the authors used input data consisting of
 4 times, and each time generated timetables where all the hard constraints were
 satisfied.
 
-\section{Comparison of Methods}  % #TODO: comparison of methods
+\section{Comparison of Methods}
+
+The below table summarises how the different methods for solving the timetabling
+problem performed.
+
+\begin{table}
+	\begin{tabular}{cccccc}
+		\toprule
+		\ & \multirow{2}{65pt}{Genetic Algorithm\cite{ga_example}} 
+			& \multirow{2}{7.0em}{Binary Integer Prog.\cite{bip_example}} 
+			& \multirow{2}{4.0em}{Tabu Search\cite{tabu_example}} 
+			& \multirow{2}{5em}{Answer Set Prog.\cite{asp_example}} 
+			& \multirow{2}{6em}{Bat Inspired Algorithm\cite{ba_example}} \\
+		\\
+		\midrule
+		\multirow{2}{8.6em}{Dataset size (number of courses)} & 340 & 3 & 400* 
+			& 850 & 124 \\ 
+		\\
+		Solution generated? & Yes & Yes & Yes & Yes & Yes \\
+		Errors? & \multirow{3}{65pt}{84 students had at least one clash} & None 
+			& \multirow{4}{5em}{347* hard/soft constraint violations} & None 
+			& None\\
+		\\
+		\\
+		\\
+		\bottomrule
+	\end{tabular}
+	\caption{\label{method-comparison}Summative table of the results of the 
+		different methods.}
+\end{table}
+*largest dataset
+
+It is also worth recalling a few other details about the different methods used:
+\begin{itemize}
+	\item At the university used for the genetic algorithm 
+		method~\cite{ga_example}, courses are arranged in such a way that 
+		essentially every student has a unique timetable, therefore making the 
+		problem more complex compared to if students were put into groups.
+	\item Multiple different configurations were used for the answer set 
+		programming system~\cite{asp_example}, some of which were able to 
+		produce a greater number of optimal solutions than others.
+\end{itemize}
 
 \section{Chosen Method}  % #TODO: chosen method
 
