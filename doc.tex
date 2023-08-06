@@ -121,7 +121,7 @@ same time --- this is known as a clash.
 
 \subsection{Genetic Algorithms}
 
-Genetic algorithms (GAs) made up a group of search metaheuristics, inspired by
+Genetic algorithms (GAs) make up a group of search metaheuristics, inspired by
 Darwin's theory of evolution~\cite{ga_book}.
 Here, the fittest members of a population survive and produce offspring, which
 inherit the characteristics of the parents.
@@ -824,7 +824,19 @@ It is also worth recalling a few other details about the different methods used:
 		produce a greater number of optimal solutions than others.
 \end{itemize}
 
-\section{Chosen Method}  % #TODO: chosen method
+\section{Chosen Method}
+
+I will not be using binary integer programming as my chosen method, as it was 
+only tested on such a small dataset it is unknown how performance will scale for
+larger datasets.
+Likewise, I will not be using answer set programming as the dataset was so large
+that the algorithm had to be run on server-grade hardware, which I do not have 
+access to, and I do not know how the performance scales with a decrease in the 
+dataset size.
+I am not going to use Tabu search, as there were a large number of constraint 
+violations in relation to the size of the dataset.
+I have hence decided to use a genetic algorithm as I think it would be easier to
+implement than a bat inspired algorithm.
 
 \chapter{Requirements}  % #TODO: requirements
 
