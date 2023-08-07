@@ -21,23 +21,29 @@ def generate_timetable():
     """
     population_size, mutation_chance = get_settings_data()
     sessions, rooms, time_slots, teacher_times = p1.get_config_data()
-    print(teacher_times)
+    print("Generation 1:")
+    generation_count = 1
     population = p1.generate_initial_population(sessions, rooms, time_slots,
                                                 population_size)
+    print(population)
     population_fitness, valid_solution_bool, valid_solution = \
         p2.check_population_fitness(population, teacher_times)
-    while not valid_solution_bool:
-        print("No timetable solution found.")
+    for i in range(3):  # TODO temp
+    #   while not valid_solution_bool: TODO add back
+        # print("No timetable solution found.") TODO: add back
         parent_a, parent_b = p3.select_parents(population_fitness)
         # Note that parent_a and parent_b are indices
+        print("pop size:")  # TODO remove
+        print(population_size)  # TODO remove 
         offspring = p4.crossover(population[parent_a], population[parent_b],
                                  len(population[0]), population_size)
-        # check if any of the offspring is a valid solution
-        mutated_offspring = p5.mutate(offspring, time_slots, rooms, sessions)
+        mutated_offspring = p5.mutate(offspring, time_slots, rooms, sessions,
+                                      mutation_chance)
         mutated_offspring.append(population[parent_a])
         mutated_offspring.append(population[parent_b])
+        # check if any of the offspring is a valid solution
         population_fitness, valid_solution_bool, valid_solution \
-            = p2.check_population_fitness(mutated_offspring)
+            = p2.check_population_fitness(mutated_offspring, teacher_times)
         if not valid_solution_bool:
             population = mutated_offspring
             for i in range(2):
@@ -45,6 +51,10 @@ def generate_timetable():
                 worst_fitness_index = population_fitness.index(worst_fitness)
                 del population_fitness[worst_fitness_index]
                 del population[worst_fitness_index]
+            generation_count += 1
+            print("Generation " + str(generation_count) + ":")
+        print(population)
+        print(population_fitness)
     print("Timetable solution found. Writing output to text files...")
     generate_output_text(valid_solution, "teachers")
     generate_output_text(valid_solution, "student_groups")

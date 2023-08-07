@@ -18,25 +18,21 @@ def select_parents(population_fitness: list) -> [int, int]:
         int: Index of the first parent.
         int: Index of the other parent.
     """
-    print("Selecting parents for crossover...")
+    # print("Selecting parents for crossover...") TODO: add back
     fitness_values = population_fitness
-    print(len(fitness_values))  # debugging TODO: remove later
     range_limits_a = normalise_values(fitness_values)
-    print(range_limits_a)  # debugging TODO: remove later
     parent_a = choose_parent(range_limits_a)
-    print("First parent selected.")
+    # print("First parent selected.") TODO: add back
     fitness_values.remove(fitness_values[parent_a])
 
-    print(len(fitness_values))  # debugging TODO: remove later
     range_limits_b = normalise_values(fitness_values)
     parent_b = choose_parent(range_limits_b)
-    print(str(parent_b))  # debugging TODO: remove later
-    print("Second parent selected.")
+    # print("Second parent selected.") TODO: add back
     return parent_a, parent_b
 
 
 def normalise_values(fitness_values: list) -> list:
-    """Normalise the fitness values so that they summate to 1.
+    """Normalise the fitness values so that they add up to 1.
 
     Args:
         fitness_values (list): The fitness values of the population.
@@ -59,7 +55,7 @@ def normalise_values(fitness_values: list) -> list:
 
 
 def choose_parent(range_limits: list) -> int:
-    """Perfom a binary search to get the index of the chosen parent.
+    """Perform a binary search to get the index of the chosen parent.
 
     Args:
         range_limits (list): Cumulative sums of the normalised fitness values.

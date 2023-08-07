@@ -309,6 +309,24 @@
       "building": "Computer Science",
       "type": "Computer Lab",
       "capacity": "100"
+    },
+    {
+      "id": "CS002",
+      "building": "Computer Science",
+      "type": "Computer Lab",
+      "capacity": "100"
+    },
+    {
+      "id": "CS003",
+      "building": "Computer Science",
+      "type": "Computer Lab",
+      "capacity": "100"
+    },
+    {
+      "id": "CS004",
+      "building": "Computer Science",
+      "type": "Computer Lab",
+      "capacity": "100"
     }
   ],
   "student_groups": [
@@ -380,7 +398,7 @@
   ],
   "modules": [
     {
-      "id": "C110",
+      "id": "C111",
       "title": "Introduction to Keyboards",
       "teachers": "004",
       "lecture_hours": "1",

@@ -30,7 +30,9 @@ def get_config_data() -> [list, list, list, list]:
     sessions, rooms_id, time_slots_id = [], [], []
     for module in data["modules"]:
         session = [module["id"], module["student_group"], module["teachers"]]
-        for i in range(int(module["hours"])):
+        for i in range(int(module["lecture_hours"])):
+            sessions.append(session)
+        for i in range(int(module["lab_hours"])):
             sessions.append(session)
 
     for room in data["rooms"]:
@@ -58,10 +60,14 @@ def get_config_data() -> [list, list, list, list]:
                     day_number = 4
                 case "Friday":
                     day_number = 5
+                case "Saturday":
+                    day_number = 6
+                case "Sunday":
+                    day_number = 7
                 case _:
                     day_number = 0
-            for start_time in day["start_times"]:
-                time_number = day["start_times"][start_time]
+            for i in range(len(day["start_times"])):
+                time_number = day["start_times"][i]
                 teacher_time.append(str(day_number) + str(time_number))
         teacher_times.append(teacher_time)
 

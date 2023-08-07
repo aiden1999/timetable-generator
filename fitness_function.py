@@ -20,7 +20,7 @@ def check_population_fitness(population: list, teacher_times: list) \
         bool: Whether or not there is a correct solution.
         list: The correct solution (if it exists).
     """
-    print("Calculating the fitness of individuals...")
+    # print("Calculating the fitness of individuals...") TODO: add back
     population_fitness = []
     valid_solution_bool = False
     valid_solution = None
@@ -33,7 +33,7 @@ def check_population_fitness(population: list, teacher_times: list) \
             valid_solution = solution
             break
 
-    print("Fitness of individuals calculated.")
+    # print("Fitness of individuals calculated.") TODO: add back
     return population_fitness, valid_solution_bool, valid_solution
 
 
@@ -52,7 +52,7 @@ def calculate_fitness(solution: list, teacher_times: list) -> float:
     problem_count = 0
 
     for i in range(len(solution) - 1):
-        
+
         # Check if sessions are happening at the same time
         if solution[i][0] == solution[i + 1][0]:
 

@@ -1,7 +1,7 @@
 Timetable Project
 =================
 
-Prequisites
+Prerequisites
 -----------
 Python 3: install from https://www.python.org/downloads, or download with your
 OS's package manger, eg. Arch Linux and derivatives:
@@ -23,7 +23,7 @@ Download these 9 files:
     main.py
     mutation.py
     selection.py
-    settings.json
+    settings.json (NOT the settings.json for VSCode, if applicable)
 Make sure they are in the same directory.
 
 Configuration

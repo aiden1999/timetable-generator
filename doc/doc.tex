@@ -16,6 +16,7 @@
 \usepackage{titlesec}
 \usepackage[nottoc]{tocbibind}
 \usepackage{url}
+\usepackage{xcolor}
 
 % Choose your bibliography style
 \bibliographystyle{plain}
@@ -838,7 +839,7 @@ violations in relation to the size of the dataset.
 I have hence decided to use a genetic algorithm as I think it would be easier to
 implement than a bat inspired algorithm.
 
-\chapter{Requirements}  % #TODO: requirements
+\chapter{Requirements}
 
 \section{Necessary Requirements}
 
@@ -900,7 +901,7 @@ completion.
 \chapter{Conclusion}  % #TODO: conclusion
 
 % Rename Bibliography to References
-\renewcommand\bibname{References}  % #TODO: add the rest of the references
+\renewcommand\bibname{References}
 \bibliography{references.bib}
 
 % Include appendix section if needed
@@ -908,27 +909,46 @@ completion.
 
 \chapter{Source Code}
 
+\lstdefinestyle{mystyle}{   
+    commentstyle=\color{green},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{black},
+    stringstyle=\color{purple},
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
 \lstset{basicstyle=\ttfamily, breaklines=true}
 
 \section{main.py}
-\lstinputlisting[language=Python]{main.py}
+\lstinputlisting[language=Python]{../main.py}
 
 \section{ga.py}
-\lstinputlisting[language=Python]{ga.py}
+\lstinputlisting[language=Python]{../ga.py}
 
 \section{initial population.py}
-\lstinputlisting[language=Python]{initial_population.py}
+\lstinputlisting[language=Python]{../initial_population.py}
 
 \section{fitness function.py}
-\lstinputlisting[language=Python]{fitness_function.py}
+\lstinputlisting[language=Python]{../fitness_function.py}
 
 \section{selection.py}
-\lstinputlisting[language=Python]{selection.py}
+\lstinputlisting[language=Python]{../selection.py}
 
 \section{crossover.py}
-\lstinputlisting[language=Python]{crossover.py}
+\lstinputlisting[language=Python]{../crossover.py}
 
 \section{mutation.py}
-\lstinputlisting[language=Python]{mutation.py}
+\lstinputlisting[language=Python]{../mutation.py}
 
 \end{document}

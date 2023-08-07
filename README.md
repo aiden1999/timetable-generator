@@ -26,7 +26,7 @@ Download these 9 files:
 - main.py
 - mutation.py
 - selection.py
-- settings.json
+- settings.json (NOT the settings.json for VSCode, if applicable)
 Make sure they are in the same directory.
 
 ## Configuration
