@@ -54,7 +54,6 @@ def crossover(parent_a: list, parent_b: list, num_of_sessions: int,
         child_b = left_b + right_b
         offspring.append(child_b)  # TODO remove
         
-
     # Remove last child if the population size is an odd number
     if half_pop != math.floor(population_size / 2):
         del offspring[-1]

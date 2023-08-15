@@ -73,6 +73,7 @@ def calculate_fitness(solution: list, teacher_times: list) -> float:
         # check teacher preferences
         time_slot = solution[i][0]
         teacher_num = int(solution[i][4])
+        # TODO: why the FUCK is this not finished??????
 
     if problem_count == 0:
         fitness = 0

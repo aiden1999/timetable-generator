@@ -8,6 +8,7 @@
 \usepackage{examplep}
 \usepackage{fancybox}
 \usepackage{fancyhdr}
+\usepackage{fancyvrb}
 \usepackage[includeheadfoot,margin=1.5cm]{geometry}
 \usepackage[dvips]{graphicx}
 \usepackage{listings}
@@ -878,25 +879,469 @@ completion.
 		very legible format, such as in a traditional tabular timetable format.
 \end{itemize}
 
-\chapter{Design and Implementation}  % #TODO: design and implementation
+\chapter{Design}
 
-\section{Program Overview}  % #TODO: program overview
+\section{Modelling the Input Data}
 
-\section{Genetic Algorithm}  % #TODO: genetic algorithm
+Before the whole algorithm can be modelled mathematically, we must first model 
+the input data as set of variables.
+\begin{itemize}
+	\item Let \( T = \{ t_1 , \ldots , t_n \} \) be the set of teachers where:
+	\begin{itemize}
+		\item a teacher \( t_i = \{ M_{t_i}, H_{t_i} \} \) where:
+		\begin{itemize} 
+			\item \( H_{t_i} = \{ h_{t_{i_1}} , \ldots , h_{t_{i_n}} \} \) is 
+				the set of the teacher's preferred timeslots, and
+			\item \( M_{t_i} = \{ m_{t_{i_1}} , \ldots , m_{t_{i_n}} \} \) is 
+				the set of modules that the teacher teaches.
+		\end{itemize}
+	\end{itemize}
+	\item Let \( R = \{ r_1 , \ldots , t_n \} \) be the set of rooms where:
+	\begin{itemize}
+		\item a room \( r_i = \{ y_{r_i} , c_{r_i} \} \) where:
+		\begin{itemize}
+			\item \( y_{r_i} \) is the type of room, which takes the value 
+				\( 1 \) if the room is a lecture theatre, or \( 2 \) if the room
+				is a lab, and
+			\item \( c_{r_i} \) is the maximum capacity of the room.
+		\end{itemize}
+	\end{itemize}
+	\item Let \( S = \{ s_1 , \ldots , s_n \} \) be the set of student groups
+		where:
+	\begin{itemize}
+		\item a student group \( s_i = \{ M_{s_i} , z_{s_i} \} \) where:
+		\begin{itemize}
+			\item \( M_{s_i} = \{ m_{s_{i_1}} , \ldots \, m_{s_{i_n}} \} \) is 
+				the set of modules taken by the student group \( s_i \), and
+			\item \( z_{s_i} \) is the number of students in \( s_i \).
+		\end{itemize} 
+	\end{itemize}
+	\item Let \( M = \{ m_1, \ldots, m_n \} \) be the set of modules where:
+	\begin{itemize}
+		\item a module \( m_i = \{ p_{m_i}, q_{m_i} \} \) where:
+		\begin{itemize}
+			\item \( p_{m_i} \) is the number of lecture hours of the module 
+				\( m_i \), and 
+			\item \( q_{m_i} \) is the number of lab hours of the module 
+				\( m_i \).
+		\end{itemize}
+	\end{itemize}
+	\item Let \( H = \{ h_1 , \ldots , h_n \} \) be the set of time slots.
+\end{itemize}
+Further to this, we can also describe a set of teaching sessions \( X \) where 
+each session \( x_{t_{\alpha},r_{\beta},s_{\gamma},m_{\delta},h_{\epsilon}} \) 
+is a session taught by teacher \( t_{\alpha} \), in room \( r_{\beta} \), with 
+student group \( s_{\gamma} \), about module \( m_{\delta} \), during time slot
+\( h_{\epsilon} \).
 
-\subsection{Initial Population}  % #TODO: initial population
+\section{Constraints}
 
-\subsection{Fitness Function}  % #TODO: fitness function
+We next need to represent the constraints. We take the requirements from \S 2.1,
+but add two more constraints (2 and 3).
+\begin{enumerate}
+	\item Every module has all its hours timetabled.
+	\item Each session is taught by the correct teacher for the module.
+	\item Each session has the correct student group attending it.
+	\item A room is being used for at most one learning session in a time slot.
+	\item A student has at most one learning session in a time slot.
+	\item A teacher has at most one learning session in a time slot.
+	\item A session is in the correct type of room, for example, a lecture is in 
+		a lecture theatre, and a lab session is in a lab.
+	\item The number of students in the room must not exceed the capacity of the
+		room.
+	\item The size of the room is optimal for the number of students, meaning 
+		that the size of the room is as small as possible.
+	\item Teachers can make preferences for when they are teaching.
+\end{enumerate}
+We will now formulate these constraints below.
 
-\subsection{Selection}  % #TODO: selection
+\subsection{Every module has all its hours timetabled}
 
-\subsection{Crossover}  % #TODO: crossover
+We can say that the number of sessions scheduled is equal to the sum of the 
+number of lecture sessions and the number of lab sessions for all the modules, 
+or:
+\begin{equation*}
+	\lvert X \rvert = \sum_{i=1}^{\lvert M \rvert} (p_{m_i} + q_{m_i})
+\end{equation*}
+However, this is not sufficient to prove that the correct number of sessions per
+module has been scheduled, for instance one module might be missing a session 
+and another module might have an extra session scheduled, and the above 
+statement would still hold. To further prove this, we also have constraint 7.
 
-\subsection{Mutation}  % #TODO: mutation
+\subsection{Each session is taught by the correct teacher for the module}
+
+This can be reworded to: for every session, the module taught in that session is
+in the set of modules taught by the teacher, or:
+\begin{equation*}
+	\forall x_{t_{\alpha},r_{\beta},s_{\gamma},m_{\delta},h_{\epsilon}} \in X,
+	\: m_{\delta} \in M_{t_{\alpha}}
+\end{equation*}
+
+\subsection{Each session has the correct student group attending it}
+
+Very similarly to the previous constraint, this constraint can be reworded to: 
+for every session, the module taught in that session is in the set of modules 
+taken by the student group, or:
+\begin{equation*}
+	\forall x_{t_{\alpha},r_{\beta},s_{\gamma},m_{\delta},h_{\epsilon}} \in X,
+	\: m_{\delta} \in M_{s_{\gamma}}
+\end{equation*}
+
+\subsection{A room is being used for at most one learning session in a time 
+	slot}
+
+This can be rephrased as: for each room, there is at most one of each time slot 
+scheduled for that room.
+\begin{equation*}
+	\forall r_i \in R, \: \exists X_{r_i} \subseteq X \text{ where } X_{r_i} = 
+	\{ x_{t_{\alpha},r_{\beta},s_{\gamma},m_{\delta},h_{\epsilon}} \: | \: 
+	r_{\beta} = r_i\}
+\end{equation*}
+This creates subsets \( X_{r_i} \) which are all the learning sessions scheduled
+to the room \( r_i \). Then:
+\begin{equation*}
+	\forall h_j \in H\, \: \exists X_{r_i,h_j} \subseteq X_{r_i} \text{ where }
+	X_{r_i,h_j} = \{ x_{t_{\alpha}, r_i, s_{\gamma}, m_{\delta}, h_{\epsilon}} 
+	\: | \: h_{\epsilon} = h_j \}
+\end{equation*}
+This creates subsets \( X_{r_i,h_j} \) which are all the learning session 
+scheduled in time slot \( h_j \) for the room \( r_i \). We then require the 
+condition
+\begin{equation*}
+	\lvert X_{r_i,h_j} \rvert = 1 \text{ or } \lvert X_{r_i,h_j} \rvert = 0
+\end{equation*}
+to hold \( \forall X_{r_i,h_j} \).
+
+\subsection{A student has at most one learning session in a time slot}
+
+This very similar to constraint 4.
+\begin{equation*}
+	\forall s_i \in S, \: \exists X_{s_i} \subseteq X \text{ where } X_{s_i} = 
+	\{ x_{t_{\alpha},r_{\beta},s_{\gamma},m_{\delta},h_{\epsilon}} \: | \: 
+	s_{\gamma} = s_i\}
+\end{equation*}
+\begin{equation*}
+	\forall h_j \in H\, \: \exists X_{s_i,h_j} \subseteq X_{s_i} \text{ where }
+	X_{s_i,h_j} = \{ x_{t_{\alpha}, r_{\beta}, s_i, m_{\delta}, h_{\epsilon}} 
+	\: | \: h_{\epsilon} = h_j \}
+\end{equation*}
+It is then required that
+\begin{equation*}
+	\lvert X_{s_i,h_j} \rvert = 1 \text{ or } \lvert X_{s_i,h_j} \rvert = 0, \: 
+	\forall X_{s_i,h_j}.
+\end{equation*}
+
+\subsection{A teacher has at most one learning session in a time slot}
+
+This very similar to constraints 4 and 5.
+\begin{equation*}
+	\forall t_i \in T, \: \exists X_{t_i} \subseteq X \text{ where } X_{t_i} = 
+	\{ x_{t_{\alpha},r_{\beta},s_{\gamma},m_{\delta},h_{\epsilon}} \: | \: 
+	t_{\alpha} = t_i\}
+\end{equation*}
+\begin{equation*}
+	\forall h_j \in H\, \: \exists X_{t_i,h_j} \subseteq X_{t_i} \text{ where }
+	X_{t_i,h_j} = \{ x_{t_i, r_{\beta}, s_{\gamma}, m_{\delta}, h_{\epsilon}} 
+	\: | \: h_{\epsilon} = h_j \}
+\end{equation*}
+It is then required that
+\begin{equation*}
+	\lvert X_{t_i,h_j} \rvert = 1 \text{ or } \lvert X_{t_i,h_j} \rvert = 0, \: 
+	\forall X_{t_i,h_j}.
+\end{equation*}
+
+\subsection{A session is in the correct type of room}
+
+This can be thought of as: for each module, the number of sessions in a lecture 
+room is equal to the number of lecture sessions for that module. The same 
+applies for lab sessions.
+
+To begin with (recall that \( y_{r_i} = 1 \) if \( r_i \) is a lecture room):
+\begin{equation*}
+	\exists X_{lecture} \subseteq X \text{ where } X_{lecture} = \{ 
+	x_{t_{\alpha}, r_{\beta},s_{\gamma},m_{\delta},h_{\epsilon}} \: | \: \forall 
+	r_{\beta}, \: y_{r_{\beta}} = 1\}
+\end{equation*}
+This gives us \( X_{lecture} \), a set that contains all the sessions in a 
+lecture room. Then:
+\begin{equation*}
+	\forall m_i \in M, \: \exists X_{lecture,m_i} \subseteq X_{lecture} 
+	\text{ where } X_{lecture,m_i} = \{ t_{\alpha},r_{\beta},s_{\gamma},
+	m_{\delta},h_{\epsilon} \: | \: m_{\delta} = m_i\}
+\end{equation*}
+Finally, it is required that
+\begin{equation*}
+	\forall X_{lecture,m_i}, \: \lvert X_{lecture,m_i} \rvert = p_{m_i}.
+\end{equation*}
+
+Similarly, for labs:
+\begin{equation*}
+	\exists X_{lab} \subseteq X \text{ where } X_{lab} = \{ x_{t_{\alpha}, 
+	r_{\beta},s_{\gamma},m_{\delta},h_{\epsilon}} \: | \: \forall r_{\beta}, \: 
+	y_{r_{\beta}} = 2\}
+\end{equation*}
+\begin{equation*}
+	\forall m_i \in M, \: \exists X_{lab,m_i} \subseteq X_{lab} \text{ where } 
+	X_{lab,m_i} = \{ t_{\alpha},r_{\beta},s_{\gamma},m_{\delta},h_{\epsilon} \:
+	| \: m_{\delta} = m_i\}
+\end{equation*}
+and it is required that
+\begin{equation*}
+	\forall X_{lab,m_i} \lvert X_{lab,m_i} \rvert = p_{m_i}.
+\end{equation*}
+
+As teaching sessions are either labs or lectures, it can be implied that \( 
+\lvert X_{lecture} \rvert + \lvert X_{lab} \rvert = \lvert X \rvert \).
+
+Because of the above, there are the correct number of lectures and labs for 
+each module, and the conditions are now sufficient for constraint 1 to hold. 
+
+\subsection{The number of students in the room must not exceed the capacity of 
+	the room}
+
+This can be reworded to: for every session, the size of the student group must 
+be less than or equal to the capacity of the room, or:
+\begin{equation*}
+	\forall x_{t_{\alpha},r_{\beta},s_{\gamma},m_{\delta},h_{\epsilon}} \in X, 
+	\: z_{s_{\gamma}} \leq c_{r_{\beta}}
+\end{equation*}
+
+\subsection{The size of the room is optimal for the number of students}
+
+This means, for every session \( x_i \in X \) in room \( r_i \), if there 
+exists a room \( r_j \in R \) where \( c_{r_j} < c_{r_i} \), change \( 
+r_i \) to \( r_j \), only if no other constraints are violated. Or, \( r_i = 
+\min \{ r_j \: | \: c_{r_j} \geq c_{r_i} \} \in R \).
+
+\subsection{Teachers can make preferences for when they are teaching}
+
+We first define a set of sessions for each teacher:
+\begin{equation*}
+	\forall t_i \in T, \: \exists X_{t_i} \subseteq X \text{ where } X_{t_i} = 
+	\{ x_{t_{\alpha},r_{\beta},s_{\gamma},m_{\delta},h_{\epsilon}} \: | \: 
+	t_{\alpha} = t_i\}
+\end{equation*}
+We then define a set containing just the time slots for each \( X_{t_i} \):
+\begin{equation*}
+	\forall X_{t_i}, \: \exists H_{xt_i} \text{ where } H_{xt_i} = \{ h_j \: | 
+	\: h_j = h_{\epsilon} \forall x_{t_i,r_{\beta},s_{\gamma},m_{\delta},
+	h_{\epsilon}} \in X_{t_i}\}
+\end{equation*}
+Then, for the constraint to be satisfied, \( H_{xt_i} \subseteq H_{t_i} \) must
+hold \( \forall t_i \in T \), or alternatively, the constraint is violated if
+\( \exists H_{xt_i} \ni h_j \notin H_{t_j} \).
+
+\section{Timetable Encoding}
+
+A solution will be encoded as a set of 5-tuples, where each tuple is 
+\{time slot, room, student group, module, teacher\}, where a solution represents
+an entire timetable.
+
+For the genetic algorithm, the population is a set of solutions.
+
+\section{Genetic Algorithm Pseudocode}
+
+\begin{Verbatim}[numbers=left]
+function GeneticAlgorithm
+
+GetSettingsData (return: populationSize, mutationChance)
+GetConfigData (return: sessions, rooms, timeSlots, teacherTimes)
+CreatePopulation (return: population)
+CheckFitness of population (return: populationFitness, 
+                            validSolution, validSolutionBool)
+while not validSolutionBool:
+    SelectParents (return: parentA, parentB)
+    CreateOffspring (return: offspring)
+    MutateOffspring (return: mutatedOffspring)
+    append parents to mutatedOffspring
+    CheckFitness of mutatedOffspring (return: offspringFitness, 
+                                      validSolution, validSolutionBool)
+    if not validSolutionBool:
+        population := offspring
+        repeat(2):
+            remove individual from population with worst fitness
+        end repeat
+    end if
+end while
+output timetable from validSolution
+\end{Verbatim}
+
+The settings data contains \verb|populationSize| and \verb|mutationChance|, 
+which are parameters for the genetic algorithm the user may wish to change.
+\verb|populationSize| is quite self-explanatory, simply the number of 
+individuals in the population.
+\verb|mutationChance| is the reciprocal of the actual chance of a mutation 
+occurring, for example, if the chance of a mutation occurring is 
+\( \frac{1}{1000} \), then \verb|mutationChance| needs to be 1000.
+
+Note that the \verb|ChecKFitness| function is called both inside the while loop
+and before it.
+This is so that the initial population generated can be checked for a valid 
+solution, removing the need to proceed with the rest of the algorithm.
+Hence, the population's fitness needs to be calculated again inside the while
+loop, after the mutation phase.
+
+\subsection{Initial Population}
+
+\begin{Verbatim}[numbers=left]
+function CreatePopulation
+input: sessions, rooms, timeSlots, populationSize
+
+population := empty list
+repeat(populationSize):
+    solution := empty list
+    for session in sessions:
+        timeSlot := random(timeSlots)
+        room := random(rooms)
+        studentGroup := session[1]
+        module := session[0]
+        teacher := session[2]
+        newSession := (timeSlot, room, studentGroup, module, teacher)
+        append newSession to solution
+    end for
+    append solution to population
+end repeat
+return population
+\end{Verbatim}
+
+
+
+\subsection{Fitness Function}
+
+\begin{Verbatim}[numbers=left]
+function CheckFitness
+input: population, teacherTimes
+
+populationFitness := empty list
+validSolutionBool := False
+validSolution := None
+for each solution in population:
+    sort solution by timeSlot
+    violations := 0
+    for i in range(size(solution) - 1):
+        if solution[i][0] == solution[i + 1][0]:
+            if solution[i][1] == solution[i + 1][1]:
+                violations := violations + 1
+            end if
+            if solution[i][2] == solution[i + 1][2]:
+                violations := violations + 1
+            end if
+            if solution[i][4] == solution[i + 1][4]:
+                violations := violations + 1
+            end if
+        end if
+    end for
+    for in range(size(solution)):
+        timeSlot = solution[i][0]
+        teacherNumber = solution[i][4]
+        CONTINUE WHEN FINISHED CODE
+    end for
+    if violations == 0:
+        solutionFitness := 0
+    else:
+	    solutionFitness := 1 / violations 
+    end if
+    append solutionFitness to populationFitness
+    if solutionFitness == 0:
+        valid solution bool := True
+        valid solution := solution
+        break for loop
+    end if
+end for
+return populationFitness, validSolution, validSolutionBool
+\end{Verbatim}
+
+\subsection{Selection}
+
+\begin{Verbatim}[numbers=left]
+function SelectParents
+input: populationFitness
+
+NormaliseValues(return: normalisedLimits)
+ChooseParent(return: parentA)
+remove the fitness of parentA from populationFitness
+NormaliseValues(return: normalisedLimits)
+ChooseParent(return: parentB)
+return parentA, parentB
+\end{Verbatim}
+
+explain what normalised limits and choose parents are
+
+\subsection{Crossover}
+
+\begin{Verbatim}[numbers=left]
+function CreateOffspring
+input: populationSize, numOfSessions, parentA, parentB
+
+offspring := empty list
+halfPop := ceiling(populationSize / 2)
+for i in range(halfPop):
+    outerLocus := RandomInteger(0, numOfSessions - 1)
+    if outerLocus == 0:
+        innerLocus := RandomInteger(1, 2)
+    else:
+        innerLocus := RandomInteger(0, 2)
+    end if
+    leftA := parentA[:outerLocus]
+    centreA = parentA[outerLocus][:innerLocus] 
+	          + parentB[outerLocus][innerLocus:]
+    rightA := parentB[outerLocus + 1:]
+    append centreA to leftA
+    childA := leftA + rightA
+    append childA to offspring
+    leftB := parentB[:outerLocus]
+    centreB := parentB[outerLocus][innerLocus]
+               + parentA[outerLocus][innerLocus:]
+    rightB := parentA[outerLocus + 1:]
+    append centreB to leftB
+    childB := leftB + rightB
+end for
+if halfPop =/= floor(populationSize / 2):
+    delete the last element in offspring
+end if
+return offspring
+\end{Verbatim}
+
+\subsection{Mutation}
+
+\begin{Verbatim}[numbers=left]
+function MutateOffspring
+input: offspring, mutationChance, timeSlots, rooms, sessions
+
+mutatedOffspring = offspring
+for solution in mutatedOffspring:
+    for session in solution:
+        for i in range(3):
+            mutate = RandomInteger(1, mutationChance)
+            if mutate == 0:
+                match i:
+                    case 0:
+                        newTimeSlot = random(timeSlots)
+                        offspring[solution][session][0] := newTimeSlot
+                    end case
+                    case 1:
+                        newRoom = random(rooms)
+                        offspring[solution][session][1] := newRoom
+                    end case
+                    case _:
+                        newSession = random.choice(sessions)
+                        offspring[solution][session][2] := newSession[0]
+                        offspring[solution][session][3] := newSession[1]
+                        offspring[solution][session][4] := newSession[2]
+                    end case
+                end match
+            end if
+        end for
+    end for
+end for
+return mutatedOffspring
+\end{Verbatim}
+
+\chapter{Implementation}
 
 \chapter{Testing}  % #TODO: testing
 
-\chapter{Evaluation}  % #TODO: evaluation
+\chapter{Evaluation}  % #TODO: evaluation 
 
 \chapter{Conclusion}  % #TODO: conclusion
 
