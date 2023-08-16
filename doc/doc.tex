@@ -1174,7 +1174,7 @@ individuals in the population.
 occurring, for example, if the chance of a mutation occurring is 
 \( \frac{1}{1000} \), then \verb|mutationChance| needs to be 1000.
 
-Note that the \verb|ChecKFitness| function is called both inside the while loop
+Note that the \verb|CheckFitness| function is called both inside the while loop
 and before it.
 This is so that the initial population generated can be checked for a valid 
 solution, removing the need to proceed with the rest of the algorithm.
@@ -1204,7 +1204,18 @@ end repeat
 return population
 \end{Verbatim}
 
-
+The initial population is generated within two for loops, as the population
+consists of many solutions, each of which consist of many sessions.
+For each session, the time slot and room are chosen randomly, but a session's 
+module, student group and teacher is predetermined.
+This is because when the configuration data is imported, a module is imported 
+with its student group and teacher, as a triple.
+Then each triple is stored in the list \verb|sessions|.
+This means that a session automatically has the correct student group and 
+teacher for the module, therefore reducing the difficulty of the problem.
+The session is stored \( n \) times in \verb|sessions|, where \( n \) is the 
+number of lab and lecture sessions of that module, so that the correct number 
+of teaching sessions are created.
 
 \subsection{Fitness Function}
 
@@ -1251,6 +1262,23 @@ end for
 return populationFitness, validSolution, validSolutionBool
 \end{Verbatim}
 
+The fitness function is calculated by totalling the number of constraint 
+violations, then raising it to the power of -1, so a higher fitness function is 
+better.
+However, solutions with no constraint violations have a fitness function of 0.
+
+Violations are worked out in different ways depending on which constraint is
+violated.
+To check for clashes for student groups, rooms, and teachers, the sessions in a 
+solution are sorted by time slot, so it can be checked if two consecutive 
+sessions in the solution list share the same time slot.
+If the two sessions do share the same time slot, then it is checked if the rooms
+are the same, and then if they are, constraint 4 has been violated, and the 
+count of violations is increased --- the same applies to student groups and 
+teachers.
+
+% TEACHER PREFERENCES #TODO 
+
 \subsection{Selection}
 
 \begin{Verbatim}[numbers=left]
@@ -1265,7 +1293,42 @@ ChooseParent(return: parentB)
 return parentA, parentB
 \end{Verbatim}
 
-explain what normalised limits and choose parents are
+\begin{Verbatim}[numbers=left]
+function ChooseParent
+input: normalisedLimits
+
+choice = random[0, 1]
+lowerValue = 0
+upperValue = size(normalisedLimits) - 1
+foundParent = False
+parent = None
+while not found_parent:
+    perform binary search to find interval in which the parent lies
+end while
+return parent
+\end{Verbatim}
+
+Firstly, the fitness values of the population are normalised so that they add 
+up to one. The selection of a parent can be modelled like a spinner wheel, where
+the fitter the solution, the larger its `slice' on the spinner wheel, so it is 
+more likely to be chosen.
+The function \verb|NormaliseValues| returns a list of limits, which are the 
+intermediate points of the cumulative sum of the normalised fitness values.
+As an example, if the population has normalised fitness values of 
+\( 0.25,0.5,0.25 \), then the returned \verb|normalisedLimits| will be 
+\( [0,0.25,0.75,1] \).
+Referring back to the spinner wheel analogy, these refer to the `edges' where 
+the `slices' meet.
+
+To select a parent, a random float between 0 and 1 is selected, which represents
+where the spinner lands.
+To continue the previous example, if the random float \verb|choice| is 0.52, 
+then the second solution will be chosen, as \( 0.25 < 0.52 < 0.75 \).
+Once this is selected, a binary search is performed to find the index of the 
+chosen solution (\verb|parent|). After the first parent has been selected, its 
+fitness value is removed from the list and the \verb|normalisedLimits| are 
+recalculated and \verb|ChooseParent| is run again, to determine the second 
+parent.
 
 \subsection{Crossover}
 
@@ -1302,6 +1365,26 @@ end if
 return offspring
 \end{Verbatim}
 
+Recall that to generate offspring, a locus in the chromosome is randomly chosen,
+and the before and after parts of the chromosome are swapped between the two 
+parents to produce two offspring.
+So the first task of the crossover phase is determining where the locus will be 
+in the chromosome.
+As the chromosome in this instance is a solution, which is modelled as set of 
+sets, we first need to determine which session contains the split --- which is 
+indexed with \verb|outerLocus|.
+The \verb|innerLocus| determines whether the locus is before the time slot
+(\verb|innerLocus| \( = 0\)), before the room (\verb|innerLocus| \( = 1 \)), or
+before the student group (\verb|innerLocus| \(=2\)). There is no split between
+the student group and the module, or the module and the teacher, because that 
+part of the solution is already known to be correct, so there is no point in
+changing it.
+
+The way that the crossover phase typically works is that the locus is in between
+alleles, i.e.\ between characters in a string. 
+However, due to how the data has been encoded, splitting between characters 
+would create e.g.\ rooms that do not exist, which is counterproductive. 
+
 \subsection{Mutation}
 
 \begin{Verbatim}[numbers=left]
@@ -1336,6 +1419,11 @@ for solution in mutatedOffspring:
 end for
 return mutatedOffspring
 \end{Verbatim}
+
+There is a chance of mutation for individual genes, rather than for the 
+individual as a whole, meaning an individual could have multiple mutations.
+Like with the crossover phase, the student group, module and teacher are not 
+mutated separately, for the same reason.
 
 \chapter{Implementation}
 
