@@ -1,0 +1,81 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Phase 3 (selection) of genetic algorithm.}
+
+\PYG{l+s+sd}{Functions:}
+\PYG{l+s+sd}{    select\PYGZus{}parents(population\PYGZus{}fitness: list) \PYGZhy{}\PYGZgt{} [int, int]}
+\PYG{l+s+sd}{    normalise\PYGZus{}values(fitness\PYGZus{}values: list) \PYGZhy{}\PYGZgt{} list}
+\PYG{l+s+sd}{    choose\PYGZus{}parent(range\PYGZus{}limits: list) \PYGZhy{}\PYGZgt{} int}
+\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+\PYG{k+kn}{import} \PYG{n+nn}{random}
+
+
+\PYG{k}{def} \PYG{n+nf}{select\PYGZus{}parents}\PYG{p}{(}\PYG{n}{population\PYGZus{}fitness}\PYG{p}{:} \PYG{n+nb}{list}\PYG{p}{)} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{[}\PYG{n+nb}{int}\PYG{p}{,} \PYG{n+nb}{int}\PYG{p}{]:}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Select the parents for crossover.}
+
+\PYG{l+s+sd}{    Args:}
+\PYG{l+s+sd}{        population\PYGZus{}fitness (list): The fitness values of the population.}
+
+\PYG{l+s+sd}{    Returns:}
+\PYG{l+s+sd}{        int: Index of the first parent.}
+\PYG{l+s+sd}{        int: Index of the other parent.}
+\PYG{l+s+sd}{    \PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{c+c1}{\PYGZsh{} print(\PYGZdq{}Selecting parents for crossover...\PYGZdq{}) TODO: add back}
+    \PYG{n}{fitness\PYGZus{}values} \PYG{o}{=} \PYG{n}{population\PYGZus{}fitness}
+    \PYG{n}{range\PYGZus{}limits\PYGZus{}a} \PYG{o}{=} \PYG{n}{normalise\PYGZus{}values}\PYG{p}{(}\PYG{n}{fitness\PYGZus{}values}\PYG{p}{)}
+    \PYG{n}{parent\PYGZus{}a} \PYG{o}{=} \PYG{n}{choose\PYGZus{}parent}\PYG{p}{(}\PYG{n}{range\PYGZus{}limits\PYGZus{}a}\PYG{p}{)}
+    \PYG{c+c1}{\PYGZsh{} print(\PYGZdq{}First parent selected.\PYGZdq{}) TODO: add back}
+    \PYG{n}{fitness\PYGZus{}values}\PYG{o}{.}\PYG{n}{remove}\PYG{p}{(}\PYG{n}{fitness\PYGZus{}values}\PYG{p}{[}\PYG{n}{parent\PYGZus{}a}\PYG{p}{])}
+
+    \PYG{n}{range\PYGZus{}limits\PYGZus{}b} \PYG{o}{=} \PYG{n}{normalise\PYGZus{}values}\PYG{p}{(}\PYG{n}{fitness\PYGZus{}values}\PYG{p}{)}
+    \PYG{n}{parent\PYGZus{}b} \PYG{o}{=} \PYG{n}{choose\PYGZus{}parent}\PYG{p}{(}\PYG{n}{range\PYGZus{}limits\PYGZus{}b}\PYG{p}{)}
+    \PYG{c+c1}{\PYGZsh{} print(\PYGZdq{}Second parent selected.\PYGZdq{}) TODO: add back}
+    \PYG{k}{return} \PYG{n}{parent\PYGZus{}a}\PYG{p}{,} \PYG{n}{parent\PYGZus{}b}
+
+
+\PYG{k}{def} \PYG{n+nf}{normalise\PYGZus{}values}\PYG{p}{(}\PYG{n}{fitness\PYGZus{}values}\PYG{p}{:} \PYG{n+nb}{list}\PYG{p}{)} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n+nb}{list}\PYG{p}{:}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Normalise the fitness values so that they add up to 1.}
+
+\PYG{l+s+sd}{    Args:}
+\PYG{l+s+sd}{        fitness\PYGZus{}values (list): The fitness values of the population.}
+
+\PYG{l+s+sd}{    Returns:}
+\PYG{l+s+sd}{        list: Cumulative sums of the normalised fitness values.}
+\PYG{l+s+sd}{    \PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{n}{fitness\PYGZus{}total} \PYG{o}{=} \PYG{l+m+mi}{0}
+    \PYG{k}{for} \PYG{n}{value} \PYG{o+ow}{in} \PYG{n}{fitness\PYGZus{}values}\PYG{p}{:}
+        \PYG{n}{fitness\PYGZus{}total} \PYG{o}{+=} \PYG{n}{value}
+    \PYG{n}{range\PYGZus{}limits} \PYG{o}{=} \PYG{p}{[]}
+    \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{fitness\PYGZus{}values}\PYG{p}{)):}
+        \PYG{n}{value\PYGZus{}norm} \PYG{o}{=} \PYG{n}{fitness\PYGZus{}values}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{/} \PYG{n}{fitness\PYGZus{}total}
+        \PYG{n}{range\PYGZus{}limits}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{value\PYGZus{}norm}\PYG{p}{)}
+        \PYG{k}{if} \PYG{n}{i} \PYG{o}{!=} \PYG{l+m+mi}{0}\PYG{p}{:}
+            \PYG{n}{range\PYGZus{}limits}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{+=} \PYG{n}{range\PYGZus{}limits}\PYG{p}{[}\PYG{n}{i} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{]}
+    \PYG{n}{range\PYGZus{}limits}\PYG{p}{[}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{fitness\PYGZus{}values}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mi}{1}
+    \PYG{n}{range\PYGZus{}limits}\PYG{o}{.}\PYG{n}{insert}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{)}
+    \PYG{k}{return} \PYG{n}{range\PYGZus{}limits}  \PYG{c+c1}{\PYGZsh{} limits are upper limits?}
+
+
+\PYG{k}{def} \PYG{n+nf}{choose\PYGZus{}parent}\PYG{p}{(}\PYG{n}{range\PYGZus{}limits}\PYG{p}{:} \PYG{n+nb}{list}\PYG{p}{)} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n+nb}{int}\PYG{p}{:}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Perform a binary search to get the index of the chosen parent.}
+
+\PYG{l+s+sd}{    Args:}
+\PYG{l+s+sd}{        range\PYGZus{}limits (list): Cumulative sums of the normalised fitness values.}
+
+\PYG{l+s+sd}{    Returns:}
+\PYG{l+s+sd}{        int: The index of the chosen parent.}
+\PYG{l+s+sd}{    \PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{n}{choice} \PYG{o}{=} \PYG{n}{random}\PYG{o}{.}\PYG{n}{random}\PYG{p}{()}
+    \PYG{n}{lower}\PYG{p}{,} \PYG{n}{upper} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{range\PYGZus{}limits}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}
+    \PYG{n}{found\PYGZus{}parent} \PYG{o}{=} \PYG{k+kc}{False}
+    \PYG{n}{parent\PYGZus{}index} \PYG{o}{=} \PYG{k+kc}{None}
+    \PYG{k}{while} \PYG{o+ow}{not} \PYG{n}{found\PYGZus{}parent}\PYG{p}{:}
+        \PYG{n}{middle} \PYG{o}{=} \PYG{p}{(}\PYG{n}{lower} \PYG{o}{+} \PYG{n}{upper}\PYG{p}{)} \PYG{o}{//} \PYG{l+m+mi}{2}
+        \PYG{k}{if} \PYG{n}{lower} \PYG{o}{==} \PYG{n}{upper} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{:}
+            \PYG{n}{found\PYGZus{}parent} \PYG{o}{=} \PYG{k+kc}{True}
+            \PYG{n}{parent\PYGZus{}index} \PYG{o}{=} \PYG{n}{middle}
+        \PYG{k}{elif} \PYG{n}{range\PYGZus{}limits}\PYG{p}{[}\PYG{n}{middle}\PYG{p}{]} \PYG{o}{\PYGZlt{}} \PYG{n}{choice}\PYG{p}{:}
+            \PYG{n}{lower} \PYG{o}{=} \PYG{n}{middle}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{n}{upper} \PYG{o}{=} \PYG{n}{middle}
+    \PYG{k}{return} \PYG{n}{parent\PYGZus{}index}
+\end{Verbatim}

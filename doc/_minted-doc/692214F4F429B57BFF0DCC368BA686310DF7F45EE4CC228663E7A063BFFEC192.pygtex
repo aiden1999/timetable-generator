@@ -1,0 +1,84 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Phase 2 (fitness function) of genetic algorithm.}
+
+\PYG{l+s+sd}{Functions:}
+\PYG{l+s+sd}{    check\PYGZus{}population\PYGZus{}fitness(population: list, teacher\PYGZus{}times: list) \PYGZhy{}\PYGZgt{} [list,}
+\PYG{l+s+sd}{        bool, list]}
+\PYG{l+s+sd}{    calculate\PYGZus{}fitness(solution: list, teacher\PYGZus{}times: list) \PYGZhy{}\PYGZgt{} float}
+\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+
+
+\PYG{k}{def} \PYG{n+nf}{check\PYGZus{}population\PYGZus{}fitness}\PYG{p}{(}\PYG{n}{population}\PYG{p}{:} \PYG{n+nb}{list}\PYG{p}{,} \PYG{n}{teacher\PYGZus{}times}\PYG{p}{:} \PYG{n+nb}{list}\PYG{p}{)} \PYGZbs{}
+        \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{[}\PYG{n+nb}{list}\PYG{p}{,} \PYG{n+nb}{bool}\PYG{p}{,} \PYG{n+nb}{list}\PYG{p}{]:}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Calculate the fitness of the whole population.}
+
+\PYG{l+s+sd}{    Args:}
+\PYG{l+s+sd}{        population (list): The population of solutions.}
+\PYG{l+s+sd}{        teacher\PYGZus{}times (list): The time slot preferences of the teachers.}
+
+\PYG{l+s+sd}{    Returns:}
+\PYG{l+s+sd}{        list: The fitness values of the population.}
+\PYG{l+s+sd}{        bool: Whether or not there is a correct solution.}
+\PYG{l+s+sd}{        list: The correct solution (if it exists).}
+\PYG{l+s+sd}{    \PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{c+c1}{\PYGZsh{} print(\PYGZdq{}Calculating the fitness of individuals...\PYGZdq{}) TODO: add back}
+    \PYG{n}{population\PYGZus{}fitness} \PYG{o}{=} \PYG{p}{[]}
+    \PYG{n}{valid\PYGZus{}solution\PYGZus{}bool} \PYG{o}{=} \PYG{k+kc}{False}
+    \PYG{n}{valid\PYGZus{}solution} \PYG{o}{=} \PYG{k+kc}{None}
+
+    \PYG{k}{for} \PYG{n}{solution} \PYG{o+ow}{in} \PYG{n}{population}\PYG{p}{:}
+        \PYG{n}{sol\PYGZus{}fitness} \PYG{o}{=} \PYG{n}{calculate\PYGZus{}fitness}\PYG{p}{(}\PYG{n}{solution}\PYG{p}{,} \PYG{n}{teacher\PYGZus{}times}\PYG{p}{)}
+        \PYG{n}{population\PYGZus{}fitness}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{sol\PYGZus{}fitness}\PYG{p}{)}
+        \PYG{k}{if} \PYG{n}{sol\PYGZus{}fitness} \PYG{o}{==} \PYG{l+m+mi}{0}\PYG{p}{:}
+            \PYG{n}{valid\PYGZus{}solution\PYGZus{}bool} \PYG{o}{=} \PYG{k+kc}{True}
+            \PYG{n}{valid\PYGZus{}solution} \PYG{o}{=} \PYG{n}{solution}
+            \PYG{k}{break}
+
+    \PYG{c+c1}{\PYGZsh{} print(\PYGZdq{}Fitness of individuals calculated.\PYGZdq{}) TODO: add back}
+    \PYG{k}{return} \PYG{n}{population\PYGZus{}fitness}\PYG{p}{,} \PYG{n}{valid\PYGZus{}solution\PYGZus{}bool}\PYG{p}{,} \PYG{n}{valid\PYGZus{}solution}
+
+
+\PYG{k}{def} \PYG{n+nf}{calculate\PYGZus{}fitness}\PYG{p}{(}\PYG{n}{solution}\PYG{p}{:} \PYG{n+nb}{list}\PYG{p}{,} \PYG{n}{teacher\PYGZus{}times}\PYG{p}{:} \PYG{n+nb}{list}\PYG{p}{)} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n+nb}{float}\PYG{p}{:}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Calculate fitness of a solution.}
+
+\PYG{l+s+sd}{    Args:}
+\PYG{l+s+sd}{        solution (list): A possible solution to the timetabling problem.}
+\PYG{l+s+sd}{        teacher\PYGZus{}times (list): The time slot preferences of the teachers.}
+
+\PYG{l+s+sd}{    Returns:}
+\PYG{l+s+sd}{        float: Fitness of the solution.}
+\PYG{l+s+sd}{    \PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{c+c1}{\PYGZsh{} Sort by time slot}
+    \PYG{n}{solution}\PYG{o}{.}\PYG{n}{sort}\PYG{p}{(}\PYG{n}{key}\PYG{o}{=}\PYG{k}{lambda} \PYG{n}{x}\PYG{p}{:} \PYG{n}{x}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{])}
+    \PYG{n}{problem\PYGZus{}count} \PYG{o}{=} \PYG{l+m+mi}{0}
+
+    \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{solution}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{):}
+
+        \PYG{c+c1}{\PYGZsh{} Check if sessions are happening at the same time}
+        \PYG{k}{if} \PYG{n}{solution}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{==} \PYG{n}{solution}\PYG{p}{[}\PYG{n}{i} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]:}
+
+            \PYG{c+c1}{\PYGZsh{} Room clash:}
+            \PYG{k}{if} \PYG{n}{solution}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{==} \PYG{n}{solution}\PYG{p}{[}\PYG{n}{i} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]:}
+                \PYG{n}{problem\PYGZus{}count} \PYG{o}{+=} \PYG{l+m+mi}{1}
+
+            \PYG{c+c1}{\PYGZsh{} Student group clash:}
+            \PYG{k}{if} \PYG{n}{solution}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{l+m+mi}{2}\PYG{p}{]} \PYG{o}{==} \PYG{n}{solution}\PYG{p}{[}\PYG{n}{i} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{][}\PYG{l+m+mi}{2}\PYG{p}{]:}
+                \PYG{n}{problem\PYGZus{}count} \PYG{o}{+=} \PYG{l+m+mi}{1}
+
+            \PYG{c+c1}{\PYGZsh{} Teacher clash:}
+            \PYG{k}{if} \PYG{n}{solution}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{l+m+mi}{4}\PYG{p}{]} \PYG{o}{==} \PYG{n}{solution}\PYG{p}{[}\PYG{n}{i} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{][}\PYG{l+m+mi}{4}\PYG{p}{]:}
+                \PYG{n}{problem\PYGZus{}count} \PYG{o}{+=} \PYG{l+m+mi}{1}
+
+    \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{solution}\PYG{p}{)):}
+
+        \PYG{c+c1}{\PYGZsh{} check teacher preferences}
+        \PYG{n}{time\PYGZus{}slot} \PYG{o}{=} \PYG{n}{solution}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}
+        \PYG{n}{teacher\PYGZus{}num} \PYG{o}{=} \PYG{n+nb}{int}\PYG{p}{(}\PYG{n}{solution}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{l+m+mi}{4}\PYG{p}{])}
+        \PYG{c+c1}{\PYGZsh{} TODO: why the FUCK is this not finished??????}
+
+    \PYG{k}{if} \PYG{n}{problem\PYGZus{}count} \PYG{o}{==} \PYG{l+m+mi}{0}\PYG{p}{:}
+        \PYG{n}{fitness} \PYG{o}{=} \PYG{l+m+mi}{0}
+    \PYG{k}{else}\PYG{p}{:}
+        \PYG{n}{fitness} \PYG{o}{=} \PYG{l+m+mi}{1} \PYG{o}{/} \PYG{n}{problem\PYGZus{}count}
+    \PYG{k}{return} \PYG{n}{fitness}
+\end{Verbatim}

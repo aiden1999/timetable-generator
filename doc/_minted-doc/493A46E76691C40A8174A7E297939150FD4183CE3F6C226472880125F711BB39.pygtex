@@ -1,0 +1,118 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Genetic algorithm base.}
+
+\PYG{l+s+sd}{Functions:}
+\PYG{l+s+sd}{    generate\PYGZus{}timetable()}
+\PYG{l+s+sd}{    get\PYGZus{}settings\PYGZus{}data() \PYGZhy{}\PYGZgt{} [int, int]}
+\PYG{l+s+sd}{    generate\PYGZus{}output\PYGZus{}text(solution: list, person\PYGZus{}type: str)}
+\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+\PYG{k+kn}{import} \PYG{n+nn}{initial\PYGZus{}population} \PYG{k}{as} \PYG{n+nn}{p1}
+\PYG{k+kn}{import} \PYG{n+nn}{fitness\PYGZus{}function} \PYG{k}{as} \PYG{n+nn}{p2}
+\PYG{k+kn}{import} \PYG{n+nn}{selection} \PYG{k}{as} \PYG{n+nn}{p3}
+\PYG{k+kn}{import} \PYG{n+nn}{crossover} \PYG{k}{as} \PYG{n+nn}{p4}
+\PYG{k+kn}{import} \PYG{n+nn}{mutation} \PYG{k}{as} \PYG{n+nn}{p5}
+\PYG{k+kn}{import} \PYG{n+nn}{json}
+
+
+\PYG{k}{def} \PYG{n+nf}{generate\PYGZus{}timetable}\PYG{p}{():}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Generate the timetable.}
+
+\PYG{l+s+sd}{    Basis of the timetable generation, goes through the whole of the}
+\PYG{l+s+sd}{    genetic algorithm.}
+\PYG{l+s+sd}{    \PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{n}{population\PYGZus{}size}\PYG{p}{,} \PYG{n}{mutation\PYGZus{}chance} \PYG{o}{=} \PYG{n}{get\PYGZus{}settings\PYGZus{}data}\PYG{p}{()}
+    \PYG{n}{sessions}\PYG{p}{,} \PYG{n}{rooms}\PYG{p}{,} \PYG{n}{time\PYGZus{}slots}\PYG{p}{,} \PYG{n}{teacher\PYGZus{}times} \PYG{o}{=} \PYG{n}{p1}\PYG{o}{.}\PYG{n}{get\PYGZus{}config\PYGZus{}data}\PYG{p}{()}
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Generation 1:\PYGZdq{}}\PYG{p}{)}
+    \PYG{n}{generation\PYGZus{}count} \PYG{o}{=} \PYG{l+m+mi}{1}
+    \PYG{n}{population} \PYG{o}{=} \PYG{n}{p1}\PYG{o}{.}\PYG{n}{generate\PYGZus{}initial\PYGZus{}population}\PYG{p}{(}\PYG{n}{sessions}\PYG{p}{,} \PYG{n}{rooms}\PYG{p}{,} \PYG{n}{time\PYGZus{}slots}\PYG{p}{,}
+                                                \PYG{n}{population\PYGZus{}size}\PYG{p}{)}
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{population}\PYG{p}{)}
+    \PYG{n}{population\PYGZus{}fitness}\PYG{p}{,} \PYG{n}{valid\PYGZus{}solution\PYGZus{}bool}\PYG{p}{,} \PYG{n}{valid\PYGZus{}solution} \PYG{o}{=} \PYGZbs{}
+        \PYG{n}{p2}\PYG{o}{.}\PYG{n}{check\PYGZus{}population\PYGZus{}fitness}\PYG{p}{(}\PYG{n}{population}\PYG{p}{,} \PYG{n}{teacher\PYGZus{}times}\PYG{p}{)}
+    \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{):}  \PYG{c+c1}{\PYGZsh{} TODO temp}
+        \PYG{c+c1}{\PYGZsh{} while not valid\PYGZus{}solution\PYGZus{}bool: TODO add back}
+        \PYG{c+c1}{\PYGZsh{} print(\PYGZdq{}No timetable solution found.\PYGZdq{}) TODO: add back}
+        \PYG{n}{parent\PYGZus{}a}\PYG{p}{,} \PYG{n}{parent\PYGZus{}b} \PYG{o}{=} \PYG{n}{p3}\PYG{o}{.}\PYG{n}{select\PYGZus{}parents}\PYG{p}{(}\PYG{n}{population\PYGZus{}fitness}\PYG{p}{)}
+        \PYG{c+c1}{\PYGZsh{} Note that parent\PYGZus{}a and parent\PYGZus{}b are indices}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}pop size:\PYGZdq{}}\PYG{p}{)}  \PYG{c+c1}{\PYGZsh{} TODO remove}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{population\PYGZus{}size}\PYG{p}{)}  \PYG{c+c1}{\PYGZsh{} TODO remove}
+        \PYG{n}{offspring} \PYG{o}{=} \PYG{n}{p4}\PYG{o}{.}\PYG{n}{crossover}\PYG{p}{(}\PYG{n}{population}\PYG{p}{[}\PYG{n}{parent\PYGZus{}a}\PYG{p}{],} \PYG{n}{population}\PYG{p}{[}\PYG{n}{parent\PYGZus{}b}\PYG{p}{],}
+                                 \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{population}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]),} \PYG{n}{population\PYGZus{}size}\PYG{p}{)}
+        \PYG{n}{mutated\PYGZus{}offspring} \PYG{o}{=} \PYG{n}{p5}\PYG{o}{.}\PYG{n}{mutate}\PYG{p}{(}\PYG{n}{offspring}\PYG{p}{,} \PYG{n}{time\PYGZus{}slots}\PYG{p}{,} \PYG{n}{rooms}\PYG{p}{,} \PYG{n}{sessions}\PYG{p}{,}
+                                      \PYG{n}{mutation\PYGZus{}chance}\PYG{p}{)}
+        \PYG{n}{mutated\PYGZus{}offspring}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{population}\PYG{p}{[}\PYG{n}{parent\PYGZus{}a}\PYG{p}{])}
+        \PYG{n}{mutated\PYGZus{}offspring}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{population}\PYG{p}{[}\PYG{n}{parent\PYGZus{}b}\PYG{p}{])}
+        \PYG{c+c1}{\PYGZsh{} check if any of the offspring is a valid solution}
+        \PYG{n}{population\PYGZus{}fitness}\PYG{p}{,} \PYG{n}{valid\PYGZus{}solution\PYGZus{}bool}\PYG{p}{,} \PYG{n}{valid\PYGZus{}solution} \PYGZbs{}
+            \PYG{o}{=} \PYG{n}{p2}\PYG{o}{.}\PYG{n}{check\PYGZus{}population\PYGZus{}fitness}\PYG{p}{(}\PYG{n}{mutated\PYGZus{}offspring}\PYG{p}{,} \PYG{n}{teacher\PYGZus{}times}\PYG{p}{)}
+        \PYG{k}{if} \PYG{o+ow}{not} \PYG{n}{valid\PYGZus{}solution\PYGZus{}bool}\PYG{p}{:}
+            \PYG{n}{population} \PYG{o}{=} \PYG{n}{mutated\PYGZus{}offspring}
+            \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{):}
+                \PYG{n}{worst\PYGZus{}fitness} \PYG{o}{=} \PYG{n+nb}{max}\PYG{p}{(}\PYG{n}{population\PYGZus{}fitness}\PYG{p}{)}
+                \PYG{n}{worst\PYGZus{}fitness\PYGZus{}index} \PYG{o}{=} \PYG{n}{population\PYGZus{}fitness}\PYG{o}{.}\PYG{n}{index}\PYG{p}{(}\PYG{n}{worst\PYGZus{}fitness}\PYG{p}{)}
+                \PYG{k}{del} \PYG{n}{population\PYGZus{}fitness}\PYG{p}{[}\PYG{n}{worst\PYGZus{}fitness\PYGZus{}index}\PYG{p}{]}
+                \PYG{k}{del} \PYG{n}{population}\PYG{p}{[}\PYG{n}{worst\PYGZus{}fitness\PYGZus{}index}\PYG{p}{]}
+            \PYG{n}{generation\PYGZus{}count} \PYG{o}{+=} \PYG{l+m+mi}{1}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Generation \PYGZdq{}} \PYG{o}{+} \PYG{n+nb}{str}\PYG{p}{(}\PYG{n}{generation\PYGZus{}count}\PYG{p}{)} \PYG{o}{+} \PYG{l+s+s2}{\PYGZdq{}:\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{population}\PYG{p}{)}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{population\PYGZus{}fitness}\PYG{p}{)}
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Timetable solution found. Writing output to text files...\PYGZdq{}}\PYG{p}{)}
+    \PYG{n}{generate\PYGZus{}output\PYGZus{}text}\PYG{p}{(}\PYG{n}{valid\PYGZus{}solution}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}teachers\PYGZdq{}}\PYG{p}{)}
+    \PYG{n}{generate\PYGZus{}output\PYGZus{}text}\PYG{p}{(}\PYG{n}{valid\PYGZus{}solution}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}student\PYGZus{}groups\PYGZdq{}}\PYG{p}{)}
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Output written to files in ./teacher\PYGZhy{}timetables and }\PYG{l+s+se}{\PYGZbs{}}
+\PYG{l+s+s2}{    ./student\PYGZhy{}group\PYGZhy{}timetables.\PYGZdq{}}\PYG{p}{)}
+
+
+\PYG{k}{def} \PYG{n+nf}{get\PYGZus{}settings\PYGZus{}data}\PYG{p}{()} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{p}{[}\PYG{n+nb}{int}\PYG{p}{,} \PYG{n+nb}{int}\PYG{p}{]:}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Get settings for timetable generation.}
+
+\PYG{l+s+sd}{    Returns:}
+\PYG{l+s+sd}{        int: Population size set by the user.}
+\PYG{l+s+sd}{        int: Chance of mutation set by the user.}
+\PYG{l+s+sd}{    \PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{n}{file} \PYG{o}{=} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}settings.json\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}r\PYGZdq{}}\PYG{p}{,} \PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}utf\PYGZhy{}8\PYGZdq{}}\PYG{p}{)}
+    \PYG{n}{settings} \PYG{o}{=} \PYG{n}{json}\PYG{o}{.}\PYG{n}{load}\PYG{p}{(}\PYG{n}{file}\PYG{p}{)}
+    \PYG{n}{file}\PYG{o}{.}\PYG{n}{close}\PYG{p}{()}
+    \PYG{n}{population\PYGZus{}size} \PYG{o}{=} \PYG{n+nb}{int}\PYG{p}{(}\PYG{n}{settings}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}population\PYGZhy{}size\PYGZdq{}}\PYG{p}{])}
+    \PYG{n}{mutation\PYGZus{}chance} \PYG{o}{=} \PYG{n+nb}{int}\PYG{p}{(}\PYG{n}{settings}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}mutation\PYGZhy{}chance\PYGZdq{}}\PYG{p}{])}
+    \PYG{k}{return} \PYG{n}{population\PYGZus{}size}\PYG{p}{,} \PYG{n}{mutation\PYGZus{}chance}
+
+
+\PYG{k}{def} \PYG{n+nf}{generate\PYGZus{}output\PYGZus{}text}\PYG{p}{(}\PYG{n}{solution}\PYG{p}{:} \PYG{n+nb}{list}\PYG{p}{,} \PYG{n}{person\PYGZus{}type}\PYG{p}{:} \PYG{n+nb}{str}\PYG{p}{):}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Generate output of a correct timetable to text files.}
+
+\PYG{l+s+sd}{    Args:}
+\PYG{l+s+sd}{        solution (list): A correct timetable solution.}
+\PYG{l+s+sd}{        person\PYGZus{}type (str): Who the timetable is for, student\PYGZus{}groups or teachers}
+\PYG{l+s+sd}{    \PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{n}{dictionary} \PYG{o}{=} \PYG{p}{\PYGZob{}\PYGZcb{}}
+    \PYG{n}{file} \PYG{o}{=} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}data.json\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}r\PYGZdq{}}\PYG{p}{,} \PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}utf\PYGZhy{}8\PYGZdq{}}\PYG{p}{)}
+    \PYG{n}{data} \PYG{o}{=} \PYG{n}{json}\PYG{o}{.}\PYG{n}{load}\PYG{p}{(}\PYG{n}{file}\PYG{p}{)}
+    \PYG{n}{file}\PYG{o}{.}\PYG{n}{close}\PYG{p}{()}
+
+    \PYG{k}{for} \PYG{n}{person} \PYG{o+ow}{in} \PYG{n}{data}\PYG{p}{[}\PYG{n}{person\PYGZus{}type}\PYG{p}{]:}
+        \PYG{n}{dictionary}\PYG{o}{.}\PYG{n}{update}\PYG{p}{(\PYGZob{}}\PYG{n}{person}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}id\PYGZdq{}}\PYG{p}{]:} \PYG{p}{[]\PYGZcb{})}
+    \PYG{k}{for} \PYG{n}{session} \PYG{o+ow}{in} \PYG{n}{solution}\PYG{p}{:}
+        \PYG{k}{if} \PYG{n}{person\PYGZus{}type} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}teachers\PYGZdq{}}\PYG{p}{:}
+            \PYG{n}{session\PYGZus{}person} \PYG{o}{=} \PYG{n}{session}\PYG{p}{[}\PYG{l+m+mi}{4}\PYG{p}{]}
+        \PYG{k}{else}\PYG{p}{:}  \PYG{c+c1}{\PYGZsh{} session\PYGZus{}person == \PYGZdq{}student\PYGZus{}groups\PYGZdq{}}
+            \PYG{n}{session\PYGZus{}person} \PYG{o}{=} \PYG{n}{session}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{]}
+        \PYG{n}{session\PYGZus{}person\PYGZus{}list} \PYG{o}{=} \PYG{n}{dictionary}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{n}{session\PYGZus{}person}\PYG{p}{)}
+        \PYG{n}{session\PYGZus{}person\PYGZus{}list}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{session}\PYG{p}{)}
+        \PYG{n}{dictionary}\PYG{o}{.}\PYG{n}{update}\PYG{p}{(\PYGZob{}}\PYG{n}{session\PYGZus{}person}\PYG{p}{:} \PYG{n}{session\PYGZus{}person\PYGZus{}list}\PYG{p}{\PYGZcb{})}
+
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Creating directory for \PYGZdq{}} \PYG{o}{+} \PYG{n+nb}{str}\PYG{p}{(}\PYG{n}{person\PYGZus{}type}\PYG{p}{)} \PYG{o}{+} \PYG{l+s+s2}{\PYGZdq{} timetables...\PYGZdq{}}\PYG{p}{)}
+    \PYG{k}{try}\PYG{p}{:}
+        \PYG{n}{os}\PYG{o}{.}\PYG{n}{mkdir}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}./\PYGZdq{}} \PYG{o}{+} \PYG{n+nb}{str}\PYG{p}{(}\PYG{n}{person\PYGZus{}type}\PYG{p}{)} \PYG{o}{+} \PYG{l+s+s2}{\PYGZdq{}\PYGZus{}timetables\PYGZdq{}}\PYG{p}{)}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Directory \PYGZsq{}\PYGZdq{}} \PYG{o}{+} \PYG{n+nb}{str}\PYG{p}{(}\PYG{n}{person\PYGZus{}type}\PYG{p}{)} \PYG{o}{+} \PYG{l+s+s2}{\PYGZdq{}\PYGZus{}timetables\PYGZsq{} created.\PYGZdq{}}\PYG{p}{)}
+    \PYG{k}{except} \PYG{n+ne}{FileExistsError}\PYG{p}{:}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Directory already exists.\PYGZdq{}}\PYG{p}{)}
+    \PYG{k}{for} \PYG{n}{session\PYGZus{}person} \PYG{o+ow}{in} \PYG{n}{dictionary}\PYG{p}{:}
+        \PYG{n}{file} \PYG{o}{=} \PYG{n+nb}{open}\PYG{p}{(}\PYG{n+nb}{str}\PYG{p}{(}\PYG{n}{session\PYGZus{}person}\PYG{p}{)} \PYG{o}{+} \PYG{l+s+s2}{\PYGZdq{}.txt\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}w\PYGZdq{}}\PYG{p}{,} \PYG{n}{encoding}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}utf\PYGZhy{}8\PYGZdq{}}\PYG{p}{)}
+        \PYG{n}{person\PYGZus{}sessions} \PYG{o}{=} \PYG{n}{dictionary}\PYG{p}{[}\PYG{n}{session\PYGZus{}person}\PYG{p}{]}
+        \PYG{k}{for} \PYG{n}{session} \PYG{o+ow}{in} \PYG{n}{person\PYGZus{}sessions}\PYG{p}{:}
+            \PYG{n}{file}\PYG{o}{.}\PYG{n}{write}\PYG{p}{(}\PYG{n+nb}{str}\PYG{p}{(}\PYG{n}{session}\PYG{p}{))}
+        \PYG{n}{file}\PYG{o}{.}\PYG{n}{close}\PYG{p}{()}
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Timetable output files created.\PYGZdq{}}\PYG{p}{)}
+    \PYG{c+c1}{\PYGZsh{} TODO: formatting?}
+\end{Verbatim}

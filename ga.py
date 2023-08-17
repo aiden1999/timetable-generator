@@ -29,12 +29,12 @@ def generate_timetable():
     population_fitness, valid_solution_bool, valid_solution = \
         p2.check_population_fitness(population, teacher_times)
     for i in range(3):  # TODO temp
-    #   while not valid_solution_bool: TODO add back
+        # while not valid_solution_bool: TODO add back
         # print("No timetable solution found.") TODO: add back
         parent_a, parent_b = p3.select_parents(population_fitness)
         # Note that parent_a and parent_b are indices
         print("pop size:")  # TODO remove
-        print(population_size)  # TODO remove 
+        print(population_size)  # TODO remove
         offspring = p4.crossover(population[parent_a], population[parent_b],
                                  len(population[0]), population_size)
         mutated_offspring = p5.mutate(offspring, time_slots, rooms, sessions,

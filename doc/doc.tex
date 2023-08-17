@@ -1,5 +1,6 @@
 \documentclass[a4paper, 12pt]{report}
 
+\usepackage{minted}
 \usepackage{amsmath}
 \usepackage{booktabs}
 \usepackage{courier}
@@ -9,15 +10,16 @@
 \usepackage{fancybox}
 \usepackage{fancyhdr}
 \usepackage{fancyvrb}
-\usepackage[includeheadfoot,margin=1.5cm]{geometry}
+\usepackage[includeheadfoot,margin=2.5cm]{geometry}
 \usepackage[dvips]{graphicx}
-\usepackage{listings}
 \usepackage{multirow}
 \usepackage{parskip}
 \usepackage{titlesec}
 \usepackage[nottoc]{tocbibind}
 \usepackage{url}
 \usepackage{xcolor}
+
+\usemintedstyle{default}
 
 % Choose your bibliography style
 \bibliographystyle{plain}
@@ -536,7 +538,7 @@ The authors compared their algorithm to the work of others, by running 11
 different datasets through them, and totalling the number of violations of their
 hard and soft constraints. 
 The authors' algorithm performed best against other implementations of Tabu 
-search, and  was also compared to other algorithms that did not use Tabu search 
+search, and was also compared to other algorithms that did not use Tabu search 
 at all.
 The authors' implementation performed better than all the other algorithms, 
 except variable neighbourhood search on the largest dataset, and simulated 
@@ -695,9 +697,9 @@ To simplify echolocation, Yang suggested these rules:
 		\( A_{\min} \).
 \end{enumerate}
 Pseudocode for the Bat Algorithm can be described as:
-\begin{verbatim}
+\begin{Verbatim}[numbers=left, fontsize=\footnotesize]
 	Define the objective function f(x)
-	Generate initial population of the bat X = {x1, ..., xn}
+	Generate initial population of the bat X = {x1, \( \ldots \), xn}
 	For each bat xi in X
 	    Initialise the pulse rate ri, velocity vi and loudness Ai
 	    Define the pulse frequency fi
@@ -717,7 +719,7 @@ Pseudocode for the Bat Algorithm can be described as:
 	    End for
 	End while
 	Ranks the bats and obtain the current best bat
-\end{verbatim}
+\end{Verbatim}
 ~\cite{ba_example}
 
 In the first step, the bat population initialised with parameters position
@@ -789,24 +791,38 @@ The below table summarises how the different methods for solving the timetabling
 problem performed.
 
 \begin{table}
-	\begin{tabular}{cccccc}
+	\begin{tabular}{cccc}
 		\toprule
-		\ & \multirow{2}{65pt}{Genetic Algorithm\cite{ga_example}} 
-			& \multirow{2}{7.0em}{Binary Integer Prog.\cite{bip_example}} 
-			& \multirow{2}{4.0em}{Tabu Search\cite{tabu_example}} 
-			& \multirow{2}{5em}{Answer Set Prog.\cite{asp_example}} 
-			& \multirow{2}{6em}{Bat Inspired Algorithm\cite{ba_example}} \\
+		Method 
+			& \multirow{2}{9em}{Dataset size (number of courses)}
+			& \multirow{2}{6em}{Solution generated?}
+			& Errors? \\
 		\\
 		\midrule
-		\multirow{2}{8.6em}{Dataset size (number of courses)} & 340 & 3 & 400* 
-			& 850 & 124 \\ 
+		\multirow{2}{10em}{Genetic Algorithm\cite{ga_example}}
+			& 340
+			& Yes 
+			& \multirow{2}{9em}{84 students had at least one clash} \\
 		\\
-		Solution generated? & Yes & Yes & Yes & Yes & Yes \\
-		Errors? & \multirow{3}{65pt}{84 students had at least one clash} & None 
-			& \multirow{4}{5em}{347* hard/soft constraint violations} & None 
-			& None\\
+		\multirow{2}{10em}{Binary Integer Programming\cite{bip_example}}
+			& 3
+			& Yes
+			& None \\
 		\\
+		\multirow{1}{10em}{Tabu Search\cite{tabu_example}}
+			& 400*
+			& Yes 
+			& \multirow{2}{9em}{347* hard/soft constraint violations} \\
 		\\
+		\multirow{2}{10em}{Answer Set Programming\cite{asp_example}}
+			& 850
+			& Yes 
+			& None \\
+		\\
+		\multirow{2}{10em}{Bat Inspired Algorithm\cite{ba_example}}
+			& 124
+			& Yes
+			& None \\
 		\\
 		\bottomrule
 	\end{tabular}
@@ -1141,7 +1157,7 @@ For the genetic algorithm, the population is a set of solutions.
 
 \section{Genetic Algorithm Pseudocode}
 
-\begin{Verbatim}[numbers=left]
+\begin{Verbatim}[numbers=left, fontsize=\footnotesize]
 function GeneticAlgorithm
 
 GetSettingsData (return: populationSize, mutationChance)
@@ -1183,7 +1199,7 @@ loop, after the mutation phase.
 
 \subsection{Initial Population}
 
-\begin{Verbatim}[numbers=left]
+\begin{Verbatim}[numbers=left, fontsize=\footnotesize]
 function CreatePopulation
 input: sessions, rooms, timeSlots, populationSize
 
@@ -1219,7 +1235,7 @@ of teaching sessions are created.
 
 \subsection{Fitness Function}
 
-\begin{Verbatim}[numbers=left]
+\begin{Verbatim}[numbers=left, fontsize=\footnotesize]
 function CheckFitness
 input: population, teacherTimes
 
@@ -1281,7 +1297,7 @@ teachers.
 
 \subsection{Selection}
 
-\begin{Verbatim}[numbers=left]
+\begin{Verbatim}[numbers=left, fontsize=\footnotesize]
 function SelectParents
 input: populationFitness
 
@@ -1293,7 +1309,7 @@ ChooseParent(return: parentB)
 return parentA, parentB
 \end{Verbatim}
 
-\begin{Verbatim}[numbers=left]
+\begin{Verbatim}[numbers=left, fontsize=\footnotesize]
 function ChooseParent
 input: normalisedLimits
 
@@ -1332,7 +1348,7 @@ parent.
 
 \subsection{Crossover}
 
-\begin{Verbatim}[numbers=left]
+\begin{Verbatim}[numbers=left, fontsize=\footnotesize]
 function CreateOffspring
 input: populationSize, numOfSessions, parentA, parentB
 
@@ -1387,7 +1403,7 @@ would create e.g.\ rooms that do not exist, which is counterproductive.
 
 \subsection{Mutation}
 
-\begin{Verbatim}[numbers=left]
+\begin{Verbatim}[numbers=left, fontsize=\footnotesize]
 function MutateOffspring
 input: offspring, mutationChance, timeSlots, rooms, sessions
 
@@ -1427,6 +1443,23 @@ mutated separately, for the same reason.
 
 \chapter{Implementation}
 
+The program is written in Python, using a procedural programming approach.
+The program is split across multiple files, for ease of reading.
+
+\section{Data Storage}
+
+The settings data and the config data are stored in json files, 
+\verb|settings.json| and \verb|data.json| respectively.
+Below are examples of each file, containing a small amount of data.
+
+\inputminted[linenos, fontsize=\footnotesize]{json}{../settings_template.json}
+
+\inputminted[linenos, fontsize=\footnotesize]{json}{../data_template.json}
+
+\section{Debugging}
+
+test
+
 \chapter{Testing}  % #TODO: testing
 
 \chapter{Evaluation}  % #TODO: evaluation 
@@ -1442,46 +1475,25 @@ mutated separately, for the same reason.
 
 \chapter{Source Code}
 
-\lstdefinestyle{mystyle}{   
-    commentstyle=\color{green},
-    keywordstyle=\color{magenta},
-    numberstyle=\tiny\color{black},
-    stringstyle=\color{purple},
-    breakatwhitespace=false,         
-    breaklines=true,                 
-    captionpos=b,                    
-    keepspaces=true,                 
-    numbers=left,                    
-    numbersep=5pt,                  
-    showspaces=false,                
-    showstringspaces=false,
-    showtabs=false,                  
-    tabsize=2
-}
-
-\lstset{style=mystyle}
-
-\lstset{basicstyle=\ttfamily, breaklines=true}
-
 \section{main.py}
-\lstinputlisting[language=Python]{../main.py}
+\inputminted[linenos, fontsize=\footnotesize]{Python}{../main.py}
 
 \section{ga.py}
-\lstinputlisting[language=Python]{../ga.py}
+\inputminted[linenos, fontsize=\footnotesize]{Python}{../ga.py}
 
 \section{initial population.py}
-\lstinputlisting[language=Python]{../initial_population.py}
+\inputminted[linenos, fontsize=\footnotesize]{Python}{../initial_population.py}
 
 \section{fitness function.py}
-\lstinputlisting[language=Python]{../fitness_function.py}
+\inputminted[linenos, fontsize=\footnotesize]{Python}{../fitness_function.py}
 
 \section{selection.py}
-\lstinputlisting[language=Python]{../selection.py}
+\inputminted[linenos, fontsize=\footnotesize]{Python}{../selection.py}
 
 \section{crossover.py}
-\lstinputlisting[language=Python]{../crossover.py}
+\inputminted[linenos, fontsize=\footnotesize]{Python}{../crossover.py}
 
 \section{mutation.py}
-\lstinputlisting[language=Python]{../mutation.py}
+\inputminted[linenos, fontsize=\footnotesize]{Python}{../mutation.py}
 
 \end{document}

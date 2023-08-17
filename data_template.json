@@ -1,0 +1,73 @@
+{
+  "teachers": [
+    {
+      "id": "123",
+      "name": "A Name",
+      "available_times": [
+        {
+          "day": "Tuesday",
+          "start_times": ["09", "10", "11", "12", "13", "14", "15", "16", "17"]
+        },
+        {
+          "day": "Wednesday",
+          "start_times": ["09", "10", "11", "12"]
+        },
+        {
+          "day": "Thursday",
+          "start_times": ["09", "10", "11", "12", "13", "14", "15", "16", "17"]
+        },
+        {
+          "day": "Friday",
+          "start_times": ["09", "10", "11", "12", "13", "14", "15", "16", "17"]
+        }
+      ]
+    }
+  ],
+  "rooms": [
+    {
+      "id": "B101",
+      "building": "Building Name",
+      "type": "Lecture",
+      "capacity": "200"
+    }
+  ],
+  "student_groups": [
+    {
+      "id": "4567",
+      "modules": ["A123"],
+      "num_of_students": "200"
+    }
+  ],
+  "modules": [
+    {
+      "id": "A123",
+      "title": "Module Title",
+      "teachers": "123",
+      "lecture_hours": "1",
+      "lab_hours": "2",
+      "student_group": "4567"
+    }
+  ],
+  "time_slots": [
+    {
+      "day": "Monday",
+      "start_times": ["09", "10", "11", "12", "13", "14", "15", "16", "17"]
+    },
+    {
+      "day": "Tuesday",
+      "start_times": ["09", "10", "11", "12", "13", "14", "15", "16", "17"]
+    },
+    {
+      "day": "Wednesday",
+      "start_times": ["09", "10", "11", "12", "13", "14", "15", "16", "17"]
+    },
+    {
+      "day": "Thursday",
+      "start_times": ["09", "10", "11", "12", "13", "14", "15", "16", "17"]
+    },
+    {
+      "day": "Friday",
+      "start_times": ["09", "10", "11", "12", "13", "14", "15", "16", "17"]
+    }
+  ]
+}
