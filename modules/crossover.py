@@ -22,7 +22,6 @@ def crossover(parent_a: list, parent_b: list, num_of_sessions: int,
     Returns:
         list: The offspring.
     """
-    # print("Producing offspring...") TODO: add back
     offspring = []
     half_pop = math.ceil(population_size / 2)
     for i in range(half_pop):
@@ -43,7 +42,6 @@ def crossover(parent_a: list, parent_b: list, num_of_sessions: int,
         left_a.append(centre_a)
         child_a = left_a + right_a
         offspring.append(child_a)
-        print(child_a)  # TODO remove
 
         # Crossover of child b
         left_b = parent_b[:locus_outer]
@@ -52,11 +50,10 @@ def crossover(parent_a: list, parent_b: list, num_of_sessions: int,
         right_b = parent_a[locus_outer + 1:]
         left_b.append(centre_b)
         child_b = left_b + right_b
-        offspring.append(child_b)  # TODO remove
+        offspring.append(child_b)
         
     # Remove last child if the population size is an odd number
     if half_pop != math.floor(population_size / 2):
         del offspring[-1]
 
-    # print("Offspring produced.") TODO: add back
     return offspring

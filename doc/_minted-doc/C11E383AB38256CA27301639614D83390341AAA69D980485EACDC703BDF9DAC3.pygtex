@@ -1,6 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{p}{\PYGZob{}}
-\PYG{+w}{    }\PYG{n+nt}{\PYGZdq{}population\PYGZhy{}size\PYGZdq{}}\PYG{p}{:}\PYG{+w}{ }\PYG{l+s+s2}{\PYGZdq{}10\PYGZdq{}}\PYG{p}{,}
-\PYG{+w}{    }\PYG{n+nt}{\PYGZdq{}mutation\PYGZhy{}chance\PYGZdq{}}\PYG{p}{:}\PYG{+w}{ }\PYG{l+s+s2}{\PYGZdq{}1000\PYGZdq{}}
-\PYG{p}{\PYGZcb{}}
-\end{Verbatim}

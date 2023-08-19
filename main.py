@@ -6,7 +6,7 @@ Functions:
     get_user_input()
 """
 from os import system, name
-import ga
+import modules.ga
 
 
 def menu():

@@ -1,25 +1,24 @@
 \documentclass[a4paper, 12pt]{report}
 
-\usepackage{minted}
+\usepackage[cache=false]{minted}
 \usepackage{amsmath}
 \usepackage{booktabs}
-\usepackage{courier}
 \usepackage{color}
 \usepackage{enumitem}
 \usepackage{examplep}
-\usepackage{fancybox}
 \usepackage{fancyhdr}
 \usepackage{fancyvrb}
 \usepackage[includeheadfoot,margin=2.5cm]{geometry}
-\usepackage[dvips]{graphicx}
 \usepackage{multirow}
 \usepackage{parskip}
 \usepackage{titlesec}
 \usepackage[nottoc]{tocbibind}
 \usepackage{url}
 \usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{subcaption}
 
-\usemintedstyle{default}
+\usemintedstyle{colorful}
 
 % Choose your bibliography style
 \bibliographystyle{plain}
@@ -30,18 +29,19 @@
 
 \begin{document}
 
+\graphicspath{{../doc-imgs/}}
+
 % Front Page
 \thispagestyle{empty}
-\fancypage{}{\fbox}
 \begin{center}
 	\Large{
 		\hfill \begin{tabular}{l}
-			Computer Science \\ and Mathematics \\ COC255 \\ B827126
-		\end{tabular}
+			Computer Science\\and Mathematics\\COC255\\B827126
+		\end{tabular} % #TODO: formatting for this
 	}
 	\vspace*{\fill}
 
-	\Large{\textbf{TIMETABLE CREATION \\ USING \\ARTIFICIAL INTELLIGENCE}}
+	\Large{\textbf{TIMETABLE CREATION\\USING\\ARTIFICIAL INTELLIGENCE}}
 
 	\vspace*{\fill}
 
@@ -67,14 +67,17 @@
 \end{center} % Front Page ends
 
 \newpage
-\fancypage{}{}  % Reset so that next pages do not have a box around them
-\begin{abstract}
+\begin{abstract} % #TODO: abstract
 	lol placeholder text for abstract lorem ipsum etc test
 \end{abstract}
+
+% #TODO: acknowledgements
 
 \tableofcontents
 
 \newpage
+
+\chapter{Introduction} % #TODO: introduction
 
 \chapter{Literature Review}
 
@@ -785,9 +788,11 @@ When testing their algorithm, the authors used input data consisting of
 4 times, and each time generated timetables where all the hard constraints were
 satisfied.
 
+\newpage
+
 \section{Comparison of Methods}
 
-The below table summarises how the different methods for solving the timetabling
+Table 1.1 summarises how the different methods for solving the timetabling
 problem performed.
 
 \begin{table}
@@ -841,6 +846,8 @@ It is also worth recalling a few other details about the different methods used:
 		programming system~\cite{asp_example}, some of which were able to 
 		produce a greater number of optimal solutions than others.
 \end{itemize}
+
+\newpage
 
 \section{Chosen Method}
 
@@ -1293,7 +1300,7 @@ are the same, and then if they are, constraint 4 has been violated, and the
 count of violations is increased --- the same applies to student groups and 
 teachers.
 
-% TEACHER PREFERENCES #TODO 
+% #TODO: TEACHER PREFERENCES
 
 \subsection{Selection}
 
@@ -1448,17 +1455,50 @@ The program is split across multiple files, for ease of reading.
 
 \section{Data Storage}
 
-The settings data and the config data are stored in json files, 
+The settings data and the config data are stored in two json files, 
 \verb|settings.json| and \verb|data.json| respectively.
 Below are examples of each file, containing a small amount of data.
 
-\inputminted[linenos, fontsize=\footnotesize]{json}{../settings_template.json}
+\inputminted[linenos, fontsize=\footnotesize]{json}{code/settings_template.json}
 
-\inputminted[linenos, fontsize=\footnotesize]{json}{../data_template.json}
+\begin{center}
+	\small{An example of \verb|settings.json|}
+\end{center}
+
+\inputminted[linenos, fontsize=\footnotesize]{json}{code/data_template.json}
+
+\begin{center}
+	\small{An example of \verb|data.json|}
+\end{center}
+
+In \verb|data.json| object names cannot be changed, but the values can take any 
+format, e.g.\ a \verb|teacher|'s \verb|id| could be a string instead.
+The same does not apply to \verb|settings.json|, the format of the values must 
+stay the same.
+
+\newpage
 
 \section{Debugging}
 
-test
+One bug that I encountered was that the lower and upper bounds of the binary 
+search in the \verb|choose_parent| function in \verb|selection.py| were not
+updating, as evidenced in figure~\ref*{fig:terminal-output-1}.
+
+\begin{figure}[ht]
+	\centering
+	\begin{subfigure}{0.2\textwidth}
+	\includegraphics{images/binary-search-2}
+	\caption{blah} % #TODO: think something to put here
+	\label{fig:terminal-output-1}
+	\end{subfigure}
+	\begin{subfigure}{0.6\textwidth}
+	\includegraphics{images/binary-search-1}
+	\caption{help} % #TODO: think of something to put here
+	\label{fig:code-1}
+	\end{subfigure}
+\end{figure}
+
+% #TODO: finish this
 
 \chapter{Testing}  % #TODO: testing
 
@@ -1466,12 +1506,14 @@ test
 
 \chapter{Conclusion}  % #TODO: conclusion
 
-% Rename Bibliography to References
 \renewcommand\bibname{References}
 \bibliography{references.bib}
 
-% Include appendix section if needed
-\appendix  % #TODO: add source code and diagrams?
+\appendix
+
+\chapter{Tables and Figures} % #TODO: tables and figures appendix
+
+\chapter{Pseudocode and Code Listings} % #TODO: pseudocode and code listings
 
 \chapter{Source Code}
 
@@ -1479,21 +1521,23 @@ test
 \inputminted[linenos, fontsize=\footnotesize]{Python}{../main.py}
 
 \section{ga.py}
-\inputminted[linenos, fontsize=\footnotesize]{Python}{../ga.py}
+\inputminted[linenos, fontsize=\footnotesize]{Python}{../modules/ga.py}
 
-\section{initial population.py}
-\inputminted[linenos, fontsize=\footnotesize]{Python}{../initial_population.py}
+\section{initial{\textunderscore}population.py}
+\inputminted[linenos, fontsize=\footnotesize]{Python}{
+	../modules/initial_population.py}
 
-\section{fitness function.py}
-\inputminted[linenos, fontsize=\footnotesize]{Python}{../fitness_function.py}
+\section{fitness{\textunderscore}function.py}
+\inputminted[linenos, fontsize=\footnotesize]{Python}{
+	../modules/fitness_function.py}
 
 \section{selection.py}
-\inputminted[linenos, fontsize=\footnotesize]{Python}{../selection.py}
+\inputminted[linenos, fontsize=\footnotesize]{Python}{../modules/selection.py}
 
 \section{crossover.py}
-\inputminted[linenos, fontsize=\footnotesize]{Python}{../crossover.py}
+\inputminted[linenos, fontsize=\footnotesize]{Python}{../modules/crossover.py}
 
 \section{mutation.py}
-\inputminted[linenos, fontsize=\footnotesize]{Python}{../mutation.py}
+\inputminted[linenos, fontsize=\footnotesize]{Python}{../modules/mutation.py}
 
 \end{document}

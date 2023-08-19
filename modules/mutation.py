@@ -21,7 +21,6 @@ def mutate(offspring_in: list, time_slots: list, rooms: list, sessions: list,
     Returns:
         list: List of mutated offspring.
     """
-    # print("Mutating offspring...") TODO: remove probably
     mutation_count = 0
     offspring = offspring_in
     for solution in offspring:
@@ -50,6 +49,4 @@ def mutate(offspring_in: list, time_slots: list, rooms: list, sessions: list,
                             offspring[solution][session][2] = new_session[0]
                             offspring[solution][session][3] = new_session[1]
                             offspring[solution][session][4] = new_session[2]
-    # print("Offspring mutated. " + str(mutation_count) +
-    #       " mutation(s) occurred.") TODO remove probably
     return offspring

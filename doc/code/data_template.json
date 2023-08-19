@@ -25,10 +25,9 @@
   ],
   "rooms": [
     {
-      "id": "B101",
-      "building": "Building Name",
-      "type": "Lecture",
-      "capacity": "200"
+      "id": "B101", 
+      "building": "Building Name", 
+      "type": "Lecture","capacity": "200"
     }
   ],
   "student_groups": [

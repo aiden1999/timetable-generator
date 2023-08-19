@@ -20,7 +20,6 @@ def check_population_fitness(population: list, teacher_times: list) \
         bool: Whether or not there is a correct solution.
         list: The correct solution (if it exists).
     """
-    # print("Calculating the fitness of individuals...") TODO: add back
     population_fitness = []
     valid_solution_bool = False
     valid_solution = None
@@ -33,7 +32,6 @@ def check_population_fitness(population: list, teacher_times: list) \
             valid_solution = solution
             break
 
-    # print("Fitness of individuals calculated.") TODO: add back
     return population_fitness, valid_solution_bool, valid_solution
 
 
@@ -74,6 +72,7 @@ def calculate_fitness(solution: list, teacher_times: list) -> float:
         time_slot = solution[i][0]
         teacher_num = int(solution[i][4])
         # TODO: why the FUCK is this not finished??????
+        teacher_prefs = None
 
     if problem_count == 0:
         fitness = 0

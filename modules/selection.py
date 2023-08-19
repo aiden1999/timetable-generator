@@ -18,16 +18,13 @@ def select_parents(population_fitness: list) -> [int, int]:
         int: Index of the first parent.
         int: Index of the other parent.
     """
-    # print("Selecting parents for crossover...") TODO: add back
     fitness_values = population_fitness
     range_limits_a = normalise_values(fitness_values)
     parent_a = choose_parent(range_limits_a)
-    # print("First parent selected.") TODO: add back
     fitness_values.remove(fitness_values[parent_a])
 
     range_limits_b = normalise_values(fitness_values)
     parent_b = choose_parent(range_limits_b)
-    # print("Second parent selected.") TODO: add back
     return parent_a, parent_b
 
 
