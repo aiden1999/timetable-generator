@@ -5,11 +5,11 @@ Functions:
     get_settings_data() -> [int, int]
     generate_output_text(solution: list, person_type: str)
 """
-import initial_population as p1
-import fitness_function as p2
-import selection as p3
-import crossover as p4
-import mutation as p5
+import modules.initial_population as p1
+import modules.fitness_function as p2
+import modules.selection as p3
+import modules.crossover as p4
+import modules.mutation as p5
 import json
 
 
@@ -21,19 +21,17 @@ def generate_timetable():
     """
     population_size, mutation_chance = get_settings_data()
     sessions, rooms, time_slots, teacher_times = p1.get_config_data()
-    print("Generation 1:")
+    print("Generation: 1")
     generation_count = 1
     population = p1.generate_initial_population(sessions, rooms, time_slots,
                                                 population_size)
-    print(population)
     population_fitness, valid_solution_bool, valid_solution = \
         p2.check_population_fitness(population, teacher_times)
-    for i in range(3):  # TODO temp
-        # while not valid_solution_bool: #TODO add back
-        parent_a, parent_b = p3.select_parents(population_fitness)
-        # Note that parent_a and parent_b are indices
-        offspring = p4.crossover(population[parent_a], population[parent_b],
-                                 len(population[0]), population_size)
+    print(population_fitness)  # TODO remove testing
+    for counter in range(10):  # TODO while not valid_solution_bool:
+        parents = p3.select_parents(population_fitness)
+        # Note that parents are indices
+        offspring = p4.crossover(parents, population, population_size)
         mutated_offspring = p5.mutate(offspring, time_slots, rooms, sessions,
                                       mutation_chance)
         mutated_offspring.append(population[parent_a])
@@ -44,14 +42,14 @@ def generate_timetable():
         if not valid_solution_bool:
             population = mutated_offspring
             for i in range(2):
-                worst_fitness = max(population_fitness)
+                worst_fitness = max(population_fitness)  # TODO min not max?
                 worst_fitness_index = population_fitness.index(worst_fitness)
                 del population_fitness[worst_fitness_index]
                 del population[worst_fitness_index]
             generation_count += 1
-            print("Generation " + str(generation_count) + ":")
-        print(population)
-        print(population_fitness)
+            print("Generation: " + str(generation_count))
+        print(population)  # TODO remove testing
+        print(population_fitness)  # TODO remove testing
     print("Timetable solution found. Writing output to text files...")
     generate_output_text(valid_solution, "teachers")
     generate_output_text(valid_solution, "student_groups")

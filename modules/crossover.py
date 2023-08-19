@@ -8,15 +8,12 @@ import random
 import math
 
 
-def crossover(parent_a: list, parent_b: list, num_of_sessions: int,
-              population_size: int) -> list:
+def crossover(parents: list, population: list, population_size: int) -> list:
     """Crossover parents to produce offspring.
 
     Args:
-        parent_a (list): The first selected parent.
-        parent_b (list): The other selected parent.
-        num_of_sessions (int): How many lesson sessions are needed to make up
-            the timetable.
+        parents (list): # TODO fill this in
+        population (list): # TODO fill this in
         population_size (int): The size of the population.
 
     Returns:
@@ -24,7 +21,17 @@ def crossover(parent_a: list, parent_b: list, num_of_sessions: int,
     """
     offspring = []
     half_pop = math.ceil(population_size / 2)
+    num_of_sessions = 
     for i in range(half_pop):
+        
+        # Select two parents to produce two offspring together
+        parent_a = random.choice(parents)
+        parents.remove(parent_a)
+        parent_b = random.choice(parents)
+        parents.remove(parent_b)
+        
+        
+        
         # locus_outer: session that contains the split
         locus_outer = random.randint(0, num_of_sessions - 1)
 
@@ -51,7 +58,7 @@ def crossover(parent_a: list, parent_b: list, num_of_sessions: int,
         left_b.append(centre_b)
         child_b = left_b + right_b
         offspring.append(child_b)
-        
+
     # Remove last child if the population size is an odd number
     if half_pop != math.floor(population_size / 2):
         del offspring[-1]

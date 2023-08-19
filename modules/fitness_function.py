@@ -67,15 +67,11 @@ def calculate_fitness(solution: list, teacher_times: list) -> float:
                 problem_count += 1
 
     for i in range(len(solution)):
-
         # check teacher preferences
         time_slot = solution[i][0]
-        teacher_num = int(solution[i][4])
-        # TODO: why the FUCK is this not finished??????
-        teacher_prefs = None
+        teacher_num = str(solution[i][4])
+        teacher_prefs = teacher_times.get(teacher_num)
+        if time_slot not in teacher_prefs:
+            problem_count += 1
 
-    if problem_count == 0:
-        fitness = 0
-    else:
-        fitness = 1 / problem_count
-    return fitness
+    return problem_count
