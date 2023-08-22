@@ -94,7 +94,6 @@ def generate_initial_population(sessions: list, rooms: list,
     for i in range(population_size):
         solution = create_complete_solution(sessions, rooms, time_slots)
         population.append(solution)
-    print(population)  # TODO: testing remove
     return population
 
 

@@ -11,6 +11,7 @@ import modules.selection as p3
 import modules.crossover as p4
 import modules.mutation as p5
 import json
+import copy
 
 
 def generate_timetable():
@@ -27,29 +28,49 @@ def generate_timetable():
                                                 population_size)
     population_fitness, valid_solution_bool, valid_solution = \
         p2.check_population_fitness(population, teacher_times)
-    print(population_fitness)  # TODO remove testing
-    for counter in range(10):  # TODO while not valid_solution_bool:
-        parents = p3.select_parents(population_fitness)
-        # Note that parents are indices
-        offspring = p4.crossover(parents, population, population_size)
-        mutated_offspring = p5.mutate(offspring, time_slots, rooms, sessions,
-                                      mutation_chance)
-        mutated_offspring.append(population[parent_a])
-        mutated_offspring.append(population[parent_b])
+
+    while not valid_solution_bool:
+
+        parents, worst_parent_fitness = p3.select_parents(population_fitness,
+                                                          population_size)
+
+        offspring, parents_copy = p4.crossover(parents)
+
+        offspring_fitness = p2.check_fitness_only(offspring, teacher_times)
+        mutate_list = []
+        not_mutate_list = []
+        for solution in offspring_fitness:
+            if solution[1] >= worst_parent_fitness:
+                mutate_list.append(solution[0])
+            else:
+                not_mutate_list.append(solution[0])
+
+        mutated = p5.mutate(mutate_list, time_slots, rooms, sessions,
+                            mutation_chance)
+
+        new_pop = []
+        for solution in mutated:
+            new_pop.append(solution)
+        for solution in parents_copy:
+            new_pop.append(solution)
+        for solution in not_mutate_list:
+            new_pop.append(solution)
+
         # check if any of the offspring is a valid solution
-        population_fitness, valid_solution_bool, valid_solution \
-            = p2.check_population_fitness(mutated_offspring, teacher_times)
+        new_pop_fitness, valid_solution_bool, valid_solution \
+            = p2.check_population_fitness(new_pop, teacher_times)
+
         if not valid_solution_bool:
-            population = mutated_offspring
-            for i in range(2):
-                worst_fitness = max(population_fitness)  # TODO min not max?
-                worst_fitness_index = population_fitness.index(worst_fitness)
-                del population_fitness[worst_fitness_index]
-                del population[worst_fitness_index]
+            new_pop_fitness.sort(key=lambda x: x[1])
+            while len(new_pop) > population_size:
+                worst_sol = new_pop_fitness[-1][0]
+                new_pop.remove(worst_sol)
+                del new_pop_fitness[-1]
             generation_count += 1
             print("Generation: " + str(generation_count))
-        print(population)  # TODO remove testing
-        print(population_fitness)  # TODO remove testing
+            population = new_pop
+            population_fitness = new_pop_fitness
+
     print("Timetable solution found. Writing output to text files...")
     generate_output_text(valid_solution, "teachers")
     generate_output_text(valid_solution, "student_groups")

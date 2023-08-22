@@ -4,6 +4,7 @@ Functions:
     mutate(offspring_in: list, time_slots: list, rooms: list, sessions: list,
         mutation_chance: int) -> list
 """
+import copy
 import random
 
 
@@ -22,31 +23,30 @@ def mutate(offspring_in: list, time_slots: list, rooms: list, sessions: list,
         list: List of mutated offspring.
     """
     mutation_count = 0
-    offspring = offspring_in
-    for solution in offspring:
-        for session in solution:
-            for i in range(3):
+    offspring = copy.copy(offspring_in)
+    for i in range(len(offspring)):  # For each solution
+        solution = offspring[i]
+        for j in range(len(solution)):  # For each session
+            for k in range(3):
                 mutate = random.randint(1, mutation_chance)
-
                 # Mutation does occur
-                if mutate == 0:
+                if mutate == 1:
                     mutation_count += 1
-                    match i:
-
+                    match k:
                         # Mutation of time slot
                         case 0:
                             new_time_slot = random.choice(time_slots)
-                            offspring[solution][session][0] = new_time_slot
-
+                            offspring[i][j][0] = new_time_slot
                         # Mutation of room
                         case 1:
                             new_room = random.choice(rooms)
-                            offspring[solution][session][1] = new_room
+                            offspring[i][j][1] = new_room
 
                         # Mutation of session
                         case _:
                             new_session = random.choice(sessions)
-                            offspring[solution][session][2] = new_session[0]
-                            offspring[solution][session][3] = new_session[1]
-                            offspring[solution][session][4] = new_session[2]
+                            offspring[i][j][2] = new_session[0]
+                            offspring[i][j][3] = new_session[1]
+                            offspring[i][j][4] = new_session[2]
+
     return offspring
