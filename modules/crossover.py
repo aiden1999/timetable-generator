@@ -1,59 +1,62 @@
 """Phase 4 (crossover) of genetic algorithm.
 
 Functions:
-    crossover(parent_a: list, parent_b: list, num_of_sessions: int,
-        population_size: int) -> list
+    crossover(chosen_parents: list) -> [list, list]
 """
+import copy
 import random
 import math
 
 
-def crossover(parent_a: list, parent_b: list, num_of_sessions: int,
-              population_size: int) -> list:
+def crossover(parent_list: list) -> [list, list]:
     """Crossover parents to produce offspring.
 
     Args:
-        parent_a (list): The first selected parent.
-        parent_b (list): The other selected parent.
-        num_of_sessions (int): How many lesson sessions are needed to make up
-            the timetable.
-        population_size (int): The size of the population.
+        chosen_parents (list): The parents used to create the offspring.
 
     Returns:
         list: The offspring.
+        list: Unmodified copy of the parents.
     """
     offspring = []
-    half_pop = math.ceil(population_size / 2)
-    for i in range(half_pop):
-        # locus_outer: session that contains the split
-        locus_outer = random.randint(0, num_of_sessions - 1)
+    parent_list_copy = copy.deepcopy(parent_list)
+    num_of_sessions = len(parent_list[0])
 
-        # locus_inner: split after session[locus_inner]
-        if locus_outer == 0:
-            locus_inner = random.randint(1, 2)  # TODO: hard coding fix?
-        else:
-            locus_inner = random.randint(0, 2)  # TODO: hard coding fix?
+    for i in range(int(len(parent_list_copy) / 2)):
 
-        # Crossover of child a
-        left_a = parent_a[:locus_outer]
-        centre_a = parent_a[locus_outer][:locus_inner] + \
-            parent_b[locus_outer][locus_inner:]
-        right_a = parent_b[locus_outer + 1:]
-        left_a.append(centre_a)
-        child_a = left_a + right_a
-        offspring.append(child_a)
+        # Select two parents to produce two offspring together
+        parent_a = random.choice(parent_list)
+        parent_list.remove(parent_a)
+        parent_b = random.choice(parent_list)
+        parent_list.remove(parent_b)
 
-        # Crossover of child b
-        left_b = parent_b[:locus_outer]
-        centre_b = parent_b[locus_outer][:locus_inner] + \
-            parent_a[locus_outer][locus_inner:]
-        right_b = parent_a[locus_outer + 1:]
-        left_b.append(centre_b)
-        child_b = left_b + right_b
-        offspring.append(child_b)
-        
-    # Remove last child if the population size is an odd number
-    if half_pop != math.floor(population_size / 2):
-        del offspring[-1]
+        for i in range(2):
 
-    return offspring
+            # locus_outer: session that contains :while condition:
+            locus_outer = random.randint(0, num_of_sessions - 1)
+
+            # locus_inner: split after session[locus_inner]
+            if locus_outer == 0:
+                locus_inner = random.randint(1, 2)
+            else:
+                locus_inner = random.randint(0, 2)
+
+            # Crossover of child a
+            left_a = parent_a[:locus_outer]
+            centre_a = parent_a[locus_outer][:locus_inner] + \
+                parent_b[locus_outer][locus_inner:]
+            right_a = parent_b[locus_outer + 1:]
+            left_a.append(centre_a)
+            child_a = left_a + right_a
+            offspring.append(child_a)
+
+            # Crossover of child b
+            left_b = parent_b[:locus_outer]
+            centre_b = parent_b[locus_outer][:locus_inner] + \
+                parent_a[locus_outer][locus_inner:]
+            right_b = parent_a[locus_outer + 1:]
+            left_b.append(centre_b)
+            child_b = left_b + right_b
+            offspring.append(child_b)
+
+    return offspring, parent_list_copy

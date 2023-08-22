@@ -22,7 +22,6 @@ def get_config_data() -> [list, list, list, list]:
         list: List of time slots.
         list: List of teachers' preferred time slots.
     """
-    print("Reading data file")
     file = open("data.json", "r", encoding="utf-8")
     data = json.load(file)
     file.close()
@@ -45,11 +44,13 @@ def get_config_data() -> [list, list, list, list]:
             time_slots_id.append(str(day_number) + str(time_number))
         day_number += 1
 
-    teacher_times = []
+    teacher_times = {}
     for teacher in data["teachers"]:
         teacher_time = []
+        teacher_id = (teacher["id"])
         for day in teacher["available_times"]:
-            match day:
+            day_name = day["day"]
+            match day_name:
                 case "Monday":
                     day_number = 1
                 case "Tuesday":
@@ -69,7 +70,7 @@ def get_config_data() -> [list, list, list, list]:
             for i in range(len(day["start_times"])):
                 time_number = day["start_times"][i]
                 teacher_time.append(str(day_number) + str(time_number))
-        teacher_times.append(teacher_time)
+        teacher_times.update({teacher_id: teacher_time})
 
     return sessions, rooms_id, time_slots_id, teacher_times
 
@@ -89,12 +90,10 @@ def generate_initial_population(sessions: list, rooms: list,
     Returns:
         list: The generated population.
     """
-    print("Generating initial population...")
     population = []
     for i in range(population_size):
         solution = create_complete_solution(sessions, rooms, time_slots)
         population.append(solution)
-    print("Initial population generated.")
     return population
 
 
