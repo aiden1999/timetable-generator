@@ -12,6 +12,7 @@ import modules.crossover as p4
 import modules.mutation as p5
 import json
 import copy
+import os
 
 
 def generate_timetable():
