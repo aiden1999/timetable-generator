@@ -12,6 +12,7 @@ import modules.crossover as p4
 import modules.mutation as p5
 import json
 import copy
+import os
 
 
 def generate_timetable():
@@ -72,10 +73,18 @@ def generate_timetable():
             population_fitness = new_pop_fitness
 
     print("Timetable solution found. Writing output to text files...")
-    generate_output_text(valid_solution, "teachers")
-    generate_output_text(valid_solution, "student_groups")
-    print("Output written to files in ./teacher-timetables and \
-    ./student-group-timetables.")
+    print("Creating directory...")
+    try:
+        os.mkdir("./timetables")
+        print("Directory created.")
+    except FileExistsError:
+        print("Directory already exists.")
+    file = open("./timetables/solution.txt", "w", encoding="utf-8")
+    for session in valid_solution:
+        line = str(session) + "\n"
+        file.write(line)
+    file.close()
+    print("Output written to file in ./timetables")
 
 
 def get_settings_data() -> [int, int]:
@@ -91,42 +100,3 @@ def get_settings_data() -> [int, int]:
     population_size = int(settings["population-size"])
     mutation_chance = int(settings["mutation-chance"])
     return population_size, mutation_chance
-
-
-def generate_output_text(solution: list, person_type: str):
-    """Generate output of a correct timetable to text files.
-
-    Args:
-        solution (list): A correct timetable solution.
-        person_type (str): Who the timetable is for, student_groups or teachers
-    """
-    dictionary = {}
-    file = open("data.json", "r", encoding="utf-8")
-    data = json.load(file)
-    file.close()
-
-    for person in data[person_type]:
-        dictionary.update({person["id"]: []})
-    for session in solution:
-        if person_type == "teachers":
-            session_person = session[4]
-        else:  # session_person == "student_groups"
-            session_person = session[2]
-        session_person_list = dictionary.get(session_person)
-        session_person_list.append(session)
-        dictionary.update({session_person: session_person_list})
-
-    print("Creating directory for " + str(person_type) + " timetables...")
-    try:
-        os.mkdir("./" + str(person_type) + "_timetables")
-        print("Directory '" + str(person_type) + "_timetables' created.")
-    except FileExistsError:
-        print("Directory already exists.")
-    for session_person in dictionary:
-        file = open(str(session_person) + ".txt", "w", encoding="utf-8")
-        person_sessions = dictionary[session_person]
-        for session in person_sessions:
-            file.write(str(session))
-        file.close()
-    print("Timetable output files created.")
-    # TODO: formatting?
