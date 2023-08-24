@@ -21,7 +21,6 @@ def select_parents(pop_fitness: list, population_size: int) \
     """
     parents = []
     sorted_fitness = pop_fitness
-    all_fitness = pop_fitness
     sorted_fitness.sort(key=lambda x: x[1])
     for i in range(2 * math.ceil(population_size / 4)):
         parent = sorted_fitness[0][0]
