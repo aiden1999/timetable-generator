@@ -11,7 +11,6 @@ import modules.selection as p3
 import modules.crossover as p4
 import modules.mutation as p5
 import json
-import copy
 import os
 
 
