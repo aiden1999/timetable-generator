@@ -1,0 +1,19 @@
+function GeneticAlgorithm
+
+GetSettingsData (return: populationSize, mutationChance)
+GetConfigData (return: sessions, rooms, timeSlots, teacherTimes)
+CreatePopulation (return: population)
+CheckFitness of population (return: populationFitness, 
+                            validSolution, validSolutionBool)
+while not validSolutionBool:
+    SelectParents (return: parentA, parentB)
+    CreateOffspring (return: offspring)
+    MutateOffspring (return: mutatedOffspring)
+    append parents to mutatedOffspring
+    CheckFitness of mutatedOffspring (return: offspringFitness, 
+                                      validSolution, validSolutionBool)
+    if not validSolutionBool:
+        population := offspring
+        repeat(2):
+            remove individual from population with worst fitness
+output timetable from validSolution

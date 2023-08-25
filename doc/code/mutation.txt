@@ -1,0 +1,22 @@
+function MutateOffspring
+input: offspring, mutationChance, timeSlots, rooms, sessions
+
+mutatedOffspring = offspring
+for solution in mutatedOffspring:
+    for session in solution:
+        for i in range(3):
+            mutate = RandomInteger(1, mutationChance)
+            if mutate == 0:
+                match i:
+                    case 0:
+                        newTimeSlot = random(timeSlots)
+                        offspring[solution][session][0] := newTimeSlot
+                    case 1:
+                        newRoom = random(rooms)
+                        offspring[solution][session][1] := newRoom
+                    case _:
+                        newSession = random.choice(sessions)
+                        offspring[solution][session][2] := newSession[0]
+                        offspring[solution][session][3] := newSession[1]
+                        offspring[solution][session][4] := newSession[2]
+return mutatedOffspring

@@ -1,0 +1,28 @@
+function CreateOffspring
+input: populationSize, numOfSessions, parentA, parentB
+
+offspring := empty list
+halfPop := ceiling(populationSize / 2)
+for i in range(halfPop):
+    outerLocus := RandomInteger(0, numOfSessions - 1)
+    if outerLocus == 0:
+        innerLocus := RandomInteger(1, 2)
+    else:
+        innerLocus := RandomInteger(0, 2)
+    end if
+    leftA := parentA[:outerLocus]
+    centreA = parentA[outerLocus][:innerLocus] + parentB[outerLocus][innerLocus:]
+    rightA := parentB[outerLocus + 1:]
+    append centreA to leftA
+    childA := leftA + rightA
+    append childA to offspring
+    leftB := parentB[:outerLocus]
+    centreB := parentB[outerLocus][innerLocus] + parentA[outerLocus][innerLocus:]
+    rightB := parentA[outerLocus + 1:]
+    append centreB to leftB
+    childB := leftB + rightB
+end for
+if halfPop =/= floor(populationSize / 2):
+    delete the last element in offspring
+end if
+return offspring

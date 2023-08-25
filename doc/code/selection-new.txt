@@ -1,0 +1,13 @@
+function SelectParents
+input: populationFitness, populationSize
+
+parents := empty list
+sortedFitness := populationFitness
+sort sortedFitness  // sorts from low to high
+for i in range(2 * ceiling(population_size / 4)):
+    parent = sorted_fitness[0]
+    append parent to parents
+    if i == (2 * ceiling(population_size/4)) - 1:
+        worst_parent_fitness = sorted_fitness[0]
+    delete sorted_fitness[0]
+return parents, worst_parent_fitness

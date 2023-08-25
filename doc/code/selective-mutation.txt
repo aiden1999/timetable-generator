@@ -1,0 +1,9 @@
+CheckFitness of offspring(return: offspringFitness)
+mutateList := empty list
+notMutateList := empty list
+for solution in offspringFitness
+    indexOffspring := index(offspringFitness(solution))
+    if solution <= worstParentFitness:
+        append offspring[indexOffspring] to mutateList
+    else:
+        append offspring[indexOffspring] to notMutateList

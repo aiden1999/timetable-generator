@@ -1,0 +1,33 @@
+function CheckFitness
+input: population, teacherTimes
+
+populationFitness := empty list
+validSolutionBool := False
+validSolution := None
+for each solution in population:
+    sort solution by timeSlot
+    violations := 0
+    for i in range(size(solution) - 1):
+        if solution[i][0] == solution[i + 1][0]:
+            if solution[i][1] == solution[i + 1][1]:
+                violations := violations + 1
+            if solution[i][2] == solution[i + 1][2]:
+                violations := violations + 1
+            if solution[i][4] == solution[i + 1][4]:
+                violations := violations + 1
+    for in range(size(solution)):
+        timeSlot = solution[i][0]
+        teacherNumber = solution[i][4]
+        teacherPrefs = teacherTimes.get(teacherNumber)
+        if timeSlot not in teacherPrefs:
+            violations := violations + 1
+    if violations == 0:
+        solutionFitness := 0
+    else:
+		solutionFitness := 1 / violations 
+    append solutionFitness to populationFitness
+    if solutionFitness == 0:
+        valid solution bool := True
+        valid solution := solution
+        break for loop
+return populationFitness, validSolution, validSolutionBool

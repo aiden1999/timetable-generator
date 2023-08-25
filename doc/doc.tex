@@ -8,7 +8,7 @@
 \usepackage{examplep}
 \usepackage{fancyhdr}
 \usepackage{fancyvrb}
-\usepackage[includeheadfoot,margin=2.5cm]{geometry}
+\usepackage[includeheadfoot,margin=2.5cm, headheight=1cm]{geometry}
 \usepackage{multirow}
 \usepackage{parskip}
 \usepackage{titlesec}
@@ -23,9 +23,13 @@
 % Choose your bibliography style
 \bibliographystyle{plain}
 \linespread{1.3}
-% Setup headers and footers # TODO : add headers
+% Setup headers and footers
 \fancyhf{}
+\pagestyle{fancy}
+\fancyhead[R]{\textsl{\rightmark}}
+\fancyhead[L]{\textsl{\leftmark}}
 \fancyfoot[C] {\thepage}
+
 
 \begin{document}
 
@@ -33,15 +37,14 @@
 
 % Front Page
 \thispagestyle{empty}
+\newgeometry{headheight=0cm}
 \begin{center}
 	\Large{
-		\hfill \begin{tabular}{l}
-			Computer Science\\and Mathematics\\COC255\\B827126
-		\end{tabular} % #TODO: formatting for this
+		B827126 \hfill Computer Science and Mathematics \hfill COC255
 	}
 	\vspace*{\fill}
 
-	\Large{\textbf{TIMETABLE CREATION\\USING\\ARTIFICIAL INTELLIGENCE}}
+	\Large{\textbf{TIMETABLE CREATION USING\\ARTIFICIAL INTELLIGENCE}}
 
 	\vspace*{\fill}
 
@@ -67,6 +70,9 @@
 \end{center} % Front Page ends
 
 \newpage
+
+\restoregeometry
+
 \begin{abstract} % #TODO: abstract
 	lol placeholder text for abstract lorem ipsum etc test
 \end{abstract}
@@ -699,31 +705,14 @@ To simplify echolocation, Yang suggested these rules:
 		that the loudness can vary from between positive values \( A_0 \) and 
 		\( A_{\min} \).
 \end{enumerate}
-Pseudocode for the Bat Algorithm can be described as:
-\begin{Verbatim}[numbers=left, fontsize=\footnotesize]
-	Define the objective function f(x)
-	Generate initial population of the bat X = {x1, \( \ldots \), xn}
-	For each bat xi in X
-	    Initialise the pulse rate ri, velocity vi and loudness Ai
-	    Define the pulse frequency fi
-	End for
-	While termination criterion not reached
-	    For each bat xi in X
-	        Generate new solutions using equations (1.1), (1.2) and (1.3)
-	        Generate a random number rand
-	        If rand > ri
-	            Select one solution among the best one
-	            Generate a a local solution around one of the best
-	        End if
-	        If (rand < Ai) and (f(xi) < f(x*))
-	            Accept the new solution
-	            Increase ri and reduce f(xi)
-	        End if
-	    End for
-	End while
-	Ranks the bats and obtain the current best bat
-\end{Verbatim}
-~\cite{ba_example}
+Pseudocode for the Bat Algorithm can be seen in 
+listing~\ref*{listing:bat-algorithm}.
+
+\begin{listing}[!ht]
+	\inputminted[linenos, fontsize=\footnotesize]{text}{code/bat-algorithm.txt}
+	\caption{Pseudocode for the bat algorithm ~\cite{ba_example}}
+	\label{listing:bat-algorithm}
+\end{listing}
 
 In the first step, the bat population initialised with parameters position
 \( x_i \), velocity \( v_i \) and frequency \( f_i \).
@@ -751,7 +740,7 @@ where \( \epsilon \) is a random number from the interval \( [0,1] \) and
 \( < A^t > \) is the average loudness of the bats in the population at a
 specific time step \( t \).
 Also the rate of sound pulse emission \( r_i \) and the loudness \( A_i \) of 
-each bat needs to updated with the equation,:
+each bat needs to updated with the equation:
 \begin{equation*}
 	A_i^t = \alpha A_i^{t-1}
 \end{equation*}
@@ -792,8 +781,8 @@ satisfied.
 
 \section{Comparison of Methods}
 
-Table 1.1 summarises how the different methods for solving the timetabling
-problem performed.
+Table~\ref*{table:method-comparison} summarises how the different methods for 
+solving the timetabling problem performed.
 
 \begin{table}
 	\begin{tabular}{cccc}
@@ -831,8 +820,8 @@ problem performed.
 		\\
 		\bottomrule
 	\end{tabular}
-	\caption{\label{method-comparison}Summative table of the results of the 
-		different methods.}
+	\caption{Summative table of the results of the different methods}
+	\label{table:method-comparison}
 \end{table}
 *largest dataset
 
@@ -1162,32 +1151,15 @@ an entire timetable.
 
 For the genetic algorithm, the population is a set of solutions.
 
+\newpage
+
 \section{Genetic Algorithm Pseudocode}
 
-\begin{Verbatim}[numbers=left, fontsize=\footnotesize]
-function GeneticAlgorithm
-
-GetSettingsData (return: populationSize, mutationChance)
-GetConfigData (return: sessions, rooms, timeSlots, teacherTimes)
-CreatePopulation (return: population)
-CheckFitness of population (return: populationFitness, 
-                            validSolution, validSolutionBool)
-while not validSolutionBool:
-    SelectParents (return: parentA, parentB)
-    CreateOffspring (return: offspring)
-    MutateOffspring (return: mutatedOffspring)
-    append parents to mutatedOffspring
-    CheckFitness of mutatedOffspring (return: offspringFitness, 
-                                      validSolution, validSolutionBool)
-    if not validSolutionBool:
-        population := offspring
-        repeat(2):
-            remove individual from population with worst fitness
-        end repeat
-    end if
-end while
-output timetable from validSolution
-\end{Verbatim}
+\begin{listing}[!ht]
+	\inputminted[linenos, fontsize=\footnotesize]{text}{code/ga-pseudocode.txt}
+	\caption{Pseudocode for the genetic algorithm}
+	\label{listing:genetic-algorithm}
+\end{listing}
 
 The settings data contains \verb|populationSize| and \verb|mutationChance|, 
 which are parameters for the genetic algorithm the user may wish to change.
@@ -1206,26 +1178,11 @@ loop, after the mutation phase.
 
 \subsection{Initial Population}
 
-\begin{Verbatim}[numbers=left, fontsize=\footnotesize]
-function CreatePopulation
-input: sessions, rooms, timeSlots, populationSize
-
-population := empty list
-repeat(populationSize):
-    solution := empty list
-    for session in sessions:
-        timeSlot := random(timeSlots)
-        room := random(rooms)
-        studentGroup := session[1]
-        module := session[0]
-        teacher := session[2]
-        newSession := (timeSlot, room, studentGroup, module, teacher)
-        append newSession to solution
-    end for
-    append solution to population
-end repeat
-return population
-\end{Verbatim}
+\begin{listing}[!ht]
+	\inputminted[linenos, fontsize=\footnotesize]{text}{code/population.txt}
+	\caption{Pseudocode for generating the initial population}
+	\label{listing:population}
+\end{listing}
 
 The initial population is generated within two for loops, as the population
 consists of many solutions, each of which consist of many sessions.
@@ -1240,50 +1197,15 @@ The session is stored \( n \) times in \verb|sessions|, where \( n \) is the
 number of lab and lecture sessions of that module, so that the correct number 
 of teaching sessions are created.
 
+\newpage
+
 \subsection{Fitness Function}
 
-\begin{Verbatim}[numbers=left, fontsize=\footnotesize]
-function CheckFitness
-input: population, teacherTimes
-
-populationFitness := empty list
-validSolutionBool := False
-validSolution := None
-for each solution in population:
-    sort solution by timeSlot
-    violations := 0
-    for i in range(size(solution) - 1):
-        if solution[i][0] == solution[i + 1][0]:
-            if solution[i][1] == solution[i + 1][1]:
-                violations := violations + 1
-            end if
-            if solution[i][2] == solution[i + 1][2]:
-                violations := violations + 1
-            end if
-            if solution[i][4] == solution[i + 1][4]:
-                violations := violations + 1
-            end if
-        end if
-    end for
-    for in range(size(solution)):
-        timeSlot = solution[i][0]
-        teacherNumber = solution[i][4]
-        CONTINUE WHEN FINISHED CODE  #TODO: add code
-    end for
-    if violations == 0:
-        solutionFitness := 0
-    else:
-	    solutionFitness := 1 / violations 
-    end if
-    append solutionFitness to populationFitness
-    if solutionFitness == 0:
-        valid solution bool := True
-        valid solution := solution
-        break for loop
-    end if
-end for
-return populationFitness, validSolution, validSolutionBool
-\end{Verbatim}
+\begin{listing}[!ht]
+	\inputminted[linenos, fontsize=\footnotesize]{text}{code/fitness.txt}
+	\caption{Pseudocode for the fitness function}
+	\label{listing:fitness}
+\end{listing}
 
 The fitness function is calculated by totalling the number of constraint 
 violations, then raising it to the power of -1, so a higher fitness function is 
@@ -1300,36 +1222,26 @@ are the same, and then if they are, constraint 4 has been violated, and the
 count of violations is increased --- the same applies to student groups and 
 teachers.
 
-% #TODO: TEACHER PREFERENCES
+To check a session against the teacher's time preferences, the session's time 
+slot is checked against a list of that teacher's preferred time slots.
+If the session's time slot does not appear on the list, then constraint 10 has 
+been violated and the number of and the count of violation is increased.
+
+\newpage
 
 \subsection{Selection}
 
-\begin{Verbatim}[numbers=left, fontsize=\footnotesize]
-function SelectParents
-input: populationFitness
+\begin{listing}[!ht]
+	\inputminted[linenos, fontsize=\footnotesize]{text}{code/select-parents.txt}
+	\caption{Pseudocode for the selection phase}
+	\label{listing:select-parents}
+\end{listing}
 
-NormaliseValues(return: normalisedLimits)
-ChooseParent(return: parentA)
-remove the fitness of parentA from populationFitness
-NormaliseValues(return: normalisedLimits)
-ChooseParent(return: parentB)
-return parentA, parentB
-\end{Verbatim}
-
-\begin{Verbatim}[numbers=left, fontsize=\footnotesize]
-function ChooseParent
-input: normalisedLimits
-
-choice = random[0, 1]
-lowerValue = 0
-upperValue = size(normalisedLimits) - 1
-foundParent = False
-parent = None
-while not found_parent:
-    perform binary search to find interval in which the parent lies
-end while
-return parent
-\end{Verbatim}
+\begin{listing}[!ht]
+	\inputminted[linenos, fontsize=\footnotesize]{text}{code/choose-parent.txt}
+	\caption{Pseudocode for a subroutine of the selection phase}
+	\label{listing:choose-parent}
+\end{listing}
 
 Firstly, the fitness values of the population are normalised so that they add 
 up to one. The selection of a parent can be modelled like a spinner wheel, where
@@ -1353,40 +1265,15 @@ fitness value is removed from the list and the \verb|normalisedLimits| are
 recalculated and \verb|ChooseParent| is run again, to determine the second 
 parent.
 
+\newpage
+
 \subsection{Crossover}
 
-\begin{Verbatim}[numbers=left, fontsize=\footnotesize]
-function CreateOffspring
-input: populationSize, numOfSessions, parentA, parentB
-
-offspring := empty list
-halfPop := ceiling(populationSize / 2)
-for i in range(halfPop):
-    outerLocus := RandomInteger(0, numOfSessions - 1)
-    if outerLocus == 0:
-        innerLocus := RandomInteger(1, 2)
-    else:
-        innerLocus := RandomInteger(0, 2)
-    end if
-    leftA := parentA[:outerLocus]
-    centreA = parentA[outerLocus][:innerLocus] 
-	          + parentB[outerLocus][innerLocus:]
-    rightA := parentB[outerLocus + 1:]
-    append centreA to leftA
-    childA := leftA + rightA
-    append childA to offspring
-    leftB := parentB[:outerLocus]
-    centreB := parentB[outerLocus][innerLocus]
-               + parentA[outerLocus][innerLocus:]
-    rightB := parentA[outerLocus + 1:]
-    append centreB to leftB
-    childB := leftB + rightB
-end for
-if halfPop =/= floor(populationSize / 2):
-    delete the last element in offspring
-end if
-return offspring
-\end{Verbatim}
+\begin{listing}[!ht]
+	\inputminted[linenos, fontsize=\footnotesize]{text}{code/crossover.txt}
+	\caption{Pseudocode for the crossover phase}
+	\label{listing:crossover}
+\end{listing}
 
 Recall that to generate offspring, a locus in the chromosome is randomly chosen,
 and the before and after parts of the chromosome are swapped between the two 
@@ -1408,40 +1295,15 @@ alleles, i.e.\ between characters in a string.
 However, due to how the data has been encoded, splitting between characters 
 would create e.g.\ rooms that do not exist, which is counterproductive. 
 
+\newpage
+
 \subsection{Mutation}
 
-\begin{Verbatim}[numbers=left, fontsize=\footnotesize]
-function MutateOffspring
-input: offspring, mutationChance, timeSlots, rooms, sessions
-
-mutatedOffspring = offspring
-for solution in mutatedOffspring:
-    for session in solution:
-        for i in range(3):
-            mutate = RandomInteger(1, mutationChance)
-            if mutate == 0:
-                match i:
-                    case 0:
-                        newTimeSlot = random(timeSlots)
-                        offspring[solution][session][0] := newTimeSlot
-                    end case
-                    case 1:
-                        newRoom = random(rooms)
-                        offspring[solution][session][1] := newRoom
-                    end case
-                    case _:
-                        newSession = random.choice(sessions)
-                        offspring[solution][session][2] := newSession[0]
-                        offspring[solution][session][3] := newSession[1]
-                        offspring[solution][session][4] := newSession[2]
-                    end case
-                end match
-            end if
-        end for
-    end for
-end for
-return mutatedOffspring
-\end{Verbatim}
+\begin{listing}[!ht]
+	\inputminted[linenos, fontsize=\footnotesize]{text}{code/mutation.txt}
+	\caption{Pseudocode for the mutation phase}
+	\label{listing:mutation}
+\end{listing}
 
 There is a chance of mutation for individual genes, rather than for the 
 individual as a whole, meaning an individual could have multiple mutations.
@@ -1457,19 +1319,20 @@ The program is split across multiple files, for ease of reading.
 
 The settings data and the config data are stored in two json files, 
 \verb|settings.json| and \verb|data.json| respectively.
-Below are examples of each file, containing a small amount of data.
+Listing~\ref*{listing:settings-json} and listing~\ref*{listing:data-json} are
+examples of these files, each containing a small amount of data.
 
-\inputminted[linenos, fontsize=\footnotesize]{json}{code/settings_template.json}
+\begin{listing}[!ht]
+	\inputminted[linenos, fontsize=\footnotesize]{json}{code/settings_template.json}
+	\caption{An example of settings.json}
+	\label{listing:settings-json}
+\end{listing}
 
-\begin{center}
-	\small{An example of \verb|settings.json|}
-\end{center}
-
-\inputminted[linenos, fontsize=\footnotesize]{json}{code/data_template.json}
-
-\begin{center}
-	\small{An example of \verb|data.json|}
-\end{center}
+\begin{listing}[!ht]
+	\inputminted[linenos, fontsize=\footnotesize]{json}{code/data_template.json}
+	\caption{An example of data.json}
+	\label{listing:data-json}
+\end{listing}
 
 In \verb|data.json| object names cannot be changed, but the values can take any 
 format, e.g.\ a \verb|teacher|'s \verb|id| could be a string instead.
@@ -1485,23 +1348,17 @@ search in the \verb|choose_parent| function in \verb|selection.py| were not
 updating, as evidenced in figure~\ref*{fig:terminal-output-1}.
 \begin{figure}[ht]
 	\centering
-	\begin{subfigure}{0.2\textwidth}
-		\includegraphics[scale=0.5]{images/binary-search-2}
-		\caption{blah} % #TODO: think something to put here
-		\label{fig:terminal-output-1}
-	\end{subfigure}
-	\begin{subfigure}{0.7\textwidth}
-		\includegraphics[scale=0.6]{images/binary-search-1}
-		\caption{help} % #TODO: think of something to put here
-		\label{fig:code-1}
-	\end{subfigure}
-\end{figure}  % #TODO: formatting
+	\includegraphics[scale=0.8]{images/binary-search-2}
+	\caption{Terminal output showing repeating values of ``lower'' and 
+		``upper''}
+	\label{fig:terminal-output-1}
+\end{figure}
 
 The relevant code is below in figure~\ref*{fig:code-2}
 \begin{figure}[ht]
 	\centering
 	\includegraphics[scale=0.7]{images/binary-search-3}
-	\caption{blah}  % #TODO: think of something to put here
+	\caption{The problem code}
 	\label{fig:code-2}
 \end{figure}
 
@@ -1509,13 +1366,12 @@ Changing the order of the \verb|if| \verb|else| statements solved the problem.
 \begin{figure}[ht]
 	\centering
 	\includegraphics[scale=0.4]{images/binary-search-5}
-	\caption{blah}  % #TODO: think of something to put here
+	\caption{The fixed code}
 	\label{fig:code-3}
 \end{figure}
 
 \newpage
 
-% #TODO: changes made to algorithm
 Another issue I encountered was that after thousands of generations, no valid 
 solution was being found, and after further investigation, I discovered that the
 population was converging to the same solution.
@@ -1532,21 +1388,13 @@ I fixed this by calculating the fitness of the offspring immediately after the
 crossover phase.
 If a member of the offspring has fitness that is the same as or worse than the
 fitness of the worse parent, then it is mutated, otherwise it is not.
-Some pseudocode for this is:
+Some pseudocode for this is shown in listing~\ref*{listing:selective-mutation}.
 
-\begin{Verbatim}[numbers=left, fontsize=\footnotesize]
-CheckFitness of offspring(return: offspringFitness)
-mutateList := empty list
-notMutateList := empty list
-for solution in offspringFitness
-    indexOffspring := index(offspringFitness(solution))
-    if solution <= worstParentFitness:
-        append offspring[indexOffspring] to mutateList
-    else:
-        append offspring[indexOffspring] to notMutateList
-    end if
-end for
-\end{Verbatim}
+\begin{listing}[!ht]
+	\inputminted[linenos, fontsize=\footnotesize]{text}{code/selective-mutation.txt}
+	\caption{Only mutating offspring if it does not have improved fitness}
+	\label{listing:selective-mutation}
+\end{listing}
 
 For this, I also created another function that only returns the fitness values, 
 and not a boolean for if there exists a valid solution, and that solution if it
@@ -1574,45 +1422,13 @@ longer being used choose the parents), the number of constraint violations is
 not inverted, and instead that number is used to denote the fitness, meaning
 that now, lower fitness is better, instead of before where higher fitness was 
 better.
-The pseudocode for this is now:
+The pseudocode for this is now shown in listing~\ref*{listing:fitness-new}.
 
-\begin{Verbatim}[numbers=left, fontsize=\footnotesize, tabsize=4]
-function CheckFitness
-input: population, teacherTimes
-	
-populationFitness := empty list
-validSolutionBool := False
-validSolution := None
-for each solution in population:
-	sort solution by timeSlot
-	violations := 0
-	for i in range(size(solution) - 1):
-		if solution[i][0] == solution[i + 1][0]:
-			if solution[i][1] == solution[i + 1][1]:
-				violations := violations + 1
-			end if
-			if solution[i][2] == solution[i + 1][2]:
-				violations := violations + 1
-			end if
-			if solution[i][4] == solution[i + 1][4]:
-				violations := violations + 1
-			end if
-		end if
-	end for
-	for in range(size(solution)):
-		timeSlot = solution[i][0]
-		teacherNumber = solution[i][4]
-		CONTINUE WHEN FINISHED CODE  #TODO: add code
-	end for
-	append violations to populationFitness
-	if violations == 0:
-		valid solution bool := True
-		valid solution := solution
-		break for loop
-	end if
-end for
-return populationFitness, validSolution, validSolutionBool
-\end{Verbatim}
+\begin{listing}[!ht]
+	\inputminted[linenos, fontsize=\footnotesize]{text}{code/fitness-new.txt}
+	\caption{Pseudocode for modified fitness function}
+	\label{listing:fitness-new}
+\end{listing}
 
 The selection process for the parents is now greatly simplified, as they just
 need to be sorted by their fitness, and then the best ones are selected.
@@ -1622,23 +1438,11 @@ there be one parent without a partner).
 Therefore the size of the population needs to be a multiple of 4.
 The pseudocode is now:
 
-\begin{Verbatim}[numbers=left, fontsize=\footnotesize, tabsize=4]
-function SelectParents
-input: populationFitness, populationSize
-
-parents := empty list
-sortedFitness := populationFitness
-sort sortedFitness  // sorts from low to high
-for i in range(2 * ceiling(population_size / 4)):
-    parent = sorted_fitness[0]
-    append parent to parents
-    if i == (2 * ceiling(population_size/4)) - 1:
-        worst_parent_fitness = sorted_fitness[0]
-	end if
-    delete sorted_fitness[0]
-end for
-return parents, worst_parent_fitness
-\end{Verbatim}
+\begin{listing}[!ht]
+	\inputminted[linenos, fontsize=\footnotesize]{text}{code/selection-new.txt}
+	\caption{Pseudocode for modified selection phase}
+	\label{listing:selection-new}
+\end{listing}
 
 Next, the crossover phase had to be changed so that two parents are chosen
 randomly, and they crossover twice, with a random locus each time, to create a 
@@ -1688,7 +1492,7 @@ parents, which creates a completely separate variable with an ID which is not
 referenced by its offspring, and hence does not change when the offspring does.
 Now, my program works as expected.
 
-% #TODO: fulfilled requirements
+% TODO: removing bad ppl
 
 \chapter{Testing}  % #TODO: testing
 
@@ -1701,33 +1505,45 @@ Now, my program works as expected.
 
 \appendix
 
-\chapter{Tables and Figures} % #TODO: tables and figures appendix
-
-\chapter{Pseudocode and Code Listings} % #TODO: pseudocode and code listings
-
 \listoffigures
+
+\listoftables
+
+\listoflistings
 
 \chapter{Source Code}
 
 \section{main.py}
 \inputminted[linenos, fontsize=\footnotesize]{Python}{../main.py}
 
+\newpage
+
 \section{ga.py}
 \inputminted[linenos, fontsize=\footnotesize]{Python}{../modules/ga.py}
+
+\newpage
 
 \section{initial{\textunderscore}population.py}
 \inputminted[linenos, fontsize=\footnotesize]{Python}{
 	../modules/initial_population.py}
 
+\newpage
+
 \section{fitness{\textunderscore}function.py}
 \inputminted[linenos, fontsize=\footnotesize]{Python}{
 	../modules/fitness_function.py}
 
+\newpage
+
 \section{selection.py}
 \inputminted[linenos, fontsize=\footnotesize]{Python}{../modules/selection.py}
 
+\newpage
+
 \section{crossover.py}
 \inputminted[linenos, fontsize=\footnotesize]{Python}{../modules/crossover.py}
+
+\newpage
 
 \section{mutation.py}
 \inputminted[linenos, fontsize=\footnotesize]{Python}{../modules/mutation.py}

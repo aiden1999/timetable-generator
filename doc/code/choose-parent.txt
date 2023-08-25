@@ -1,0 +1,11 @@
+function ChooseParent
+input: normalisedLimits
+
+choice = random[0, 1]
+lowerValue = 0
+upperValue = size(normalisedLimits) - 1
+foundParent = False
+parent = None
+while not found_parent:
+    perform binary search to find interval in which the parent lies
+return parent

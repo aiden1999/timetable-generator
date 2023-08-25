@@ -1,0 +1,9 @@
+function SelectParents
+input: populationFitness
+
+NormaliseValues(return: normalisedLimits)
+ChooseParent(return: parentA)
+remove the fitness of parentA from populationFitness
+NormaliseValues(return: normalisedLimits)
+ChooseParent(return: parentB)
+return parentA, parentB

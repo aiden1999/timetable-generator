@@ -1,0 +1,16 @@
+function CreatePopulation
+input: sessions, rooms, timeSlots, populationSize
+
+population := empty list
+repeat(populationSize):
+    solution := empty list
+    for session in sessions:
+        timeSlot := random(timeSlots)
+        room := random(rooms)
+        studentGroup := session[1]
+        module := session[0]
+        teacher := session[2]
+        newSession := (timeSlot, room, studentGroup, module, teacher)
+        append newSession to solution
+    append solution to population
+return population
