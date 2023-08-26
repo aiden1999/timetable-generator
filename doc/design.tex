@@ -1,0 +1,416 @@
+\section{Modelling the Input Data}
+
+Before the whole algorithm can be modelled mathematically, we must first model 
+the input data as set of variables.
+\begin{itemize}
+	\item Let \( T = \{ t_1 , \ldots , t_n \} \) be the set of teachers where:
+	\begin{itemize}
+		\item a teacher \( t_i = \{ M_{t_i}, H_{t_i} \} \) where:
+		\begin{itemize} 
+			\item \( H_{t_i} = \{ h_{t_{i_1}} , \ldots , h_{t_{i_n}} \} \) is 
+				the set of the teacher's preferred timeslots, and
+			\item \( M_{t_i} = \{ m_{t_{i_1}} , \ldots , m_{t_{i_n}} \} \) is 
+				the set of modules that the teacher teaches.
+		\end{itemize}
+	\end{itemize}
+	\item Let \( R = \{ r_1 , \ldots , t_n \} \) be the set of rooms where:
+	\begin{itemize}
+		\item a room \( r_i = \{ y_{r_i} , c_{r_i} \} \) where:
+		\begin{itemize}
+			\item \( y_{r_i} \) is the type of room, which takes the value 
+				\( 1 \) if the room is a lecture theatre, or \( 2 \) if the room
+				is a lab, and
+			\item \( c_{r_i} \) is the maximum capacity of the room.
+		\end{itemize}
+	\end{itemize}
+	\item Let \( S = \{ s_1 , \ldots , s_n \} \) be the set of student groups
+		where:
+	\begin{itemize}
+		\item a student group \( s_i = \{ M_{s_i} , z_{s_i} \} \) where:
+		\begin{itemize}
+			\item \( M_{s_i} = \{ m_{s_{i_1}} , \ldots \, m_{s_{i_n}} \} \) is 
+				the set of modules taken by the student group \( s_i \), and
+			\item \( z_{s_i} \) is the number of students in \( s_i \).
+		\end{itemize} 
+	\end{itemize}
+	\item Let \( M = \{ m_1, \ldots, m_n \} \) be the set of modules where:
+	\begin{itemize}
+		\item a module \( m_i = \{ p_{m_i}, q_{m_i} \} \) where:
+		\begin{itemize}
+			\item \( p_{m_i} \) is the number of lecture hours of the module 
+				\( m_i \), and 
+			\item \( q_{m_i} \) is the number of lab hours of the module 
+				\( m_i \).
+		\end{itemize}
+	\end{itemize}
+	\item Let \( H = \{ h_1 , \ldots , h_n \} \) be the set of time slots.
+\end{itemize}
+Further to this, we can also describe a set of teaching sessions \( X \) where 
+each session \( x_{t_{\alpha},r_{\beta},s_{\gamma},m_{\delta},h_{\epsilon}} \) 
+is a session taught by teacher \( t_{\alpha} \), in room \( r_{\beta} \), with 
+student group \( s_{\gamma} \), about module \( m_{\delta} \), during time slot
+\( h_{\epsilon} \).
+
+\section{Constraints}
+
+We next need to represent the constraints. We take the requirements from \S 2.1,
+but add two more constraints (2 and 3).
+\begin{enumerate}
+	\item Every module has all its hours timetabled.
+	\item Each session is taught by the correct teacher for the module.
+	\item Each session has the correct student group attending it.
+	\item A room is being used for at most one learning session in a time slot.
+	\item A student has at most one learning session in a time slot.
+	\item A teacher has at most one learning session in a time slot.
+	\item A session is in the correct type of room, for example, a lecture is in 
+		a lecture theatre, and a lab session is in a lab.
+	\item The number of students in the room must not exceed the capacity of the
+		room.
+	\item The size of the room is optimal for the number of students, meaning 
+		that the size of the room is as small as possible.
+	\item Teachers can make preferences for when they are teaching.
+\end{enumerate}
+We will now formulate these constraints below.
+
+\subsection{Every module has all its hours timetabled}
+
+We can say that the number of sessions scheduled is equal to the sum of the 
+number of lecture sessions and the number of lab sessions for all the modules, 
+or:
+\begin{equation*}
+	\lvert X \rvert = \sum_{i=1}^{\lvert M \rvert} (p_{m_i} + q_{m_i})
+\end{equation*}
+However, this is not sufficient to prove that the correct number of sessions per
+module has been scheduled, for instance one module might be missing a session 
+and another module might have an extra session scheduled, and the above 
+statement would still hold. To further prove this, we also have constraint 7.
+
+\subsection{Each session is taught by the correct teacher for the module}
+
+This can be reworded to: for every session, the module taught in that session is
+in the set of modules taught by the teacher, or:
+\begin{equation*}
+	\forall x_{t_{\alpha},r_{\beta},s_{\gamma},m_{\delta},h_{\epsilon}} \in X,
+	\: m_{\delta} \in M_{t_{\alpha}}
+\end{equation*}
+
+\subsection{Each session has the correct student group attending it}
+
+Very similarly to the previous constraint, this constraint can be reworded to: 
+for every session, the module taught in that session is in the set of modules 
+taken by the student group, or:
+\begin{equation*}
+	\forall x_{t_{\alpha},r_{\beta},s_{\gamma},m_{\delta},h_{\epsilon}} \in X,
+	\: m_{\delta} \in M_{s_{\gamma}}
+\end{equation*}
+
+\subsection{A room is being used for at most one learning session in a time 
+	slot}
+
+This can be rephrased as: for each room, there is at most one of each time slot 
+scheduled for that room.
+\begin{equation*}
+	\forall r_i \in R, \: \exists X_{r_i} \subseteq X \text{ where } X_{r_i} = 
+	\{ x_{t_{\alpha},r_{\beta},s_{\gamma},m_{\delta},h_{\epsilon}} \: | \: 
+	r_{\beta} = r_i\}
+\end{equation*}
+This creates subsets \( X_{r_i} \) which are all the learning sessions scheduled
+to the room \( r_i \). Then:
+\begin{equation*}
+	\forall h_j \in H\, \: \exists X_{r_i,h_j} \subseteq X_{r_i} \text{ where }
+	X_{r_i,h_j} = \{ x_{t_{\alpha}, r_i, s_{\gamma}, m_{\delta}, h_{\epsilon}} 
+	\: | \: h_{\epsilon} = h_j \}
+\end{equation*}
+This creates subsets \( X_{r_i,h_j} \) which are all the learning session 
+scheduled in time slot \( h_j \) for the room \( r_i \). We then require the 
+condition
+\begin{equation*}
+	\lvert X_{r_i,h_j} \rvert = 1 \text{ or } \lvert X_{r_i,h_j} \rvert = 0
+\end{equation*}
+to hold \( \forall X_{r_i,h_j} \).
+
+\subsection{A student has at most one learning session in a time slot}
+
+This very similar to constraint 4.
+\begin{equation*}
+	\forall s_i \in S, \: \exists X_{s_i} \subseteq X \text{ where } X_{s_i} = 
+	\{ x_{t_{\alpha},r_{\beta},s_{\gamma},m_{\delta},h_{\epsilon}} \: | \: 
+	s_{\gamma} = s_i\}
+\end{equation*}
+\begin{equation*}
+	\forall h_j \in H\, \: \exists X_{s_i,h_j} \subseteq X_{s_i} \text{ where }
+	X_{s_i,h_j} = \{ x_{t_{\alpha}, r_{\beta}, s_i, m_{\delta}, h_{\epsilon}} 
+	\: | \: h_{\epsilon} = h_j \}
+\end{equation*}
+It is then required that
+\begin{equation*}
+	\lvert X_{s_i,h_j} \rvert = 1 \text{ or } \lvert X_{s_i,h_j} \rvert = 0, \: 
+	\forall X_{s_i,h_j}.
+\end{equation*}
+
+\subsection{A teacher has at most one learning session in a time slot}
+
+This very similar to constraints 4 and 5.
+\begin{equation*}
+	\forall t_i \in T, \: \exists X_{t_i} \subseteq X \text{ where } X_{t_i} = 
+	\{ x_{t_{\alpha},r_{\beta},s_{\gamma},m_{\delta},h_{\epsilon}} \: | \: 
+	t_{\alpha} = t_i\}
+\end{equation*}
+\begin{equation*}
+	\forall h_j \in H\, \: \exists X_{t_i,h_j} \subseteq X_{t_i} \text{ where }
+	X_{t_i,h_j} = \{ x_{t_i, r_{\beta}, s_{\gamma}, m_{\delta}, h_{\epsilon}} 
+	\: | \: h_{\epsilon} = h_j \}
+\end{equation*}
+It is then required that
+\begin{equation*}
+	\lvert X_{t_i,h_j} \rvert = 1 \text{ or } \lvert X_{t_i,h_j} \rvert = 0, \: 
+	\forall X_{t_i,h_j}.
+\end{equation*}
+
+\subsection{A session is in the correct type of room}
+
+This can be thought of as: for each module, the number of sessions in a lecture 
+room is equal to the number of lecture sessions for that module. The same 
+applies for lab sessions.
+
+To begin with (recall that \( y_{r_i} = 1 \) if \( r_i \) is a lecture room):
+\begin{equation*}
+	\exists X_{lecture} \subseteq X \text{ where } X_{lecture} = \{ 
+	x_{t_{\alpha}, r_{\beta},s_{\gamma},m_{\delta},h_{\epsilon}} \: | \: \forall 
+	r_{\beta}, \: y_{r_{\beta}} = 1\}
+\end{equation*}
+This gives us \( X_{lecture} \), a set that contains all the sessions in a 
+lecture room. Then:
+\begin{equation*}
+	\forall m_i \in M, \: \exists X_{lecture,m_i} \subseteq X_{lecture} 
+	\text{ where } X_{lecture,m_i} = \{ t_{\alpha},r_{\beta},s_{\gamma},
+	m_{\delta},h_{\epsilon} \: | \: m_{\delta} = m_i\}
+\end{equation*}
+Finally, it is required that
+\begin{equation*}
+	\forall X_{lecture,m_i}, \: \lvert X_{lecture,m_i} \rvert = p_{m_i}.
+\end{equation*}
+
+Similarly, for labs:
+\begin{equation*}
+	\exists X_{lab} \subseteq X \text{ where } X_{lab} = \{ x_{t_{\alpha}, 
+	r_{\beta},s_{\gamma},m_{\delta},h_{\epsilon}} \: | \: \forall r_{\beta}, \: 
+	y_{r_{\beta}} = 2\}
+\end{equation*}
+\begin{equation*}
+	\forall m_i \in M, \: \exists X_{lab,m_i} \subseteq X_{lab} \text{ where } 
+	X_{lab,m_i} = \{ t_{\alpha},r_{\beta},s_{\gamma},m_{\delta},h_{\epsilon} \:
+	| \: m_{\delta} = m_i\}
+\end{equation*}
+and it is required that
+\begin{equation*}
+	\forall X_{lab,m_i} \lvert X_{lab,m_i} \rvert = p_{m_i}.
+\end{equation*}
+
+As teaching sessions are either labs or lectures, it can be implied that \( 
+\lvert X_{lecture} \rvert + \lvert X_{lab} \rvert = \lvert X \rvert \).
+
+Because of the above, there are the correct number of lectures and labs for 
+each module, and the conditions are now sufficient for constraint 1 to hold. 
+
+\subsection{The number of students in the room must not exceed the capacity of 
+	the room}
+
+This can be reworded to: for every session, the size of the student group must 
+be less than or equal to the capacity of the room, or:
+\begin{equation*}
+	\forall x_{t_{\alpha},r_{\beta},s_{\gamma},m_{\delta},h_{\epsilon}} \in X, 
+	\: z_{s_{\gamma}} \leq c_{r_{\beta}}
+\end{equation*}
+
+\subsection{The size of the room is optimal for the number of students}
+
+This means, for every session \( x_i \in X \) in room \( r_i \), if there 
+exists a room \( r_j \in R \) where \( c_{r_j} < c_{r_i} \), change \( 
+r_i \) to \( r_j \), only if no other constraints are violated. Or, \( r_i = 
+\min \{ r_j \: | \: c_{r_j} \geq c_{r_i} \} \in R \).
+
+\subsection{Teachers can make preferences for when they are teaching}
+
+We first define a set of sessions for each teacher:
+\begin{equation*}
+	\forall t_i \in T, \: \exists X_{t_i} \subseteq X \text{ where } X_{t_i} = 
+	\{ x_{t_{\alpha},r_{\beta},s_{\gamma},m_{\delta},h_{\epsilon}} \: | \: 
+	t_{\alpha} = t_i\}
+\end{equation*}
+We then define a set containing just the time slots for each \( X_{t_i} \):
+\begin{equation*}
+	\forall X_{t_i}, \: \exists H_{xt_i} \text{ where } H_{xt_i} = \{ h_j \: | 
+	\: h_j = h_{\epsilon} \forall x_{t_i,r_{\beta},s_{\gamma},m_{\delta},
+	h_{\epsilon}} \in X_{t_i}\}
+\end{equation*}
+Then, for the constraint to be satisfied, \( H_{xt_i} \subseteq H_{t_i} \) must
+hold \( \forall t_i \in T \), or alternatively, the constraint is violated if
+\( \exists H_{xt_i} \ni h_j \notin H_{t_j} \).
+
+\section{Timetable Encoding}
+
+A solution will be encoded as a set of 5-tuples, where each tuple is 
+\{time slot, room, student group, module, teacher\}, where a solution represents
+an entire timetable.
+
+For the genetic algorithm, the population is a set of solutions.
+
+\newpage
+
+\section{Genetic Algorithm Pseudocode}
+
+\begin{listing}[!ht]
+	\inputminted[linenos, fontsize=\footnotesize]{text}{code/ga-pseudocode.txt}
+	\caption{Pseudocode for the genetic algorithm}
+	\label{listing:genetic-algorithm}
+\end{listing}
+
+The settings data contains \verb|populationSize| and \verb|mutationChance|, 
+which are parameters for the genetic algorithm the user may wish to change.
+\verb|populationSize| is quite self-explanatory, simply the number of 
+individuals in the population.
+\verb|mutationChance| is the reciprocal of the actual chance of a mutation 
+occurring, for example, if the chance of a mutation occurring is 
+\( \frac{1}{1000} \), then \verb|mutationChance| needs to be 1000.
+
+Note that the \verb|CheckFitness| function is called both inside the while loop
+and before it.
+This is so that the initial population generated can be checked for a valid 
+solution, removing the need to proceed with the rest of the algorithm.
+Hence, the population's fitness needs to be calculated again inside the while
+loop, after the mutation phase.
+
+\subsection{Initial Population}
+
+\begin{listing}[!ht]
+	\inputminted[linenos, fontsize=\footnotesize]{text}{code/population.txt}
+	\caption{Pseudocode for generating the initial population}
+	\label{listing:population}
+\end{listing}
+
+The initial population is generated within two for loops, as the population
+consists of many solutions, each of which consist of many sessions.
+For each session, the time slot and room are chosen randomly, but a session's 
+module, student group and teacher is predetermined.
+This is because when the configuration data is imported, a module is imported 
+with its student group and teacher, as a triple.
+Then each triple is stored in the list \verb|sessions|.
+This means that a session automatically has the correct student group and 
+teacher for the module, therefore reducing the difficulty of the problem.
+The session is stored \( n \) times in \verb|sessions|, where \( n \) is the 
+number of lab and lecture sessions of that module, so that the correct number 
+of teaching sessions are created.
+
+\newpage
+
+\subsection{Fitness Function}
+
+\begin{listing}[!ht]
+	\inputminted[linenos, fontsize=\footnotesize]{text}{code/fitness.txt}
+	\caption{Pseudocode for the fitness function}
+	\label{listing:fitness}
+\end{listing}
+
+The fitness function is calculated by totalling the number of constraint 
+violations, then raising it to the power of -1, so a higher fitness function is 
+better.
+However, solutions with no constraint violations have a fitness function of 0.
+
+Violations are worked out in different ways depending on which constraint is
+violated.
+To check for clashes for student groups, rooms, and teachers, the sessions in a 
+solution are sorted by time slot, so it can be checked if two consecutive 
+sessions in the solution list share the same time slot.
+If the two sessions do share the same time slot, then it is checked if the rooms
+are the same, and then if they are, constraint 4 has been violated, and the 
+count of violations is increased --- the same applies to student groups and 
+teachers.
+
+To check a session against the teacher's time preferences, the session's time 
+slot is checked against a list of that teacher's preferred time slots.
+If the session's time slot does not appear on the list, then constraint 10 has 
+been violated and the number of and the count of violation is increased.
+
+\newpage
+
+\subsection{Selection}
+
+\begin{listing}[!ht]
+	\inputminted[linenos, fontsize=\footnotesize]{text}{code/select-parents.txt}
+	\caption{Pseudocode for the selection phase}
+	\label{listing:select-parents}
+\end{listing}
+
+\begin{listing}[!ht]
+	\inputminted[linenos, fontsize=\footnotesize]{text}{code/choose-parent.txt}
+	\caption{Pseudocode for a subroutine of the selection phase}
+	\label{listing:choose-parent}
+\end{listing}
+
+Firstly, the fitness values of the population are normalised so that they add 
+up to one. The selection of a parent can be modelled like a spinner wheel, where
+the fitter the solution, the larger its `slice' on the spinner wheel, so it is 
+more likely to be chosen.
+The function \verb|NormaliseValues| returns a list of limits, which are the 
+intermediate points of the cumulative sum of the normalised fitness values.
+As an example, if the population has normalised fitness values of 
+\( 0.25,0.5,0.25 \), then the returned \verb|normalisedLimits| will be 
+\( [0,0.25,0.75,1] \).
+Referring back to the spinner wheel analogy, these refer to the `edges' where 
+the `slices' meet.
+
+To select a parent, a random float between 0 and 1 is selected, which represents
+where the spinner lands.
+To continue the previous example, if the random float \verb|choice| is 0.52, 
+then the second solution will be chosen, as \( 0.25 < 0.52 < 0.75 \).
+Once this is selected, a binary search is performed to find the index of the 
+chosen solution (\verb|parent|). After the first parent has been selected, its 
+fitness value is removed from the list and the \verb|normalisedLimits| are 
+recalculated and \verb|ChooseParent| is run again, to determine the second 
+parent.
+
+\newpage
+
+\subsection{Crossover}
+
+\begin{listing}[!ht]
+	\inputminted[linenos, fontsize=\footnotesize]{text}{code/crossover.txt}
+	\caption{Pseudocode for the crossover phase}
+	\label{listing:crossover}
+\end{listing}
+
+Recall that to generate offspring, a locus in the chromosome is randomly chosen,
+and the before and after parts of the chromosome are swapped between the two 
+parents to produce two offspring.
+So the first task of the crossover phase is determining where the locus will be 
+in the chromosome.
+As the chromosome in this instance is a solution, which is modelled as set of 
+sets, we first need to determine which session contains the split --- which is 
+indexed with \verb|outerLocus|.
+The \verb|innerLocus| determines whether the locus is before the time slot
+(\verb|innerLocus| \( = 0\)), before the room (\verb|innerLocus| \( = 1 \)), or
+before the student group (\verb|innerLocus| \(=2\)). There is no split between
+the student group and the module, or the module and the teacher, because that 
+part of the solution is already known to be correct, so there is no point in
+changing it.
+
+The way that the crossover phase typically works is that the locus is in between
+alleles, i.e.\ between characters in a string. 
+However, due to how the data has been encoded, splitting between characters 
+would create e.g.\ rooms that do not exist, which is counterproductive. 
+
+\newpage
+
+\subsection{Mutation}
+
+\begin{listing}[!ht]
+	\inputminted[linenos, fontsize=\footnotesize]{text}{code/mutation.txt}
+	\caption{Pseudocode for the mutation phase}
+	\label{listing:mutation}
+\end{listing}
+
+There is a chance of mutation for individual genes, rather than for the 
+individual as a whole, meaning an individual could have multiple mutations.
+Like with the crossover phase, the student group, module and teacher are not 
+mutated separately, for the same reason.

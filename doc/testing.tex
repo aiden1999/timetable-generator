@@ -1,0 +1,83 @@
+All the testing was run on computer using Arch Linux x86\textunderscore64, with 
+a dual core processor clocked @ 2.7 GHz, and 8 GB of RAM.
+I used 3 different sizes of data sets, and used different sizes of population, 
+but kept the chance of mutation constant at \( \frac{1}{1000} \).
+I used the number of generations to generate a correct solution to measure the
+speed of the program with the different inputs.
+Table~\ref*{table:results-mean} shows the mean number of generations for each
+number of modules, for each population size.
+The full results are in table~\ref*{table:results-full}.
+
+\begin{table}
+	\begin{tabular}{c|ccc}
+		\toprule
+		& \multicolumn{3}{c}{Number of Modules} \\
+		Population Size & 10 & 50 & 100 \\
+		\midrule
+		10 & 155.4 \\
+		50 & 16.7 \\
+		100 & 11 \\
+		200 & 8.8 \\
+		\bottomrule
+	\end{tabular}
+	\caption{Mean average of number of generations for each number of modules
+		and population size}
+	\label{table:results-mean}
+\end{table}
+
+\begin{table}
+	\begin{tabular}{cc|cccc|cccc|cccc}
+		\toprule
+		\multicolumn{2}{c}{Num of Modules}
+			& \multicolumn{4}{c}{10}
+			& \multicolumn{4}{c}{50}
+			& \multicolumn{4}{c}{100} \\
+		\midrule
+		\multicolumn{2}{c}{Population Size}
+			& 10 & 50 & 100 & 200 
+			& 10 & 50 & 100 & 200 
+			& 10 & 50 & 100 & 200 \\
+		\midrule
+		Result & 1
+			& 68 & 14 & 9 & 7
+		\\
+		& 2
+			& 86 & 17 & 9 & 9
+		\\
+		& 3
+			& 91 & 7 & 12 & 8
+		\\
+		& 4
+			& 117 & 10 & 11 & 8
+		\\
+		& 5
+			& 265 & 9 & 10 & 10
+		\\
+		& 6
+			& 157 & 24 & 13 & 12
+		\\
+		& 7
+			& 172 & 32 & 17 & 10
+		\\
+		& 8
+			& 186 & 14 & 8 & 7
+		\\
+		& 9
+			& 188 & 177 & 10 & 9
+		\\
+		& 10
+			& 224 & 23 & 11 & 8
+		\\
+		\midrule
+		\multicolumn{2}{c}{Mean}
+			& 155.4 & 16.7 & 11 & 8.8
+		\\
+		\multicolumn{2}{c}{Std Deviation}
+			& 64.2 & 7.7 & 2.6 & 1.6
+		\\
+		\bottomrule
+	\end{tabular}
+	\caption{Full testing results}
+	\label{table:results-full}
+\end{table}
+

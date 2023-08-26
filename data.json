@@ -2,7 +2,6 @@
   "teachers": [
     {
       "id": "001",
-      "name": "J Harkness",
       "available_times": [
         {
           "day": "Tuesday",
@@ -59,7 +58,6 @@
     },
     {
       "id": "002",
-      "name": "G Cooper",
       "available_times": [
         {
           "day": "Monday",
@@ -116,7 +114,6 @@
     },
     {
       "id": "003",
-      "name": "O Harper",
       "available_times": [
         {
           "day": "Monday",
@@ -178,7 +175,6 @@
     },
     {
       "id": "004",
-      "name": "T Sato",
       "available_times": [
         {
           "day": "Monday",
@@ -235,7 +231,6 @@
     },
     {
       "id": "005",
-      "name": "I Jones",
       "available_times": [
         {
           "day": "Monday",
@@ -294,38 +289,26 @@
   "rooms": [
     {
       "id": "M101",
-      "building": "Maths",
-      "type": "Lecture",
       "capacity": "200"
     },
     {
       "id": "M002",
-      "building": "Maths",
-      "type": "Seminar",
       "capacity": "50"
     },
     {
       "id": "CS001",
-      "building": "Computer Science",
-      "type": "Computer Lab",
       "capacity": "100"
     },
     {
       "id": "CS002",
-      "building": "Computer Science",
-      "type": "Computer Lab",
       "capacity": "100"
     },
     {
       "id": "CS003",
-      "building": "Computer Science",
-      "type": "Computer Lab",
       "capacity": "100"
     },
     {
       "id": "CS004",
-      "building": "Computer Science",
-      "type": "Computer Lab",
       "capacity": "100"
     }
   ],
@@ -352,12 +335,53 @@
         "A123"
       ],
       "num_of_students": "30"
+    },
+    {
+      "id": "8394",
+      "modules": [
+        "A123",
+        "D112"
+      ],
+      "num_of_students": "100"
+    },
+    {
+      "id": "2938",
+      "modules": [
+        "J736",
+        "F937"
+      ],
+      "num_of_students": "50"
+    },
+    {
+      "id": "9483",
+      "modules": [
+        "G023",
+        "U843"
+      ],
+      "num_of_students": "80"
+    },
+    {
+      "id": "4293",
+      "modules": [
+        "D112",
+        "C110"
+      ],
+      "num_of_students": "30"
+    },
+    {
+      "id": "6437",
+      "modules": [
+        "G023",
+        "U843",
+        "K483",
+        "B388"
+      ],
+      "num_of_students": "80"
     }
   ],
   "modules": [
     {
       "id": "C111",
-      "title": "Introduction to Keyboards",
       "teachers": "004",
       "lecture_hours": "1",
       "lab_hours": "2",
@@ -365,7 +389,6 @@
     },
     {
       "id": "B388",
-      "title": "Basics of Immortality",
       "teachers": "001",
       "lecture_hours": "5",
       "lab_hours": "0",
@@ -373,7 +396,6 @@
     },
     {
       "id": "K483",
-      "title": "Jam Making",
       "teachers": "003",
       "lecture_hours": "1",
       "lab_hours": "1",
@@ -381,7 +403,6 @@
     },
     {
       "id": "L378",
-      "title": "Coffee Brewing",
       "teachers": "005",
       "lecture_hours": "2",
       "lab_hours": "1",
@@ -389,7 +410,6 @@
     },
     {
       "id": "A123",
-      "title": "Avoiding Apocalyptic Scenarios",
       "teachers": "002",
       "lecture_hours": "6",
       "lab_hours": "2",
@@ -400,7 +420,6 @@
     },
     {
       "id": "D112",
-      "title": "Legal Tax Evasion",
       "teachers": "001",
       "lecture_hours": "4",
       "lab_hours": "0",
@@ -408,7 +427,6 @@
     },
     {
       "id": "J736",
-      "title": "Infiltration via Pizza Delivery",
       "teachers": "002",
       "lecture_hours": "5",
       "lab_hours": "1",
@@ -416,7 +434,6 @@
     },
     {
       "id": "F937",
-      "title": "Autopsies 101",
       "teachers": "003",
       "lecture_hours": "2",
       "lab_hours": "3",
@@ -424,7 +441,6 @@
     },
     {
       "id": "G023",
-      "title": "Linux Basics",
       "teachers": "004",
       "lecture_hours": "1",
       "lab_hours": "1",
@@ -432,7 +448,6 @@
     },
     {
       "id": "U843",
-      "title": "Advanced Archiving",
       "teachers": "005",
       "lecture_hours": "3",
       "lab_hours": "0",
