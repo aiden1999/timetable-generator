@@ -15,16 +15,17 @@ into the terminal. If an error is returned, add to PATH.
 Installation
 ------------
 Download these 9 files:
-    crossover.py
+    ./modules/crossover.py
+    ./modules/fitness_function.py
+    ./modules/ga.py
+    ./modules/initial_population.py
+    ./modules/mutation.py
+    ./modules/selection.py
     data.json
-    fitness_function.py
-    ga.py
-    initial_population.py
     main.py
-    mutation.py
-    selection.py
     settings.json (NOT the settings.json for VSCode, if applicable)
-Make sure they are in the same directory.
+Make sure that the first 6 files are contained in the folder "modules", and that
+that folder is in the same directory as the other 3 files.
 
 Configuration
 -------------

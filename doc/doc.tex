@@ -30,7 +30,6 @@
 \fancyhead[L]{\textsl{\leftmark}}
 \fancyfoot[C] {\thepage}
 
-
 \begin{document}
 
 \graphicspath{{../doc-imgs/}}
@@ -73,32 +72,35 @@
 
 \restoregeometry
 
-\begin{abstract} % #TODO: abstract
-	lol placeholder text for abstract lorem ipsum etc test
-\end{abstract}
+\section*{Abstract} % #TODO: abstract
+lol placeholder text for abstract lorem ipsum etc test
 
-% #TODO: acknowledgements
+\section*{Acknowledgements}
+
+I would like to thank Dr. Shaheen Fatima, and Thomas Venhuizen.
 
 \tableofcontents
+\addcontentsline{toc}{section}{Abstract}
+\addcontentsline{toc}{section}{Acknowledgements}
 
 \newpage
 
 \chapter{Introduction} % #TODO: introduction
 
 \chapter{Literature Review}
-\input{literature-review.tex}
+\input{c2-literature-review.tex}
 
 \chapter{Requirements}
-\input{requirements.tex}
+\input{c3-requirements.tex}
 
 \chapter{Design}
-\input{design.tex}
+\input{c4-design.tex}
 
 \chapter{Implementation}
-\input{implementation.tex}
+\input{c5-implementation.tex}
 
-\chapter{Testing}  % #TODO: testing
-\input{testing.tex}
+\chapter{Testing}
+\input{c6-testing.tex}
 
 \chapter{Evaluation}  % #TODO: evaluation 
 
@@ -115,7 +117,7 @@
 
 \listoflistings
 
-\chapter{Testing Output Timetables}
+\chapter{Testing Output Timetables}  % #TODO: add output timetables
 
 \chapter{Source Code}
 \input{source-code.tex}

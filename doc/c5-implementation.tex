@@ -176,6 +176,12 @@ parent), the parent's chromosome also mutates.
 I fixed this by creating a deep copy (from the \verb|copy| module) of the 
 parents, which creates a completely separate variable with an ID which is not
 referenced by its offspring, and hence does not change when the offspring does.
-Now, my program works as expected.
 
-% #TODO: removing bad ppl
+As seen in lines 17 and 18 of listing~\ref*{listing:genetic-algorithm}, only the
+two members of the population with the worst fitness are removed.
+However, now the difference between the parameter population size and the 
+current number of individuals varies depending on the population size.
+So instead, the individual with the worst fitness is removed from the population
+until the size of the population is equal to the parameter population size.
+
+Now, my program works as expected.
