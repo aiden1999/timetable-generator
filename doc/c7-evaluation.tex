@@ -1,0 +1,53 @@
+\section{Fulfilling requirements}
+
+I managed to achieve all the necessary requirements listed in \S3.1, except for
+requirements 2(e) (a session is in the correct type of room, for example, a
+lecture is in a lecture theatre, and a lab session is in a lab), 2(f) (the 
+number of students in the room must not exceed the capacity of the room), and
+2(g) (the size of the room is optimal for the number of students, meaning that
+the size of the room is as small as possible).
+This was because I ran out of time.
+
+Of the aspirational requirements in \S3.2, I implemented 2 - allow a user to
+change the parameters of the genetic algorithm.
+
+The program does work for the most part, but when looking through a solution for
+100 modules, I did spot the occasional clash, but this may have been because
+the problem was unsolvable (this will be elaborated on later).
+
+\section{Comparison to the work of others}
+
+Comparing to the other methods explored earlier and summarised in 
+table~\ref*{table:method-comparison}, my solution did not turn out to be the
+most effective, considering the issue listed above.
+
+\section{Other improvements}
+
+In addition to the other aspirational requirements, there are other things I 
+would do if I were to do this again.
+
+Firstly, to address the issue as to whether or not the problem is solvable for
+the input, I would change the program so that it would check if the problem is
+solvable in the first place. 
+As a simple example, the problem would not be solvable if a teacher was assigned
+to more sessions than as many as they had listed as preferred time slots.
+If it is not possible for a correct timetable to be generated, the user would
+be informed of the reason.
+Similarly, the program would perform data validation checking on the input data
+before attempting to generate a solution, for example, checking if a module does
+not have 0 for both the number of lecture hours and the number of lab hours. 
+
+To further elaborate on the aspirational requirements, the use of graphical 
+interface would also allow the user to input the data in a way that would be
+more familiar to them, as opposed to editing JSON files.
+This could also be where any problem with the input data, such as listed above,
+would be highlighted on the fly, so the user could change it straight away.
+The final timetables could perhaps be returned in a file format of the user's
+choosing, for instance a CSV file, or as an HTML snippet for use on a website.
+
+Finally, I would use an object oriented programming approach, so I could model
+each session as a object, with time slot, teacher, student group, module and 
+room as attributes.
+This would make accessing the different parts of a session easier.
+Solutions would be objects made of a list of sessions, and the population would
+be an object which is a list of sessions.
