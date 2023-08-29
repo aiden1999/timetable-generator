@@ -3,7 +3,7 @@ The program is split across multiple files, for ease of reading.
 
 \section{Data Storage}
 
-The settings data and the config data are stored in two json files, 
+The settings data and the config data are stored in two JSON files, 
 \verb|settings.json| and \verb|data.json| respectively.
 Listing~\ref*{listing:settings-json} and listing~\ref*{listing:data-json} are
 examples of these files, each containing a small amount of data.
@@ -110,7 +110,7 @@ that now, lower fitness is better, instead of before where higher fitness was
 better.
 The pseudocode for this is now shown in listing~\ref*{listing:fitness-new}.
 
-\begin{listing}[!ht]
+\begin{listing}[!h]
 	\inputminted[linenos, fontsize=\footnotesize]{text}{code/fitness-new.txt}
 	\caption{Pseudocode for modified fitness function}
 	\label{listing:fitness-new}
@@ -122,9 +122,9 @@ However, it is not as simple as selecting half of population, if the size of the
 population is an odd number, or if half of the population is an odd number (as 
 there be one parent without a partner).
 Therefore the size of the population needs to be a multiple of 4.
-The pseudocode is now:
+The pseudocode is now as shown in listing~\ref*{listing:selection-new}.
 
-\begin{listing}[!ht]
+\begin{listing}[!h]
 	\inputminted[linenos, fontsize=\footnotesize]{text}{code/selection-new.txt}
 	\caption{Pseudocode for modified selection phase}
 	\label{listing:selection-new}
@@ -185,3 +185,20 @@ So instead, the individual with the worst fitness is removed from the population
 until the size of the population is equal to the parameter population size.
 
 Now, my program works as expected.
+
+\newpage
+
+\section{Software and Libraries Used}
+
+\begin{itemize}
+	\item \textbf{VSCode}: IDE/text editor
+	\item \textbf{Neovim}: text editor
+	\item \textbf{Git}: version control
+	\item \textbf{Python 3.11}: programming language
+	\item Python libraries used:
+	\subitem \verb|copy|
+	\subitem \verb|json|
+	\subitem \verb|math|
+	\subitem \verb|os|
+	\subitem \verb|random|
+\end{itemize}

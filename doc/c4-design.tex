@@ -53,7 +53,7 @@ student group \( s_{\gamma} \), about module \( m_{\delta} \), during time slot
 
 \section{Constraints}
 
-We next need to represent the constraints. We take the requirements from \S 2.1,
+We next need to represent the constraints. We take the requirements from \S 1.1,
 but add two more constraints (2 and 3).
 \begin{enumerate}
 	\item Every module has all its hours timetabled.
@@ -291,8 +291,8 @@ loop, after the mutation phase.
 	\label{listing:population}
 \end{listing}
 
-The initial population is generated within two for loops, as the population
-consists of many solutions, each of which consist of many sessions.
+The initial population is generated within two for loops (lines 5 and 7), as the
+population consists of many solutions, each of which consist of many sessions.
 For each session, the time slot and room are chosen randomly, but a session's 
 module, student group and teacher is predetermined.
 This is because when the configuration data is imported, a module is imported 
@@ -334,8 +334,6 @@ slot is checked against a list of that teacher's preferred time slots.
 If the session's time slot does not appear on the list, then constraint 10 has 
 been violated and the number of and the count of violation is increased.
 
-\newpage
-
 \subsection{Selection}
 
 \begin{listing}[!ht]
@@ -372,8 +370,6 @@ fitness value is removed from the list and the \verb|normalisedLimits| are
 recalculated and \verb|ChooseParent| is run again, to determine the second 
 parent.
 
-\newpage
-
 \subsection{Crossover}
 
 \begin{listing}[!ht]
@@ -401,8 +397,6 @@ The way that the crossover phase typically works is that the locus is in between
 alleles, i.e.\ between characters in a string. 
 However, due to how the data has been encoded, splitting between characters 
 would create e.g.\ rooms that do not exist, which is counterproductive. 
-
-\newpage
 
 \subsection{Mutation}
 

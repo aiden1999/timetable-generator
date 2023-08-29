@@ -46,7 +46,7 @@ same time --- this is known as a clash.
 \subsection{Genetic Algorithms}
 
 Genetic algorithms (GAs) make up a group of search metaheuristics, inspired by
-Darwin's theory of evolution~\cite{ga_book}.
+Darwin's theory of evolution (Mitchell, 1998~\cite{ga_book}).
 Here, the fittest members of a population survive and produce offspring, which
 inherit the characteristics of the parents.
 It is also possible for the offspring to have small mutations within their
@@ -90,7 +90,7 @@ For example, in the instance of the university timetabling problem, the fitness
 of the solution could be measured by the number of times in the solution that a
 hard constraint is not met.
 This means that a solution with a score of 0 is a valid solution, as there are
-instances of a hard constraint not being met.
+no instances of a hard constraint not being met.
 
 Once the fitness function has been used to calculate the fitness of each
 individual, the fittest individuals are chosen for reproduction in the
@@ -147,12 +147,12 @@ are used to represent decisions, i.e., in the case of the university
 timetabling problem, a teaching session is happening in a specific room, at a 
 specific time, on a specific day, with a specific teacher, with a specific 
 teacher, with a specific student group, about a specific module, or 
-not~\cite{bip_example}.
+not (Abdellahi and Eledum, 2017~\cite{bip_example}).
 Then constraints are applied and used with the objective function to find what
 value each variable takes.
 
 First, a mathematical model of the problem must be constructed.
-Abdellahi and Eledum (2006)~\cite{bip_example} modelled the features of the
+Abdellahi and Eledum (2017)~\cite{bip_example} modelled the features of the
 university timetabling problem as a group of sets:
 \begin{itemize}
 	\item
@@ -221,7 +221,7 @@ Then the authors defined their auxiliary variables as
 	\text{for } s \in 1, \ldots, n_k - 1, \text{where } k + s \leq n_k	
 \end{math}
 
-Finally, (people) defined two further sets of variables:
+Finally, the authors defined two further sets of variables:
 \begin{itemize}
 	\item \( z_{im} \), which represents the existence of lectures for teacher 
 		\( m \) on day \( i \)
@@ -353,7 +353,7 @@ The model can be reduced further into two models, one for students and one for
 teachers.
 The problem is solved with using an external penalty function method. Penalty
 functions convert constrained problems to those without constraints by
-introducing a penalty for violating the constraints~(\cite{penalty_function}).
+introducing a penalty for violating the constraints~\cite{penalty_function}.
 By using a penalty function, the authors found a real solution
 to the unrestrained problem, and then approximated it to a binary solution with
 an algorithm.
@@ -423,7 +423,7 @@ There are several possible stopping criteria, such as:
 		current solution
 	\item \( k \) is larger than the maximum number of allowed iterations
 	\item The number of iterations since the last improvement of \( i^\prime \)
-		is greater than a specified number –-- meaning that convergence has been
+		is greater than a specified number --- meaning that convergence has been
 		reached, and that there are diminishing returns on finding a more
 		optimal solution
 	\item An optimal solution has been obtained.
@@ -431,8 +431,8 @@ There are several possible stopping criteria, such as:
 		solution, so that upper lower bounds can be set.
 \end{itemize}
 Tabu search has been used to solve the university timetabling
-problem~\cite{tabu_example}.
-Awad et al.\ defined four different neighbourhoods:
+problem (Awad et al., 2022~\cite{tabu_example}).
+The authors defined four different neighbourhoods:
 \begin{itemize}
 	\item Nb1: Randomly choose a particular course and progress to a feasible
 		timeslot, which can produce the smallest cost
@@ -529,8 +529,8 @@ The authors defined their constraints as:
 		unavailable to teach that course at a given timeslot, then no lecture of
 		the course can be scheduled at that timeslot.
 	\item \( S_1 \) \textbf{RoomCapacity}: For each lecture, the number of
-		students that attend the course must be less than or equal the number of
-		seats of all the room that host its lectures.
+		students that attend the course must be less than or equal to the number
+		of seats of all the rooms that host its lectures.
 		The penalty points, reflecting the number of students above the
 		capacity, are imposed on each violation.
 	\item \( S_2 \) \textbf{MinWorkingDays}: The lectures of each course must be
@@ -599,7 +599,7 @@ managed to produce optimal solutions.
 
 \subsection{Bat Inspired Algorithm}
 
-The Bat Inspired Algorithm (BA) is a heuristic method originally proposed by 
+The bat inspired algorithm (BA) is a heuristic method originally proposed by 
 Yang (2010)~\cite{yang_bat}.
 It is inspired by echolocation, which is a method used by bats and other animals
 to navigate, using sound.
@@ -618,7 +618,7 @@ To simplify echolocation, Yang suggested these rules:
 		that the loudness can vary from between positive values \( A_0 \) and 
 		\( A_{\min} \).
 \end{enumerate}
-Pseudocode for the Bat Algorithm can be seen in 
+Pseudocode for the bat algorithm can be seen in 
 listing~\ref*{listing:bat-algorithm}.
 
 \begin{listing}[!ht]
