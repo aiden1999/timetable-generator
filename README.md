@@ -1,4 +1,4 @@
-# Timetable Project
+# Timetable Generator Project
 
 ## Prerequisites
 - Python 3: install from https://www.python.org/downloads, or download with your
